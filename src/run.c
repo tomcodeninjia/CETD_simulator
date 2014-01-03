@@ -17,8 +17,6 @@
 
 //CETD API
 #include "../include/CETD.h"
-//#include "GMAC_generator.h"
-//#include "gcm.h"
 #include "../include/aes.h"
 #include "../include/cipher.h"
 #include "../include/write_txt.h"

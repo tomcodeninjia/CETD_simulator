@@ -10,7 +10,6 @@ VPATH = src:obj:include
 
 OBJ = $(OBJDIR)/run.o \
 	  $(OBJDIR)/CETD.o $(OBJDIR)/tag.o $(OBJDIR)/shuffle.o $(OBJDIR)/permutation.o  \
-      $(OBJDIR)/GMAC_generator.o $(OBJDIR)/gcm.o  \
 	  $(OBJDIR)/cipher.o  $(OBJDIR)/input.o  \
       $(OBJDIR)/aes.o  \
       $(OBJDIR)/padlock.o  \
@@ -24,7 +23,7 @@ run: $(OBJ)
 #target:prerequest
 #	commend
 $(OBJDIR)/run.o: $(SRCDIR)/run.c config.h show.h input.h CETD.h \
-	GMAC_generator.h gcm.h aes.h cipher.h 
+ aes.h cipher.h 
 	$(CC) -o $@ -c --std=c99 $(SRCDIR)/run.c 
 
 $(OBJDIR)/CETD.o: $(SRCDIR)/CETD.c CETD.h show.h write_txt.h write_csv.h
@@ -36,10 +35,6 @@ $(OBJDIR)/shuffle.o: $(SRCDIR)/shuffle.c shuffle.h show.h
 $(OBJDIR)/permutation.o: $(SRCDIR)/permutation.c permutation.h array_shift.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/permutation.c
 
-$(OBJDIR)/GMAC_generator.o: $(SRCDIR)/GMAC_generator.c gcm.h GMAC_generator.h  
-	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/GMAC_generator.c	
-$(OBJDIR)/gcm.o: $(SRCDIR)/gcm.c gcm.h config.h 
-	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/gcm.c	
 
 $(OBJDIR)/cipher.o: $(SRCDIR)/cipher.c cipher.h write_txt.h write_csv.h
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/cipher.c	
