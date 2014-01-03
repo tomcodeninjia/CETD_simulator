@@ -49,15 +49,23 @@ void write_txt_1array(FILE *dst,  int length, const uchar *array)
 {
 	for(int i=0;i<length;i++)
     {
-        fprintf(dst,"%d\n",(array[i]>>7)&0x01);
-        fprintf(dst,"%d\n",(array[i]>>6)&0x01);
-        fprintf(dst,"%d\n",(array[i]>>5)&0x01);
-        fprintf(dst,"%d\n",(array[i]>>4)&0x01);
-        fprintf(dst,"%d\n",(array[i]>>3)&0x01);
-        fprintf(dst,"%d\n",(array[i]>>2)&0x01);
-        fprintf(dst,"%d\n",(array[i]>>1)&0x01);
-        
-        fprintf(dst,"%d\n",array[i]&0x01);
+		int b= array[i];
+        fprintf(dst,"%d\n",(b>>7)&0x01);
+        fprintf(dst,"%d\n",(b>>6)&0x01);
+        fprintf(dst,"%d\n",(b>>5)&0x01);
+        fprintf(dst,"%d\n",(b>>4)&0x01);
+        fprintf(dst,"%d\n",(b>>3)&0x01);
+        fprintf(dst,"%d\n",(b>>2)&0x01);
+        fprintf(dst,"%d\n",(b>>1)&0x01);
+ 		if(i==length-1)
+        {
+            fprintf(dst,"%d",b&0x01);
+        }
+        else
+        {
+            fprintf(dst,"%d\n",b&0x01);
+        }
+       
         
     }
     fprintf(dst, "\n");

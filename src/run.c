@@ -38,11 +38,9 @@
 */
 #define data_dir "../NIST_suite/long/p%d.csv"
 #define ciphertext_dir "../NIST_suite/long/c%d.csv"
-#define nonce_input_dir "../NIST_suite/long/n_i%d.csv"
 
 #define data_dir_txt "../NIST_suite/long/p%d.txt"
 #define ciphertext_dir_txt "../NIST_suite/long/c%d.txt"
-#define nonce_input_dir_txt "../NIST_suite/long/n_i%d.txt"
 
 //#define iv_dir "/Users/duke/Documents/Research_work/tag_result/Rare_data/scheme_compare/gmac/iv%d.csv"
 
@@ -82,49 +80,8 @@ int main()
     FILE *fp_tag_CETD_txt;//tag
     fp_tag_CETD_txt=NULL;
     char filename_CETD_txt[256];
-    
-    FILE *fp_nonce_input_txt;//nonce input
-    fp_nonce_input_txt=NULL;
-    char filename_nonce_input_txt[256];
 
-	/*csv files*/
-    FILE *fp_original_data;//plaintext
-    fp_original_data=NULL;
-    char filename_data[256];
-    
-    FILE *fp_ciphertext;//ciphertext
-    fp_ciphertext=NULL;
-    char filename_ciphertext[256];
-    
-    //cetd outputs
-    FILE *fp_x_blk;//only shuffle x
-    fp_x_blk=NULL;
-    char filename_x[256];
-    
-
-	/*
-   	FILE *fp_y1_csv[BLK_NUMBER];
-	for(int i=0;i<BLK_NUMBER;i++)
-	{
-		fp_y1_csv[i]=NULL;
-	}
-	char y1_name_csv[BLK_NUMBER][256];
-
-	FILE *fp_y2_csv[BLK_NUMBER];
-	for(int i=0;i<BLK_NUMBER;i++)
-	{
-		fp_y2_csv[i]=NULL;
-	}
-	char y2_name_csv[BLK_NUMBER][256];
-
-    FILE *fp_tag_CETD;//tag
-    fp_tag_CETD=NULL;
-    char filename_CETD[256];
-    
-    FILE *fp_nonce_input;//nonce input
-    fp_nonce_input=NULL;
-    char filename_nonce_input[256];
-    */
+	//control paremeter
     int test_count;//number of test
     printf("input the test number\n");
     scanf("%d",&test_count);
@@ -188,27 +145,17 @@ int main()
         sprintf(filename_CETD_txt, tag_dir_txt,test_round+1);
         fp_tag_CETD_txt=fopen(filename_CETD_txt, "w");
         
-        sprintf(filename_nonce_input_txt, nonce_input_dir_txt,test_round+1);
-        fp_nonce_input_txt=fopen(filename_nonce_input_txt, "w");
-
-               /**
+        /**
          Each sequence require several blocks, the No. of blocks is n.
          **/
-        
-        uint *random;
-        random=(uint *)malloc(sizeof(uint)*BLK_NUMBER);
-        memset(random, 0, BLK_NUMBER);
-        for(int i=0;i<BLK_NUMBER;i++)
-        {
-            random[i]=rand();
-            //printf("%x ",random[i]);
-        }
 
-		int *rnd2;
-		   rnd2 = (int*)malloc(sizeof(int)*BLK_NUMBER);
-		   for(int i=0;i<BLK_NUMBER;i++)
+       		uchar *rnd2;
+		   rnd2 = (uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
+		   memset(rnd2,0,BLK_NUMBER);
+
+		   for(int i=0;i<BLK_LENGTH;i++)
 		   {
-				rnd2[i]=rand();
+				rnd2[i]=(uchar) (rand()%256);
 		   }
 
 
@@ -227,42 +174,31 @@ int main()
                 
                 memset(original_data[i], 0, BLK_LENGTH);
             }
-            
-            
-            
-		 //all_1(original_data,fp_plaintext_txt,TXT_file);
-	//		all_0(original_data,fp_plaintext_txt,TXT_file);
 
+        //		 all_1(original_data, fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
+//		all_0(original_data,fp_plaintext_txt,TXT_file, BLK_NUMBER, BLK_LENGTH);
 
- 			linear_counter(original_data,BLK_NUMBER , BLK_LENGTH,  test_n, TXT_file, fp_plaintext_txt);
-			
-//           balance_counter(original_data,fp_plaintext_txt,test_n,TXT_file,n/4); 
-		   
-	//	   random_repeat_long(original_data,fp_plaintext_txt,rnd2,TXT_file);
-		   //random_repeat_short(original_data,fp_plaintext_txt,rnd1,TXT_file);
-			/*
+//
+ 		//linear_counter(original_data,  test_n, TXT_file, fp_plaintext_txt,BLK_NUMBER , BLK_LENGTH);
+//			random_repeat_long(original_data, rnd2,fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
+
 			uchar **rnd3;
 			rnd3=(uchar **)malloc(sizeof(uchar *)*BLK_NUMBER);
             for(int i=0;i<BLK_NUMBER;i++)
             {
                 rnd3[i]=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
-                
-            }
-            for(int i=0;i<BLK_NUMBER;i++)
-            {
                 memset(rnd3[i], 0, BLK_LENGTH);
-                
             }
+            
 			for(int i=0;i<BLK_NUMBER;i++)
     		{
         		for(int j=0;j<BLK_LENGTH;j++)
         		{
-            		(*((uchar*)rnd3 + i * BLK_LENGTH +j))=rand()%256;
+            		*(*(rnd3+i)+j)=(uchar) (rand()%256);
         		}
     		}		
 
-		   random_input(original_data,fp_plaintext_txt,TXT_file,rnd3);
-		   */
+			random_input(original_data, rnd3,fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
          	/*
 			 *encrypting the plaintext
 			 *construct the input block sequence for scheme
@@ -316,7 +252,6 @@ int main()
             CETD_nonce_input[14]=s1->byte2;
             CETD_nonce_input[15]=s1->byte3;
 
-			write_txt_1array(fp_nonce_input_txt,16,CETD_nonce_input);
 			
             int r=4;
             int s=0;
@@ -330,30 +265,21 @@ int main()
             
             free(CETD_nonce_input);
 
+			for(int i=0;i<BLK_NUMBER;i++)
+			{
+				free(rnd3[i]);
+			}
+			free(rnd3);
+
 		
 
         }
         /**
          close the files to prepre for the next input sequence
          **/
-        free(random);
+        free(rnd2);
         free(AES_key);
-		free(rnd2);
-		/*
-        fclose(fp_nonce_input);//compare nonce_input with plaintext
-        fclose(fp_original_data);
-        fclose(fp_ciphertext);//compare nonce with ciphertext
-        fclose(fp_x_blk);
-        fclose(fp_tag_CETD);//compare tag with ciphertext
-		 for(int i=0;i<BLK_NUMBER;i++)
-		{
-			fclose(fp_y1_csv[i]);
-		}
-		for(int i=0;i<BLK_NUMBER;i++)
-		{
-			fclose(fp_y2_csv[i]);
-		}
-		*/
+
 		for(int i=0;i<BLK_NUMBER;i++)
 		{
 			fclose(fp_y1_txt[i]);
@@ -362,16 +288,12 @@ int main()
 		{
 			fclose(fp_y2_txt[i]);
 		}
-
 		fclose(fp_x_blk_txt);
-		
 		fclose(fp_tag_CETD_txt);
-		fclose(fp_nonce_input_txt);
+
 		fclose(fp_plaintext_txt);
 		fclose(fp_cipher_txt);
-        //fclose(fp_gcmtag);
-        //fclose(fp_gcmoutput);
-
+       
     }
      printf("finish \n");
     return 0;

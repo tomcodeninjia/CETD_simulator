@@ -25,7 +25,7 @@ blk1-1(0|1|2|3|4|5|6|7),...,blk1-n(0|1|2|3|4|5|6|7)
 ...
 blkm-1(8*m-1|8*m-1 + 1|...),...
  * */
-void linear_counter(uchar **input, int number, int arr_length, int test_n, bool file_type, FILE *data_i)
+void linear_counter(uchar **input, int test_n, bool file_type, FILE *data_i, int number, int arr_length)
 {
 	uint a = test_n%LC_BOUND;	
 	uint b=8*a;
@@ -63,6 +63,116 @@ void linear_counter(uchar **input, int number, int arr_length, int test_n, bool 
 
 	
 }
+
+
+void all_0(uchar **input, FILE *data_i, bool file_type, int number, int arr_length)
+{
+	for(int i=0;i<number;i++)
+	{
+		for(int j=0;j<arr_length;j++)	
+		{
+			*(*(input+i)+j) = 0;
+		}
+	}
+
+	if(file_type==TXT_file){
+		write_txt_2array(data_i,number,arr_length,input);
+	}
+	else
+	{
+		write_csv_2array(data_i,number,arr_length,input);
+	}
+
+}
+
+void all_1(uchar **input, FILE *data_i, bool file_type, int number, int arr_length)
+{
+	for(int i=0;i<number;i++)
+	{
+		for(int j=0;j<arr_length;j++)	
+		{
+			*(*(input+i)+j) = 0xFF;
+		}
+	}
+
+	if(file_type==TXT_file){
+		write_txt_2array(data_i,number,arr_length,input);
+	}
+	else
+	{
+		write_csv_2array(data_i,number,arr_length,input);
+	}
+
+}
+
+
+
+void random_repeat_long(uchar **input, const uchar *rnd,FILE *data_i,  bool file_type, int number, int arr_length)
+{
+	for(int i=0;i<number;i++)
+	{
+		for(int j=0;j<arr_length;j++)
+		{
+			*(*(input+i)+j) = rnd[j];
+		}
+	}
+
+	if(file_type==TXT_file){
+		write_txt_2array(data_i,number,arr_length,input);
+	}
+	else
+	{
+		write_csv_2array(data_i,number,arr_length,input);
+	}
+
+}
+
+void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length)
+{
+    for(int i=0;i<number;i++)
+    {
+        for(int j=0;j<arr_length;j++)
+        {
+            *(*(input+i)+j)=rnd[i][j];
+        }
+    }
+
+    if(file_type==TXT_file){
+		write_txt_2array(data_i,number,arr_length,input);
+	}
+	else
+	{
+		write_csv_2array(data_i,number,arr_length,input);
+	}
+
+
+}
+//
+void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)
+{
+	uchar *out_p=input;
+	
+	for(int i=0;i<BLK_NUMBER;i++)
+	{
+		int tmp = rand_num;
+		int j=0;
+        while (tmp!=0) {
+            *(out_p+j)=(uchar) (tmp  & 0xFF );
+            j++;
+            tmp = tmp >> CHAR_BIT;    
+     	}
+		out_p+=BLK_LENGTH;
+	}	
+
+	if(file_type==TXT_file){
+		write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+	}
+	else
+	{
+		write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+	}
+
+}
 void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int total_blk)
 {
 		
@@ -99,119 +209,6 @@ void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int 
 
 
 }
-
-void all_0(uchar **input, FILE *data_i, bool file_type)
-{
-	for(int i=0;i<BLK_NUMBER;i++)
-	{
-		memset((uchar*)input+i*BLK_LENGTH,0,BLK_LENGTH);
-	}
-
-	if(file_type==TXT_file){
-		write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-	else
-	{
-		write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-
-}
-
-void all_1(uchar **input, FILE *data_i, bool file_type)
-{
-	for(int i=0;i<BLK_NUMBER;i++)
-	{
-		memset((uchar*)input+i*BLK_LENGTH,0xFF,BLK_LENGTH);
-	}
-
-	if(file_type==TXT_file){
-		write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-	else
-	{
-		write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-
-}
-
-void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)
-{
-	uchar *out_p=input;
-	
-	for(int i=0;i<BLK_NUMBER;i++)
-	{
-		int tmp = rand_num;
-		int j=0;
-        while (tmp!=0) {
-            *(out_p+j)=(uchar) (tmp  & 0xFF );
-            j++;
-            tmp = tmp >> CHAR_BIT;    
-     	}
-		out_p+=BLK_LENGTH;
-	}	
-
-	if(file_type==TXT_file){
-		write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-	else
-	{
-		write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-
-}
-
-void random_repeat_long(uchar **input, FILE *data_i, int *rand_num, bool file_type)
-{
-	uchar *out_p=input;
-	
-	for(int i=0;i<BLK_NUMBER;i++)
-	{
-		int tmp = rand_num[i];
-		int j=0;
-        while (tmp!=0) {
-            *(out_p+j)=(uchar) (tmp  & 0xFF );
-            j++;
-            tmp = tmp >> CHAR_BIT;    
-     	}
-		out_p+=BLK_LENGTH;
-	}	
-
-	if(file_type==TXT_file){
-		write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-	else
-	{
-		write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-
-}
-
-void random_input(uchar **input, FILE *data_i, bool file_type, uchar ** rnd)
-{
-    for(int i=0;i<BLK_NUMBER;i++)
-    {
-        for(int j=0;j<BLK_LENGTH;j++)
-        {
-            (*((uchar*)input + i * BLK_LENGTH +j))=(*((uchar*)rnd + i * BLK_LENGTH +j));
-        }
-    }
-    if(file_type==TXT_file){
-		write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-	else
-	{
-		write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
-	}
-
-
-        //for(int i=0;i<BLK_NUMBER;i++)
-    //{
-    //     show((uchar*)original_data + i * BLK_LENGTH,BLK_LENGTH);
-    //  }
-
-
-}
-
 /*
  p[i] = rand(i)+test_n,
  */
