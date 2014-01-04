@@ -18,13 +18,14 @@
 void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_ctx,int r, int s,  FILE *x,FILE *y1[Y_NUMBER], FILE *y2[Y_NUMBER], FILE *CETD_tag, bool file_type)
 {
 	uchar CETD_data[Y_NUMBER][TAG_LENGTH];	
+	memset(CETD_data,0, Y_NUMBER*TAG_LENGTH);
 	int i,j;
 	for( i=0;i<Y_NUMBER;i++)
 	{
 		for( j=0;j<TAG_LENGTH;j++)
 		{
-			uchar x=i-(i/Y_SINGLE)*Y_SINGLE;
-			CETD_data[i][j]=data[i/Y_SINGLE][Y_SINGLE*x+j];
+			//uchar x=i-(i/Y_SINGLE)*Y_SINGLE;
+			CETD_data[i][j]=data[i/Y_SINGLE][Y_SINGLE*(i%Y_SINGLE)+j];
 		}
 	}
 		

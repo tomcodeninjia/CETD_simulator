@@ -174,10 +174,10 @@ int main()
             }
 
         //		 all_1(original_data, fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
-//		all_0(original_data,fp_plaintext_txt,TXT_file, BLK_NUMBER, BLK_LENGTH);
+		//all_0(original_data,fp_plaintext_txt,TXT_file, BLK_NUMBER, BLK_LENGTH);
 
 //
- 		//linear_counter(original_data,  test_n, TXT_file, fp_plaintext_txt,BLK_NUMBER , BLK_LENGTH);
+ 		linear_counter(original_data,  test_n, TXT_file, fp_plaintext_txt,BLK_NUMBER , BLK_LENGTH);
 //			random_repeat_long(original_data, rnd2,fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
 
 			uchar **rnd3;
@@ -196,7 +196,7 @@ int main()
         		}
     		}		
 
-			random_input(original_data, rnd3,fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
+			//random_input(original_data, rnd3,fp_plaintext_txt, TXT_file, BLK_NUMBER, BLK_LENGTH);
          	/*
 			 *encrypting the plaintext
 			 *construct the input block sequence for scheme
