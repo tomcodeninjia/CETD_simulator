@@ -47,7 +47,7 @@ int main()
     printf("input the number of tags\n");
     scanf("%d",&n);
 
-	int choice =5;
+	int choice =6;
 	choice = displayInputOption();
 	
 	
@@ -137,7 +137,7 @@ int main()
     /**
      Generate input sequences to NIST test, the No. of sequences is test_count
      **/
-    for(int test_round=0;test_round<test_count;test_round++)
+    for(uint test_round=0;test_round<test_count;test_round++)
     {
         
       
@@ -242,8 +242,9 @@ int main()
 		   }
 
 
-        for(int test_n=0;test_n<n;test_n++)
+        for(uint test_n=0;test_n<n;test_n++)
         {
+			int counter = test_round;
 			/*
 			 * Construct the plaintxt block sequence
 			 * */
@@ -289,9 +290,11 @@ int main()
 					linear_counter(original_data,  test_n, file_type, fp_plaintext_txt,BLK_NUMBER , BLK_LENGTH);
 					break;
 				case 4:
+					counter_normal(original_data, counter,file_type, fp_plaintext_txt, BLK_NUMBER, BLK_LENGTH);
+				case 5:
 					random_repeat_long(original_data, rnd2,fp_plaintext_txt, file_type, BLK_NUMBER, BLK_LENGTH);
 					break;
-				case 5:
+				case 6:
 					random_input(original_data, rnd3,fp_plaintext_txt, file_type, BLK_NUMBER, BLK_LENGTH);
 					break;
 				default:
@@ -314,9 +317,11 @@ int main()
 					linear_counter(original_data,  test_n, file_type, fp_plaintext_csv,BLK_NUMBER , BLK_LENGTH);
 					break;
 				case 4:
+					counter_normal(original_data, counter, file_type, fp_plaintext_csv, BLK_NUMBER, BLK_LENGTH);
+				case 5:
 					random_repeat_long(original_data, rnd2,fp_plaintext_csv, file_type, BLK_NUMBER, BLK_LENGTH);
 					break;
-				case 5:
+				case 6:
 					random_input(original_data, rnd3,fp_plaintext_csv, file_type, BLK_NUMBER, BLK_LENGTH);
 					break;
 				default:
@@ -482,14 +487,15 @@ int displayInputOption()
 	int choice = 0;
 	printf("[1] All 0 Input.\n");
 	printf("[2] All 1 Input.\n");
-	printf("[3] Linear Counter Input.\n");
-	printf("[4] Repeated Random Block Input. \n");
-	printf("[5] Random Input.\n");
+	printf("[3] Balanced Counter Input.\n");
+	printf("[4] Normal Linear Counter Input.\n");
+	printf("[5] Repeated Random Block Input. \n");
+	printf("[6] Random Input.\n");
 	printf("\n Please enter the Choice:\n");
 
 	scanf("%d",&choice);
 
-	while((choice <= 0)|| (choice >5))
+	while((choice <= 0)|| (choice >6))
 	{
 		printf("error, try again:\n");
 		scanf("%d",&choice);

@@ -7,6 +7,13 @@ In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
       ^
+./src/input.c:61:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,number,arr_length,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
 ./src/input.c: In function ‘all_0’:
 ./src/input.c:79:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,number,arr_length,input);
@@ -14,6 +21,13 @@ In file included from ./src/input.c:14:0:
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:83:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,number,arr_length,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
       ^
 ./src/input.c: In function ‘all_1’:
 ./src/input.c:99:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
@@ -23,6 +37,13 @@ In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
       ^
+./src/input.c:103:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,number,arr_length,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
 ./src/input.c: In function ‘random_repeat_long’:
 ./src/input.c:121:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,number,arr_length,input);
@@ -30,6 +51,13 @@ In file included from ./src/input.c:14:0:
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:125:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,number,arr_length,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
       ^
 ./src/input.c: In function ‘random_input’:
 ./src/input.c:141:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
@@ -39,69 +67,125 @@ In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
       ^
+./src/input.c:145:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,number,arr_length,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
 ./src/input.c: In function ‘counter_normal’:
-./src/input.c:169:29: error: lvalue required as left operand of assignment
-  arr_length > 4 ? n = 4 : n = arr_length;
-                             ^
-./src/input.c:176:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:170:5: error: invalid type argument of unary ‘*’ (have ‘int’)
+   *(*(i + 0) + i) = (uchar) ((counter >> i*CHAR_BIT) & ((1 << i*CHAR_BIT) - 1));
+     ^
+./src/input.c:174:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,number,arr_length,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
       ^
+./src/input.c:178:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,number,arr_length,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
 ./src/input.c: In function ‘random_repeat_short’:
-./src/input.c:188:15: warning: initialization from incompatible pointer type [enabled by default]
+./src/input.c:185:15: warning: initialization from incompatible pointer type [enabled by default]
   uchar *out_p=input;
                ^
-./src/input.c:203:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:200:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:204:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
       ^
 ./src/input.c: In function ‘balance_counter’:
-./src/input.c:238:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:235:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:239:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
       ^
 ./src/input.c: In function ‘count’:
-./src/input.c:292:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:289:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
       ^
-./src/input.c:252:9: warning: variable ‘start’ set but not used [-Wunused-but-set-variable]
+./src/input.c:293:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:249:9: warning: variable ‘start’ set but not used [-Wunused-but-set-variable]
      int start[BLK_NUMBER];
          ^
 ./src/input.c: In function ‘complex_count’:
-./src/input.c:357:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:354:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:358:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
       ^
 ./src/input.c: In function ‘equal_input’:
-./src/input.c:390:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:387:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
       ^
+./src/input.c:391:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
 ./src/input.c: In function ‘perodic_input’:
-./src/input.c:441:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
+./src/input.c:438:3: warning: passing argument 4 of ‘write_txt_2array’ from incompatible pointer type [enabled by default]
    write_txt_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
    ^
 In file included from ./src/input.c:14:0:
 ./src/../include/write_txt.h:4:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
  void write_txt_2array(FILE *dst, int number, int length, const uchar **array);
+      ^
+./src/input.c:442:3: warning: passing argument 4 of ‘write_csv_2array’ from incompatible pointer type [enabled by default]
+   write_csv_2array(data_i,BLK_NUMBER,BLK_LENGTH,input);
+   ^
+In file included from ./src/input.c:15:0:
+./src/../include/write_csv.h:3:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void write_csv_2array(FILE *dst, int number, int length, const uchar **array);
       ^
 make: *** [obj/input.o] Error 1
