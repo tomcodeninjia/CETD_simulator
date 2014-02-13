@@ -15,7 +15,7 @@
 
 #define Y_SINGLE BLK_LENGTH/TAG_LENGTH
 //input:data,nonce,r,
-void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_ctx,int r, int s,  FILE *x,FILE *y1[Y_NUMBER], FILE *y2[Y_NUMBER], FILE *CETD_tag, bool file_type)
+void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_ctx,int r, int s,  FILE *x,FILE *y1[Y_NUMBER], FILE *y2[Y_NUMBER], FILE *CETD_tag, FILE *CETD_nonce,bool file_type)
 {
 	uchar CETD_data[Y_NUMBER][TAG_LENGTH];	
 	memset(CETD_data,0, Y_NUMBER*TAG_LENGTH);
@@ -24,8 +24,8 @@ void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_
 	{
 		for( j=0;j<TAG_LENGTH;j++)
 		{
-			//uchar x=i-(i/Y_SINGLE)*Y_SINGLE;
-			CETD_data[i][j]=data[i/Y_SINGLE][Y_SINGLE*(i%Y_SINGLE)+j];
+			uchar x=i-(i/Y_SINGLE)*Y_SINGLE;
+			CETD_data[i][j]=data[i/Y_SINGLE][Y_SINGLE*x+j];
 		}
 	}
 		
@@ -35,6 +35,15 @@ void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_
     memset(nonce, 0, BLK_LENGTH);
     
     aes_crypt_ecb(&a_ctx, AES_ENCRYPT,nonce_input, nonce);
+	
+	if(file_type == TXT_file)
+	{
+		write_txt_1array(CETD_nonce, BLK_LENGTH, nonce);
+	}
+	else
+	{
+		write_csv_1array(CETD_nonce, BLK_LENGTH, nonce);
+	}
     
     //shuffle data
     uchar **shift_data=(uchar **)malloc(sizeof(uchar *)*Y_NUMBER);
