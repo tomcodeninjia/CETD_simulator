@@ -147,38 +147,6 @@ void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type,
 
 
 }
-
-void counter_normal(uchar **input, 
-		uint counter,
-		bool file_type, 
-		FILE *data_i, 
-		int number, 
-		int arr_length)
-{
-	int n;
-	if(arr_length > 4)
-	{
-		n = 4;	
-	}
-	else
-	{
-		n = arr_length;	
-	}
-
-	for(int i=0;i<n;i++)
-	{
-		*(*(input + 0) + i) = (uchar) ((counter >> i*CHAR_BIT) & ((1 << i*CHAR_BIT) - 1));
-	}
-
-    if(file_type==TXT_file){
-		write_txt_2array(data_i,number,arr_length,input);
-	}
-	else
-	{
-		write_csv_2array(data_i,number,arr_length,input);
-	}
-
-}
 //
 void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)
 {

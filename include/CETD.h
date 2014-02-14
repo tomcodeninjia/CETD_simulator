@@ -16,8 +16,24 @@
 
 #define Y_NUMBER BLK_NUMBER*BLK_LENGTH/TAG_LENGTH
 //void CETD_tag_generation(uchar **data, uchar *nonce_input,  aes_context a_ctx,int r, int s, uchar *tag, FILE *x,FILE *y1[BLK_NUMBER], FILE *y2[BLK_NUMBER], FILE *CETD_tag, bool file_type);
+void nonce_input_generation(uchar *nonce_input, 
+		int addr, int addr_len,
+		int crt, int crt_len,
+		uchar *rnd);
 
-void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_ctx,int r, int s,  FILE *x,FILE *y1[Y_NUMBER], FILE *y2[Y_NUMBER], FILE *CETD_tag, FILE *CETD_nonce,bool file_type);
+void CETD_tag_generation(const uchar **data,int block_num, 
+		uchar *nonce_input, 
+		aes_context a_ctx,
+		int r,  //shuffle round  
+		int tag_length,
+		int y_num, //
+		FILE *x,
+		FILE **y1, 
+		FILE **y2, 
+		FILE *CETD_tag, 
+		FILE *CETD_nonce,
+		bool file_type);
+
 
 
 #define x_dir_txt "../NIST_suite/long/x%d.txt"

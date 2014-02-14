@@ -12,6 +12,28 @@
 #define SHIFT_P 20
 #define SHIFT_P_P 5
 #define SHUFFLE_P 19
-void shift_p(uchar *nonce, int *s,int r);
-void permutation(int s, uchar **data, int number, int arr_length);
+
+int mod(int a, int b);
+
+void rotate_p(const uchar *nonce,
+		uchar *s,
+		int y_num,
+		int tag_length,
+		int shuffle_r,
+		int s_p,
+		int r_p);
+
+void permutation(uchar **data,
+		uchar *s,
+		int number, 
+		int arr_length);
+
+
+/*
+void shift_p(uchar *nonce, 
+		uchar *s,
+		int r,
+		int shuffle_p,
+		int shift_p);
+*/
 #endif

@@ -32,29 +32,120 @@
 #define data_dir_csv "./long/p%d.csv"
 #define ciphertext_dir_csv "./long/c%d.csv"
 
-
+#define CTR_MAX 100000000 
 int displayInputOption();
 bool displayFileFormat();
+int nonce_len(int shuffle_r, int y_num, int tag_len);
+int byte_split(int bit_len);
+
 int main()
 {
     
-	//control paremeter
+	/*
+	 Experiment parameters
+	 @para test_count: No. of binary sequences
+	 @para n: No. of tags for each sequence
+
+	 @para choice: input type
+	 @para file_type: file type
+	 @para block_number : No. of plaintext blks
+	 */
     int test_count;//number of test
-    printf("input the test number\n");
+    printf("input the No. of sample sequences\n");
     scanf("%d",&test_count);
     
     int n;//number of tags per test
-    printf("input the number of tags\n");
+    printf("input the No. of tags per sequence\n");
     scanf("%d",&n);
 
-	int choice =6;
+	int choice =5;
 	choice = displayInputOption();
-	
 	
 	bool file_type = CSV_file;
 	file_type = displayFileFormat();
 
-		/*
+	int block_number;
+	printf("Input the No. of Plaintext Blocks.\n");
+	scanf("%d",&block_number);
+
+	/*
+	 CETD parameters
+	 @para shuffle_round: shuffle round
+	 @para CETD_tag_length: the length of tag
+
+	*/
+	int CETD_tag_length;
+	printf("Input CETD Tag Length(No. of Bytes, 1-16):\n");
+	scanf("%d",&CETD_tag_length);
+	while((CETD_tag_length <1)||(CETD_tag_length >16))
+	{
+		printf("tag length out of order, try again.\n");
+		scanf("%d",&CETD_tag_length);
+	}
+
+	int shuffle_round;
+	printf("Input No. of shuffle rounds:\n");
+	scanf("%d",&shuffle_round);
+
+	int y_num;
+	if((block_number*BLK_LENGTH)% CETD_tag_length == 0)
+	{
+		y_num = block_number * BLK_LENGTH / CETD_tag_length;
+	}
+	else
+	{
+		y_num = 1 + block_number * BLK_LENGTH / CETD_tag_length;
+	}
+	
+	// shuffle_round*shuffle_p+shift_p <= BLK_LENGTH
+	int n_l = nonce_len(shuffle_round,y_num, CETD_tag_length);
+
+	while(n_l > (BLK_LENGTH * CHAR_BIT))
+	{
+		printf("nonce length to big, input the following parameter again.\n");
+		printf("Input CETD Tag Length(No. of Bytes, 1-16):\n");
+		scanf("%d",&CETD_tag_length);
+		while((CETD_tag_length <1)||(CETD_tag_length >16))
+		{
+			printf("tag length out of order, try again.\n");
+			scanf("%d",&CETD_tag_length);
+		
+		}
+
+		printf("Input No. of shuffle rounds:\n");
+		scanf("%d",&shuffle_round);
+
+		if((block_number*BLK_LENGTH)% CETD_tag_length == 0)
+		{
+			y_num = block_number * BLK_LENGTH / CETD_tag_length;
+		}
+		else
+		{
+			y_num = 1 + block_number * BLK_LENGTH / CETD_tag_length;
+		}
+		
+		n_l = nonce_len(shuffle_round,y_num, CETD_tag_length);
+	}
+	//tag_length, y_num and shuffle_r are set now.
+
+	/*
+	 nonce parameters
+	 @para add_len: address length
+	 @para crt_len: counter length
+	 @para rnd_len: random number length
+	 */
+	printf("Input nonce parameters\n\n");
+
+	int addr_len;
+	printf("Input address length:(bits)\n");
+	scanf("%d",&addr_len);
+
+	int crt_len;
+	printf("Input counter length:(bits)\n");
+	scanf("%d",&crt_len);
+
+
+	/*
 	 * txt files
 	 * */
 	FILE *fp_plaintext_txt;
@@ -70,19 +161,21 @@ int main()
     fp_x_blk_txt=NULL;
     char filename_x_txt[256];
     
-    FILE *fp_y1_txt[Y_NUMBER];
-	for(int i=0;i<Y_NUMBER;i++)
+    //FILE *fp_y1_txt[y_num];
+	FILE **fp_y1_txt = (FILE **)malloc(sizeof(FILE *)*y_num);
+	for(int i=0;i<y_num;i++)
 	{
 		fp_y1_txt[i]=NULL;
 	}
-	char y1_name_txt[Y_NUMBER][256];
+	char y1_name_txt[y_num][256];
 
-	FILE *fp_y2_txt[Y_NUMBER];
-	for(int i=0;i<Y_NUMBER;i++)
+	FILE **fp_y2_txt = (FILE **)malloc(sizeof(FILE *)*y_num);
+	//FILE *fp_y2_txt[y_num];
+	for(int i=0;i<y_num;i++)
 	{
 		fp_y2_txt[i]=NULL;
 	}
-	char y2_name_txt[Y_NUMBER][256];
+	char y2_name_txt[y_num][256];
     
     FILE *fp_tag_CETD_txt;//tag
     fp_tag_CETD_txt=NULL;
@@ -109,19 +202,21 @@ int main()
     fp_x_blk_csv=NULL;
     char filename_x_csv[256];
     
-    FILE *fp_y1_csv[Y_NUMBER];
-	for(int i=0;i<Y_NUMBER;i++)
+    //FILE *fp_y1_csv[y_num];
+	FILE **fp_y1_csv = (FILE **)malloc(sizeof(FILE *)*y_num);
+	for(int i=0;i<y_num;i++)
 	{
 		fp_y1_csv[i]=NULL;
 	}
-	char y1_name_csv[Y_NUMBER][256];
+	char y1_name_csv[y_num][256];
 
-	FILE *fp_y2_csv[Y_NUMBER];
-	for(int i=0;i<Y_NUMBER;i++)
+	//FILE *fp_y2_csv[y_num];
+	FILE **fp_y2_csv = (FILE **)malloc(sizeof(FILE *)*y_num);
+	for(int i=0;i<y_num;i++)
 	{
 		fp_y2_csv[i]=NULL;
 	}
-	char y2_name_csv[Y_NUMBER][256];
+	char y2_name_csv[y_num][256];
     
     FILE *fp_tag_CETD_csv;//tag
     fp_tag_CETD_csv=NULL;
@@ -132,12 +227,12 @@ int main()
     char filename_nonce_CETD_csv[256];
 
 
-	srand((int)time(0));
+	//srand((int)time(0));
     
     /**
      Generate input sequences to NIST test, the No. of sequences is test_count
      **/
-    for(uint test_round=0;test_round<test_count;test_round++)
+    for(int test_round=0;test_round<test_count;test_round++)
     {
         
       
@@ -153,9 +248,12 @@ int main()
         for(int i=0;i<16;i++)
         {
             *(AES_key+i)= (uchar) (rand()%256);
+			printf("%x,",AES_key[i]);
         }
+		printf("\n");
 		//
         //set aes key for all the block cipehr
+
         aes_context ctx;
         aes_setkey_enc(&ctx, AES_key, 128);
         
@@ -173,13 +271,13 @@ int main()
         sprintf(filename_x_txt,x_dir_txt ,test_round+1);
         fp_x_blk_txt=fopen(filename_x_txt, "w");
         
-		for(int i=0;i<Y_NUMBER;i++)
+		for(int i=0;i<y_num;i++)
 		{
 			sprintf((char*)y1_name_txt + i * 256,y1_dir_split_txt,test_round+1,i+1);
 			fp_y1_txt[i]=fopen((char*)y1_name_txt + i * 256,"w");
 		}
 
-		for(int i=0;i<Y_NUMBER;i++)
+		for(int i=0;i<y_num;i++)
 		{
 			sprintf((char*)y2_name_txt + i * 256,y2_dir_split_txt,test_round+1,i+1);
 			fp_y2_txt[i]=fopen((char*)y2_name_txt + i * 256,"w");
@@ -207,13 +305,13 @@ int main()
         sprintf(filename_x_csv,x_dir_csv ,test_round+1);
         fp_x_blk_csv=fopen(filename_x_csv, "w");
         
-		for(int i=0;i<Y_NUMBER;i++)
+		for(int i=0;i<y_num;i++)
 		{
 			sprintf((char*)y1_name_csv + i * 256,y1_dir_split_csv,test_round+1,i+1);
 			fp_y1_csv[i]=fopen((char*)y1_name_csv + i * 256,"w");
 		}
 
-		for(int i=0;i<Y_NUMBER;i++)
+		for(int i=0;i<y_num;i++)
 		{
 			sprintf((char*)y2_name_csv + i * 256,y2_dir_split_csv,test_round+1,i+1);
 			fp_y2_csv[i]=fopen((char*)y2_name_csv + i * 256,"w");
@@ -234,7 +332,7 @@ int main()
 
        		uchar *rnd2;
 		   rnd2 = (uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
-		   memset(rnd2,0,BLK_NUMBER);
+		   memset(rnd2,0,block_number);
 
 		   for(int i=0;i<BLK_LENGTH;i++)
 		   {
@@ -242,21 +340,20 @@ int main()
 		   }
 
 
-        for(uint test_n=0;test_n<n;test_n++)
+        for(int test_n=0;test_n<n;test_n++)
         {
-			int counter = test_round;
 			/*
 			 * Construct the plaintxt block sequence
 			 * */
 			uchar **rnd3;
-			rnd3=(uchar **)malloc(sizeof(uchar *)*BLK_NUMBER);
-            for(int i=0;i<BLK_NUMBER;i++)
+			rnd3=(uchar **)malloc(sizeof(uchar *)*block_number);
+            for(int i=0;i<block_number;i++)
             {
                 rnd3[i]=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
                 memset(rnd3[i], 0, BLK_LENGTH);
             }
             
-			for(int i=0;i<BLK_NUMBER;i++)
+			for(int i=0;i<block_number;i++)
     		{
         		for(int j=0;j<BLK_LENGTH;j++)
         		{
@@ -267,8 +364,8 @@ int main()
 
             //original_data=plaintext
             uchar **original_data;
-            original_data=(uchar **)malloc(sizeof(uchar *)*BLK_NUMBER);
-            for(int i=0;i<BLK_NUMBER;i++)
+            original_data=(uchar **)malloc(sizeof(uchar *)*block_number);
+            for(int i=0;i<block_number;i++)
             {
                 original_data[i]=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
                 
@@ -281,21 +378,19 @@ int main()
 					switch(choice)
 			{
 				case 1:
-					all_0(original_data,fp_plaintext_txt,file_type, BLK_NUMBER, BLK_LENGTH);
+					all_0(original_data,fp_plaintext_txt,file_type, block_number, BLK_LENGTH);
 					break;
 				case 2:
-        		 	all_1(original_data, fp_plaintext_txt, file_type, BLK_NUMBER, BLK_LENGTH);
+        		 	all_1(original_data, fp_plaintext_txt, file_type, block_number, BLK_LENGTH);
 					break;
 				case 3:
-					linear_counter(original_data,  test_n, file_type, fp_plaintext_txt,BLK_NUMBER , BLK_LENGTH);
+					linear_counter(original_data,  test_n, file_type, fp_plaintext_txt,block_number , BLK_LENGTH);
 					break;
 				case 4:
-					counter_normal(original_data, counter,file_type, fp_plaintext_txt, BLK_NUMBER, BLK_LENGTH);
-				case 5:
-					random_repeat_long(original_data, rnd2,fp_plaintext_txt, file_type, BLK_NUMBER, BLK_LENGTH);
+					random_repeat_long(original_data, rnd2,fp_plaintext_txt, file_type, block_number, BLK_LENGTH);
 					break;
-				case 6:
-					random_input(original_data, rnd3,fp_plaintext_txt, file_type, BLK_NUMBER, BLK_LENGTH);
+				case 5:
+					random_input(original_data, rnd3,fp_plaintext_txt, file_type, block_number, BLK_LENGTH);
 					break;
 				default:
 					printf("Error: Please Try again.\n");
@@ -308,21 +403,19 @@ int main()
 				switch(choice)
 			{
 				case 1:
-					all_0(original_data,fp_plaintext_csv,file_type, BLK_NUMBER, BLK_LENGTH);
+					all_0(original_data,fp_plaintext_csv,file_type, block_number, BLK_LENGTH);
 					break;
 				case 2:
-        		 	all_1(original_data, fp_plaintext_csv, file_type, BLK_NUMBER, BLK_LENGTH);
+        		 	all_1(original_data, fp_plaintext_csv, file_type, block_number, BLK_LENGTH);
 					break;
 				case 3:
-					linear_counter(original_data,  test_n, file_type, fp_plaintext_csv,BLK_NUMBER , BLK_LENGTH);
+					linear_counter(original_data,  test_n, file_type, fp_plaintext_csv,block_number , BLK_LENGTH);
 					break;
 				case 4:
-					counter_normal(original_data, counter, file_type, fp_plaintext_csv, BLK_NUMBER, BLK_LENGTH);
-				case 5:
-					random_repeat_long(original_data, rnd2,fp_plaintext_csv, file_type, BLK_NUMBER, BLK_LENGTH);
+					random_repeat_long(original_data, rnd2,fp_plaintext_csv, file_type, block_number, BLK_LENGTH);
 					break;
-				case 6:
-					random_input(original_data, rnd3,fp_plaintext_csv, file_type, BLK_NUMBER, BLK_LENGTH);
+				case 5:
+					random_input(original_data, rnd3,fp_plaintext_csv, file_type, block_number, BLK_LENGTH);
 					break;
 				default:
 					printf("Error: Please Try again.\n");
@@ -340,8 +433,8 @@ int main()
    
             uchar **ciper_data;
             
-            ciper_data=(uchar **)malloc(sizeof(uchar *)*BLK_NUMBER);
-            for(int i=0;i<BLK_NUMBER;i++)
+            ciper_data=(uchar **)malloc(sizeof(uchar *)*block_number);
+            for(int i=0;i<block_number;i++)
             {
                 ciper_data[i]=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
                 
@@ -354,80 +447,141 @@ int main()
 
 			if(file_type==TXT_file)
 			{
-		 		only_plaintext(ciper_data, original_data, BLK_NUMBER,BLK_LENGTH, fp_cipher_txt,file_type);
+		 		only_plaintext(ciper_data, original_data, block_number,BLK_LENGTH, fp_cipher_txt,file_type);
 			}
 			else
 			{
-		 		only_plaintext(ciper_data, original_data, BLK_NUMBER,BLK_LENGTH, fp_cipher_csv,file_type);
+		 		only_plaintext(ciper_data, original_data, block_number,BLK_LENGTH, fp_cipher_csv,file_type);
 				
 			}
 
+			int CETD_ctr = mod(test_n,CTR_MAX);
             /*
              CETD: producing internal outputs and the tag
              */
 		     /*
 			 *generate cetd_nonce
+			 @para add_length
+			 @para rnd_length
+			 @para cnt_length
 			 * */
-			uint addr_ciphertext = (uint) ciper_data;
-           	uchar *CETD_nonce_input;
+			/*
+			 nonce parameter
+			 @para int addr_cipher
+			 @para uchar *rnd
+			 @para uchar 
+			 */
+			int rnd_len = byte_split(128 - addr_len - crt_len) ;
+			uchar *rnd_nonce = (uchar *)malloc(sizeof(uchar)*rnd_len);
+			memset(rnd_nonce,0,rnd_len);
+
+			for(int i=0;i<rnd_len;i++)
+			{
+				*(rnd_nonce+i) = rand() %256;
+			}
+
+			uchar *CETD_nonce_input;
             CETD_nonce_input = (uchar *)malloc(sizeof(uchar)*16);
 			memset(CETD_nonce_input,0,16);
-			//void CETD_nonce_generation(FILE *nonce_file,  uchar *nonce_input, int file_type, uint addr_ciphertext)
-			            //printf("address is %x\n",addr_ciphertext);
-            
-            typedef struct split_ciphertext {
-                uint byte0:8;//segsize
-                uint byte1:8;//start position for block2
-                uint byte2:8;//block number 2
-                uint byte3:8;//start position for block1
-            }split_block;
 
+			//uint addr = (uint) ciper_data;
+			uint addr = 1;
+			uint crt = mod(test_n, CTR_MAX);
+
+ 			nonce_input_generation(CETD_nonce_input, 
+				 addr,  addr_len,
+				 crt,  crt_len,
+				rnd_nonce);
+
+
+
+			/*
+			typedef struct split_ciphertext {
+                uchar byte0:8;//segsize
+                uchar byte1:8;//start position for block2
+                uchar byte2:8;//block number 2
+                uchar byte3:8;//start position for block1
+            }split_block;
             split_block *s1,*s2;
+
+           	
+			//address
+			uint addr_ciphertext = (uint) ciper_data;
             s1=(split_block*)&addr_ciphertext;
-			s2 =(split_block*)&test_n;
-            
-            for(int i=8;i<16;i++)
-            {
-                CETD_nonce_input[i] = (uchar) (rand()%256);
-            }
             CETD_nonce_input[0]=s1->byte0;
             CETD_nonce_input[1]=s1->byte1;
             CETD_nonce_input[2]=s1->byte2;
             CETD_nonce_input[3]=s1->byte3;
 
-			CETD_nonce_input[4]=s2->byte0;
+			s2 =(split_block*)&test_n;
+            CETD_nonce_input[4]=s2->byte0;
             CETD_nonce_input[5]=s2->byte1;
             CETD_nonce_input[6]=s2->byte2;
             CETD_nonce_input[7]=s2->byte3;
 
-			//show(CETD_nonce_input,16);
-
-			
-            int r=4;
-            int s=0;
+            for(int i=8;i<16;i++)
+            {
+                CETD_nonce_input[i] = (uchar) (rand()%256);
+            }
+            */
 
 			/*
 			 *generate CETD_tag
 			 * */
 			if(file_type == TXT_file)
 			{
- 				CETD_tag_generation(ciper_data, CETD_nonce_input,  ctx, r, s,  fp_x_blk_txt,fp_y1_txt, fp_y2_txt,fp_tag_CETD_txt, fp_nonce_CETD_txt,file_type);
-			}
+ 				CETD_tag_generation(ciper_data,block_number, 
+					CETD_nonce_input, 
+					ctx,
+					shuffle_round,  //shuffle round  
+		 			CETD_tag_length,
+		 			y_num, //
+					fp_x_blk_txt,
+					fp_y1_txt, 
+					fp_y2_txt, 
+					fp_tag_CETD_txt, 
+					fp_nonce_CETD_txt,
+		 			file_type);
+
+ 			}
 			else
 			{
- 				CETD_tag_generation(ciper_data, CETD_nonce_input,  ctx, r, s,  fp_x_blk_csv,fp_y1_csv, fp_y2_csv,fp_tag_CETD_csv,fp_nonce_CETD_csv, file_type);
-			}
+				CETD_tag_generation(ciper_data,block_number, 
+					CETD_nonce_input, 
+					ctx,
+					shuffle_round,  //shuffle round  
+		 			CETD_tag_length,
+		 			y_num, //
+					fp_x_blk_csv,
+					fp_y1_csv, 
+					fp_y2_csv, 
+					fp_tag_CETD_csv, 
+					fp_nonce_CETD_csv,
+		 			file_type);
+
+ 			}
 
             
             
             free(CETD_nonce_input);
 
-			for(int i=0;i<BLK_NUMBER;i++)
+			for(int i=0;i<block_number;i++)
 			{
 				free(rnd3[i]);
 			}
 			free(rnd3);
-
+			
+			for(int i=0;i<block_number;i++)
+			{
+				free(ciper_data[i]);
+			}
+			free(ciper_data);
+			
+			for(int i=0;i<block_number;i++)
+			{
+				free(original_data[i]);
+			}
+			free(original_data);
 		
 
         }
@@ -439,11 +593,11 @@ int main()
 
 		if(file_type==TXT_file)
 		{
-			for(int i=0;i<BLK_NUMBER;i++)
+			for(int i=0;i<block_number;i++)
 		{
 			fclose(fp_y1_txt[i]);
 		}
-		for(int i=0;i<BLK_NUMBER;i++)
+		for(int i=0;i<block_number;i++)
 		{
 			fclose(fp_y2_txt[i]);
 		}
@@ -457,11 +611,11 @@ int main()
 		}
 		else
 		{
-			for(int i=0;i<BLK_NUMBER;i++)
+			for(int i=0;i<block_number;i++)
 		{
 			fclose(fp_y1_csv[i]);
 		}
-		for(int i=0;i<BLK_NUMBER;i++)
+		for(int i=0;i<block_number;i++)
 		{
 			fclose(fp_y2_csv[i]);
 		}
@@ -487,15 +641,14 @@ int displayInputOption()
 	int choice = 0;
 	printf("[1] All 0 Input.\n");
 	printf("[2] All 1 Input.\n");
-	printf("[3] Balanced Counter Input.\n");
-	printf("[4] Normal Linear Counter Input.\n");
-	printf("[5] Repeated Random Block Input. \n");
-	printf("[6] Random Input.\n");
+	printf("[3] Linear Counter Input.\n");
+	printf("[4] Repeated Random Block Input. \n");
+	printf("[5] Random Input.\n");
 	printf("\n Please enter the Choice:\n");
 
 	scanf("%d",&choice);
 
-	while((choice <= 0)|| (choice >6))
+	while((choice <= 0)|| (choice >5))
 	{
 		printf("error, try again:\n");
 		scanf("%d",&choice);
@@ -527,4 +680,27 @@ bool displayFileFormat()
 			return CSV_file;
 	}
 
+}
+
+int nonce_len(int shuffle_r, int y_num, int tag_len)
+{
+	int v, s;
+	
+	v= shuffle_p(y_num, tag_len); 
+	s= log2_int(tag_len);
+
+	return shuffle_r*v+y_num*s;
+
+}
+
+int byte_split(int bit_len)
+{
+	if(mod(bit_len, CHAR_BIT) == 0)
+	{
+		return bit_len/CHAR_BIT;
+	}
+	else 
+	{
+		return (bit_len/CHAR_BIT) +1;
+	}
 }

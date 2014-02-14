@@ -14,6 +14,27 @@
 
 #define PERIODIC 20
 /*
+ *do not encrypt the input plaintext
+ * */
+void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type)
+{
+   for(int i=0;i<number;i++)
+   {
+	   for(int j=0;j<arr_length;j++)
+	   {
+		   *(*(dst+i)+j) = src[i][j];
+	   }
+   }
+ 	if(file_type==TXT_file){
+		write_txt_2array(cipher_o,number,arr_length,dst);
+	}
+	else
+	{
+		write_csv_2array(cipher_o,number,arr_length,dst);
+	}
+       
+}
+/*
  *if the BLK_LENGTH=16, use this function as AES cipher
  * */
 void cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o, bool file_type)
@@ -135,24 +156,4 @@ void perodic_cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,in
 
 }
 
-/*
- *do not encrypt the input plaintext
- * */
-void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type)
-{
-   for(int i=0;i<number;i++)
-   {
-	   for(int j=0;j<arr_length;j++)
-	   {
-		   *(*(dst+i)+j) = src[i][j];
-	   }
-   }
- 	if(file_type==TXT_file){
-		write_txt_2array(cipher_o,number,arr_length,dst);
-	}
-	else
-	{
-		write_csv_2array(cipher_o,number,arr_length,dst);
-	}
-       
-}
+

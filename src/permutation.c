@@ -11,55 +11,86 @@
 #include <limits.h>
 #include "../include/array_shift.h"
 #include "../include/show.h"
-void shift_p(uchar *nonce, int *s,int r)
+
+int mod(int a, int b)
+{
+	return a - (a/b)*b;
+}
+void rotate_p(const uchar *nonce,
+		uchar *s,
+		int y_num,
+		int tag_length,
+		int shuffle_r,
+		int s_p,
+		int r_p)
+{
+	int start,end;
+	uchar tmp;	
+	uchar b;
+	int shift_index;
+	for(int i=0;i< y_num;i++)
+	{
+		start = (s_p * shuffle_r + i * r_p)/CHAR_BIT;
+		end = (shuffle_r*s_p + i*r_p + r_p)/CHAR_BIT;
+//		printf("%d, %d\n", start, end);
+
+		//r*s_p + i * r_p + r_p % CHAR_BIT	
+		tmp = nonce[end];
+		shift_index = (CHAR_BIT - mod(shuffle_r*s_p + i*r_p + r_p, CHAR_BIT));
+		if(start != end)
+		{
+			b =  (tmp >> shift_index)  &  ((1 << shift_index )- 1); 
+			tmp = nonce[start];
+			b |= tmp << (CHAR_BIT - shift_index);   
+
+			b = b & ((1 << r_p) - 1);
+
+		}
+		else
+		{
+			b = (tmp >> shift_index) & ((1 << r_p)-1);
+		}
+				*(s+i)=mod(b,tag_length*CHAR_BIT);
+//		printf("%d,%d\n",b, *(s+i));
+	}
+}
+
+void permutation(uchar **data,
+		uchar *s,
+		int number, 
+		int arr_length)
+{
+    
+    for(int i=0;i<number;i++)
+    {
+        shiftrrn(data[i], arr_length, s[i]);
+    }
+}
+
+/*
+void shift_p(uchar *nonce, 
+		uchar *s,
+		int r,
+		int shuffle_p,
+		int shift_p)
 {
     uint k=0;
-    uint blk = (r*SHUFFLE_P+SHIFT_P)/CHAR_BIT - r*SHUFFLE_P/CHAR_BIT +1;
-    //printf("blk %d \n",blk);
-    k = (*(nonce + (r*SHUFFLE_P + SHIFT_P)/CHAR_BIT)) >> (CHAR_BIT-((SHIFT_P + (r * SHUFFLE_P)%CHAR_BIT)%CHAR_BIT));
-    //printf("start is %d, end is %d \n",r*SHUFFLE_P/CHAR_BIT , (r*SHUFFLE_P+SHIFT_P)/CHAR_BIT);
+	//blk: rotate parameter length 
+    uint blk = (r*shuffle_p+shift_p)/CHAR_BIT - r*shuffle_p/CHAR_BIT +1;
+	//k: the value of last byte for rotate para
+    k = (*(nonce + (r*shuffle_p + shift_p)/CHAR_BIT)) >> (CHAR_BIT-((shift_p + (r * shuffle_p)%CHAR_BIT)%CHAR_BIT));
     //printf("k is %x\n",k);
     for(int j=0;j<blk;j++)
     {
           //printf("j is %d\n",j);
         //printf("block is %x \n",blk);
-        k |= (*(nonce + (r*SHUFFLE_P+SHIFT_P)/CHAR_BIT-j-1)) << ((((r*SHUFFLE_P + SHIFT_P))%CHAR_BIT) + j*CHAR_BIT);
-         //int l= (((r*SHUFFLE_P + SHIFT_P) % CHAR_BIT) + j*CHAR_BIT) ;
+        k |= (*(nonce + (r*shuffle_p+shift_p)/CHAR_BIT-j-1)) << ((((r*shuffle_p + shift_p))%CHAR_BIT) + j*CHAR_BIT);
+         //int l= (((r*shuffle_p + shift_p) % CHAR_BIT) + j*CHAR_BIT) ;
          //printf("l is %x \n",l);
       //   printf("k is %x\n",k);
     }
-    *s = k & ((1 << SHIFT_P)-1);
+    *s = k & ((1 << shift_p)-1);
     //printf("s is %x \n",*s);
     
 }
-
-void permutation(int s, uchar **data, int number, int arr_length)
-{
-    
-    //printf("s is %x \n",s);
-    for(int i=0;i<number;i++)
-    {
-        int shift= (s & (1 << (i+1)*SHIFT_P_P)-1)>> i*SHIFT_P_P ;
-       
-        /*
-        printf("data before shift\n");
-        for(int i=0;i<4;i++)
-        {
-          show((uchar*)data + i * BLK_LENGTH, BLK_LENGTH);
-        }
-       
-         */
-        //printf("shift is %d\n",shift);
-        shiftrrn(data[i], arr_length, shift);
-        /*
-        printf("data after shift\n");
-        for(int i=0;i<4;i++)
-        {
-            show((uchar*)data + i * BLK_LENGTH, BLK_LENGTH);
-      }
-*/ 
-     
-        
-    }
-}
-
+*/

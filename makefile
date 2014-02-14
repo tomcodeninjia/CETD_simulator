@@ -3,6 +3,9 @@ GCCFLAGS = -c -Wall -g --std=c99
 ROOTDIR = .
 SRCDIR = $(ROOTDIR)/src
 OBJDIR = $(ROOTDIR)/obj
+LDIR = $(ROOTDIR)/long
+SDIR = $(ROOTDIR)/short
+
 
 #if using this method to find header files, the header file in c file should be included in the following way: #include "../include/header.h"
 VPATH = src:obj:include 
@@ -57,7 +60,7 @@ $(OBJDIR)/write_csv.o: $(SRCDIR)/write_csv.c write_csv.h
 
 
 clean:
-	rm -f run $(OBJDIR)/*.o
+	rm -f run $(OBJDIR)/*.o $(LDIR)/* $(SDIR)/*
 
 rebuild: clean run
 

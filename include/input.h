@@ -14,12 +14,6 @@ void all_1(uchar **input, FILE *data_i, bool file_type, int number, int arr_leng
 void all_0(uchar **input, FILE *data_i, bool file_type,int number, int arr_length);
 void random_repeat_long(uchar **input, const uchar *rnd,FILE *data_i,  bool file_type, int number, int arr_length);
 void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length);
-void counter_normal(uchar **input, 
-		uint counter,
-		bool file_type, 
-		FILE *data_i, 
-		int number, 
-		int arr_length);
 
 void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type);
 void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int total_blk);

@@ -1,8 +1,161 @@
 #include "../include/shuffle.h"
 #include <stdlib.h>
 #include <limits.h>
+#include <math.h>
 #include "../include/array_shift.h"
 #include "../include/show.h"
+
+int log2_int(int n)
+{
+	int a= log2(n);
+	if( pow(2,a)< n)
+	{
+		return a+1;
+	}
+	else 
+	{
+		return a;
+	}
+}
+
+int mod1(int a, int b)
+{
+	return a - (a/b)*b;
+}
+/*
+ The nonce should be 1 blk
+ @para uint* v: each element is the shuffle control for a round
+ */
+
+void swap_p(const uchar *nonce, 
+		uint *v, 
+		int r,
+		int shuffle_p)
+{
+    uint k=0;
+    uint blk = 0;
+    uint src=0;
+	int tmp_v;
+    for(int i=0;i<r;i++)
+    {
+        
+		tmp_v = nonce[shuffle_p*(i+1)/CHAR_BIT];
+        //k = (*(nonce+shuffle_p*(i+1)/CHAR_BIT)) >> (CHAR_BIT - (shuffle_p*(i+1) % CHAR_BIT));
+		k= tmp_v >> (CHAR_BIT - (shuffle_p*(i+1) % CHAR_BIT));
+        int dest=shuffle_p*(i+1)/CHAR_BIT;
+        blk=dest-src;
+        for(int j=0;j<blk;j++)
+        {
+			tmp_v = nonce[shuffle_p*(i+1)/CHAR_BIT-j-1];
+            //k |= (*(nonce + shuffle_p*(i+1)/CHAR_BIT-j-1)) << (((shuffle_p*(i+1))%CHAR_BIT) + j*CHAR_BIT);
+			k |= tmp_v <<  (((shuffle_p*(i+1))%CHAR_BIT) + j*CHAR_BIT);
+                        
+        }
+        src=dest;
+        v[i] = k & ((1 << shuffle_p)-1);
+        
+    }
+}
+
+
+/*
+ split the v[i]
+ @para log2_int(tag_len)
+ */
+
+void v_split(int shuffle_p, int y_num, int tag_length, uchar *v)
+{
+	int len=0;
+	//seg length
+	int tmp_len = tag_length * CHAR_BIT;
+	v[4]= mod1((shuffle_p & ((1 << log2_int(tmp_len)) - 1 )),tmp_len)  ;	
+	len += log2_int(tmp_len);
+	//blk2 offset
+	v[3] = mod1(((shuffle_p >> len) & ((1 << log2_int(tmp_len)) - 1 )),tmp_len)  ;
+	len += log2_int(tmp_len);
+	//blk2 index
+	v[2] = mod1(((shuffle_p >> len) & ((1 << log2_int(y_num)) - 1)),y_num)  ;
+	len += log2_int(y_num);
+	//blk1 offset
+	v[1] =mod1(((shuffle_p >> len) & ((1 << log2_int(tmp_len))-1)),tmp_len)  ; 
+	len += log2_int(tmp_len);
+	//blk1 index
+	v[0] =mod1(((shuffle_p >> len) & ((1 << log2_int(y_num))-1)),y_num)  ;
+}
+
+void swap(const uchar *nonce, 
+		uchar **data, 
+		int r, 
+		int shuffle_p,
+		int number, int arr_length//y_num and tag_len
+		)
+{
+    uint *v =(uint *)malloc(sizeof(uint)*r);
+	memset(v, 0 , r);
+    
+ 	swap_p(nonce, 
+		v, 
+		 r,
+		 shuffle_p);
+
+//    swap_p(nonce, v, r);
+
+	//split v[i] to v_s[];
+	uchar v_s[5];
+	memset(v_s,0,5);
+	int tmp_v = 0;
+
+    for(int i=0;i<r;i++)
+    {
+
+		memset(v_s,0,5);
+		 tmp_v = v[i];
+		 v_split(tmp_v, number, arr_length, v_s);
+		if(v_s[0]==v_s[2])
+		{
+			v_s[2]  = (v_s[2] + 1) % number;
+		}
+		 /*
+        struct split *split1;
+        split1 = (struct split*)&v[i];
+               
+        if(split1->index1 == split1->index2)
+        {
+            split1->index2 = (split1->index2 + 1) % number;
+        }
+		*/
+				
+        uchar *a, *b;
+        a=data[v_s[0]] ; // index1
+        b=data[v_s[2]] ; // index 2
+
+
+        while(v_s[4]>0 ) //seg_length
+        {
+            
+//			printf("%d, %d\n", v_s[1],v_s[3]);
+            if(((*(a+v_s[1] / CHAR_BIT) & (1 << (CHAR_BIT - (v_s[1] % CHAR_BIT)-1))) >> (CHAR_BIT - (v_s[1] % CHAR_BIT)-1)) 
+					!= 
+					((*(b+v_s[3] / CHAR_BIT) & (1 << (CHAR_BIT - (v_s[3] % CHAR_BIT)-1))) >> (CHAR_BIT - ((v_s[3]) % CHAR_BIT)-1)) )
+            {
+                
+                *(a+v_s[1] / CHAR_BIT) ^= 1 << (CHAR_BIT - ((v_s[1]) % CHAR_BIT)-1);
+                *(b+v_s[3] / CHAR_BIT) ^= 1 << (CHAR_BIT - ((v_s[3]) % CHAR_BIT)-1);
+                
+            }
+            
+            v_s[1] = mod1((v_s[1] + 1),arr_length*CHAR_BIT );   // offset1
+            v_s[3] =mod1((v_s[3] + 1),arr_length*CHAR_BIT); // offset2
+			v_s[4]--;
+            
+        }
+
+        
+    }
+    
+	free(v);    
+    
+}
 
 struct split {
 	uint length:5;//segsize
@@ -20,6 +173,7 @@ void split_test(uint x)
     
     printf("index1 %x, offset1 %x, index2 %x, offset2 %x, length %x\n",split1->index1,split1->offset1,split1->index2,split1->offset2,split1->length);
 }
+
 static void print_binary(unsigned int x)
 {
 	if (x <= 0) {
@@ -35,105 +189,4 @@ void debug(unsigned int x)
 	print_binary(x);
 	printf("\n");
 }
-
-//split the bits in nonce and store as elements to v, the No. of eles in v=r
-//input:nonce,r
-//output:v
-void shuffle_p(uchar *nonce, uint *v, int r)
-{
-    uint k=0;
-    uint blk = 0;
-    uint src=0;
-    for(int i=0;i<r;i++)
-    {
-        
-        k = (*(nonce+SHUFFLE_P*(i+1)/CHAR_BIT)) >> (CHAR_BIT - (SHUFFLE_P*(i+1) % CHAR_BIT));
-        int dest=SHUFFLE_P*(i+1)/CHAR_BIT;
-        //printf(" dest is %d,k is %x \n",dest,k);
-        blk=dest-src;
-        for(int j=0;j<blk;j++)
-        {
-            k |= (*(nonce + SHUFFLE_P*(i+1)/CHAR_BIT-j-1)) << (((SHUFFLE_P*(i+1))%CHAR_BIT) + j*CHAR_BIT);
-            //printf("des is %d \n",SHUFFLE_P*(i+1)/CHAR_BIT-j-1);
-            //int l= (((SHUFFLE_P*(i+1))%CHAR_BIT) + j*CHAR_BIT) ;
-            //printf("l is %x \n",l);
-            //printf("k is %x\n",k);
-            
-        }
-        src=dest;
-        //printf("mask is %x \n",((1 << SHUFFLE_P)-1));
-        v[i] = k & ((1 << SHUFFLE_P)-1);
-        //printf("v[i] is %x\n",v[i]);
-        
-    }
-}
-
-
-//nonce is devided according to r， data swapped
-void swap(uchar *nonce, uchar **data, int r, int number, int arr_length)
-{
-    uint *v;
-    v=(uint *)malloc(sizeof(uint)*r);
-    
-    //store parameters
-    shuffle_p(nonce, v, r);
-    //printf("nonce stored\n");
-    for(int i=0;i<r;i++)
-    {
-        struct split *split1;
-        split1 = (struct split*)&v[i];
-        //printf("v[i] is %x \n",v[i]);
-       // printf("index1 %d, offset1 %d, index2 %d, offset2 %d, length %d\n",split1->index1,split1->offset1,split1->index2,split1->offset2,split1->length);
-      // printf("data before swap\n");
-      //  for(int i=0;i<BLK_NUMBER;i++)
-      // {
-      //     show((uchar*)data + i * BLK_LENGTH, BLK_LENGTH);
-      // }
-        
-        uchar *a, *b;
-        if(split1->index1 == split1->index2)
-        {
-            split1->index2 = (split1->index2 + 1) % number;
-        }
-       // printf("index1 %d, index2 %d\n",split1->index1,split1->index2);
-        a=data[split1->index1] ;
-        b=data[split1->index2] ;
-
-       // printf("a %d and b %d \n",split1->index1, split1->index2);
-      //  show(a, BLK_LENGTH);
-      //  show(b, BLK_LENGTH);
-        
-        
-        while(split1->length-- )
-        {
-            
-            if(((*(a+split1->offset1 / CHAR_BIT) & (1 << (CHAR_BIT - (split1->offset1 % CHAR_BIT)-1))) >> (CHAR_BIT - (split1->offset1 % CHAR_BIT)-1)) != ((*(b+split1->offset2 / CHAR_BIT) & (1 << (CHAR_BIT - (split1->offset2 % CHAR_BIT)-1))) >> (CHAR_BIT - ((split1->offset2) % CHAR_BIT)-1)) )
-            {
-                
-                *(a+split1->offset1 / CHAR_BIT) ^= 1 << (CHAR_BIT - ((split1->offset1) % CHAR_BIT)-1);
-                *(b+split1->offset2 / CHAR_BIT) ^= 1 << (CHAR_BIT - ((split1->offset2) % CHAR_BIT)-1);
-                
-            }
-            
-           // printf("after blk a %x, b %x \n",*(a+split1->offset1 / CHAR_BIT),*(b+split1->offset2 / CHAR_BIT));
-            split1->offset1 = (split1->offset1 + 1) % SEG_BITS;
-            split1->offset2 = (split1->offset2 + 1) % SEG_BITS;
-            //printf("\n");
-            
-        }
-       // printf("After a %d and b %d \n",split1->index1, split1->index2);
-      //  show(a, BLK_LENGTH);
-      //  show(b, BLK_LENGTH);
-       // printf("after swap\n");
-       // for(int i=0;i<4;i++)
-        //{
-         //   show((uchar*)data + i * BLK_LENGTH, BLK_LENGTH);
-       // }
-         
-    }
-    
-    
-    
-}
-
 
