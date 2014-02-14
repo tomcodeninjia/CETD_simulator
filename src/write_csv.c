@@ -99,3 +99,35 @@ void write_csv_2array2(FILE *dst, int num, int len, const uchar *array)
     fprintf(dst, "\n");
 }
 
+
+void write_csv_decimal_1array(FILE *dst, int len, const uchar *array)
+{
+	uint tmp_int;
+	for(int i=0;i<len;i++)
+	{
+		tmp_int += array[i]*pow(256,i);	
+	}
+
+    fprintf(dst,"%d\n",tmp_int);
+
+}
+
+void write_csv_decimal_2array(FILE *dst, int num, int len, const uchar **array)
+{
+
+
+	uint tmp_int;	
+	if( num * len <= 4)
+	{
+		for(int i=0;i<num;i++)
+		{
+			for(int j=0;j<len;j++)
+			{
+				tmp_int += array[i][j] * pow(256, i*len+j);
+			}
+		}	
+	}
+
+	fprintf(dst,"%d\n", tmp_int);
+
+}

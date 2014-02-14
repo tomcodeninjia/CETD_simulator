@@ -13,7 +13,7 @@
 #include "../include/write_csv.h"
 #include <time.h>
 //void CETD_nonce_input(uint addr, uint counter, );
-#define Y_SINGLE BLK_LENGTH/tag_length
+#define Y_SINGLE block_length/tag_length
 //input:data,nonce,r,
 
 
@@ -145,12 +145,12 @@ void nonce_input_generation(uchar *nonce_input,
 		uchar *rnd)
 {
 
-	printf("addr %x\n", addr);
+	//printf("addr %x\n", addr);
  	addr_arr_generation( addr, 
 		 addr_len, 
 		nonce_input); // |addr_seg, crt_seg|, |crt_byte|
 
-	printf("crt %x\n", crt);
+	//printf("crt %x\n", crt);
 	crt_arr_generation( crt, 
 		 crt_len, 
 		nonce_input,
@@ -171,7 +171,7 @@ void nonce_input_generation(uchar *nonce_input,
  @para a_ctx: aes_context for blk cipher
 
  @para tag_length : len of tag
- @para y_num: block_num * BLK_LENGTH / tag_len
+ @para y_num: block_num * block_length / tag_len
  @para r: shuffle rounds
  @para nonce_input: (A, C,R)
 
@@ -179,6 +179,7 @@ void nonce_input_generation(uchar *nonce_input,
  @para 
  */
 void CETD_tag_generation(const uchar **data,int block_num, 
+		int block_length,
 		uchar *nonce_input, 
 		aes_context a_ctx,
 		int r,  //shuffle round  
@@ -189,17 +190,18 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		FILE **y2, 
 		FILE *CETD_tag, 
 		FILE *CETD_nonce,
-		bool file_type)
+		bool file_type,
+		bool result_format)
 {
 
 	/*
 	 concatenate the data array to a 1D array
 	 */
-	uchar *tmp_data = (uchar *)malloc(sizeof(uchar)*BLK_LENGTH*block_num);
-	for(int i=0;i<BLK_LENGTH*block_num;i++)
+	uchar *tmp_data = (uchar *)malloc(sizeof(uchar)*block_length*block_num);
+	for(int i=0;i<block_length*block_num;i++)
 	{
-		uchar x = i - (i/BLK_LENGTH)*BLK_LENGTH;
-		tmp_data[i]=data[i/BLK_LENGTH][x];
+		uchar x = i - (i/block_length)*block_length;
+		tmp_data[i]=data[i/block_length][x];
 	}
 
 	
@@ -218,10 +220,10 @@ void CETD_tag_generation(const uchar **data,int block_num,
 			*(*(CETD_data+i)+j) = tmp_data[i*tag_length+j];
 		}
 	}
-	int remain = BLK_LENGTH*block_num - tag_length*(y_num-1);
+	int remain = block_length*block_num - tag_length*(y_num-1);
 	for(int i=0;i<remain;i++)
 	{
-		*(*(CETD_data+y_num-1)+i) = tmp_data[BLK_LENGTH*block_num-remain+i];
+		*(*(CETD_data+y_num-1)+i) = tmp_data[block_length*block_num-remain+i];
 	}
 
 	/*
@@ -229,21 +231,11 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	 */
     uchar *nonce;
     
-    nonce=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
-    memset(nonce, 0, BLK_LENGTH);
+    nonce=(uchar *)malloc(sizeof(uchar)*block_length);
+    memset(nonce, 0, block_length);
     
-	for(int i=0;i<16;i++)
-	{
-		printf("%x,", nonce_input[i]);
-	}
-	printf("\n");
-
+	
     aes_crypt_ecb(&a_ctx, AES_ENCRYPT,nonce_input, nonce);
-	for(int i=0;i<16;i++)
-	{
-		printf("%x,", nonce[i]);
-	}
-	printf("\n");
 
 	if(file_type == TXT_file)
 	{
@@ -265,7 +257,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 
 	uchar *s = (uchar *)malloc(sizeof(uchar)*y_num);
 	memset(s,0,y_num);
-
     //shift data
     uchar **shift_data=(uchar **)malloc(sizeof(uchar *)*y_num);
     for(int i=0;i<y_num;i++)
@@ -296,11 +287,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		 y_num, 
 		tag_length);
 
-   // shift_p(nonce, &s, r);
-    //permutation(s, shift_data, y_num, tag_length);
-	/*
-	 *need to store BLK_NUMBER files for y1
-	 * */
+/*
 	for(int i=0;i<y_num;i++)
 	{
 		if(file_type==TXT_file)
@@ -339,8 +326,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		y_num, tag_length//y_num and tag_len
 		);
 
-    //swap(nonce,swap_data,r,y_num,tag_length);
-
 	if(file_type==TXT_file){
 		write_txt_2array(x,y_num,tag_length,swap_data);
 	}
@@ -354,9 +339,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		s,
 		 y_num, 
 		tag_length);
-   
-    //shift_p(nonce, &s, r);
-    //permutation(s, swap_data, y_num, tag_length);
 
     for(int i=0;i<y_num;i++)
 	{
@@ -370,22 +352,32 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		}	
 
 	}
-
+*/
 	uchar *tag=(uchar *)malloc(sizeof(uchar)*tag_length);
 	memset(tag, 0, tag_length);
 
-    tag_gene(swap_data, tag, y_num, tag_length);
+    tag_gene(shift_data, tag, y_num, tag_length);
     
 	
-	if(file_type==TXT_file)
+	if(result_format == DEC)
 	{
-		write_txt_1array(CETD_tag,tag_length,tag);
+		write_csv_decimal_1array(CETD_tag,tag_length,tag);
 	}
 	else
 	{
-		write_csv_1array(CETD_tag,tag_length,tag);
+		if(file_type==TXT_file)
+		{
+			write_txt_1array(CETD_tag,tag_length,tag);
+		}
+		else
+		{
+			write_csv_1array(CETD_tag,tag_length,tag);
+		}	
 	}
-   
+	
+	
+	
+	//free memory
    	free(tmp_data);    
 	free(nonce);
 	for(int i=0;i<y_num;i++)
@@ -394,11 +386,13 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	}
 	free(shift_data);
 
+	/*
 	for(int i=0;i<y_num;i++)
 	{
 		free(swap_data[i]);
 	}
-	free(swap_data);
+//	free(swap_data);
+*/
 	for(int i=0;i<y_num;i++)
 	{
 		free(CETD_data[i]);

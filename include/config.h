@@ -20,6 +20,9 @@
 #define CSV_file false
 #define TXT_file true
 
+#define DEC false
+#define BIN true
+
 #define TAG_LENGTH 4
 /**
  * \def POLARSSL_AES_C

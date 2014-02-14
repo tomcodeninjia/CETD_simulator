@@ -22,6 +22,7 @@ void nonce_input_generation(uchar *nonce_input,
 		uchar *rnd);
 
 void CETD_tag_generation(const uchar **data,int block_num, 
+		int block_length,
 		uchar *nonce_input, 
 		aes_context a_ctx,
 		int r,  //shuffle round  
@@ -32,7 +33,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		FILE **y2, 
 		FILE *CETD_tag, 
 		FILE *CETD_nonce,
-		bool file_type);
+		bool file_type,
+		bool result_format);
 
 
 

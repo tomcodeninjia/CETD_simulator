@@ -15,8 +15,9 @@ CETD_128_CETD_h	include/CETD.h	10;"	d
 CETD_128_permutation_h	include/permutation.h	10;"	d
 CETD_internal_cipher_h	include/cipher.h	10;"	d
 CETD_internal_input_h	include/input.h	10;"	d
-CETD_tag_generation	src/CETD.c	/^void CETD_tag_generation(const uchar **data, uchar *nonce_input,  aes_context a_ctx,int r, int s,  FILE *x,FILE *y1[Y_NUMBER], FILE *y2[Y_NUMBER], FILE *CETD_tag, FILE *CETD_nonce,bool file_type)$/;"	f
+CETD_tag_generation	src/CETD.c	/^void CETD_tag_generation(const uchar **data,int block_num, $/;"	f
 CSV_file	include/config.h	20;"	d
+CTR_MAX	src/run.c	35;"	d	file:
 FSb	src/aes.c	/^static const unsigned char FSb[256] =$/;"	v	file:
 FSb	src/aes.c	/^static unsigned char FSb[256];$/;"	v	file:
 FT	src/aes.c	114;"	d	file:
@@ -33,6 +34,7 @@ GCCFLAGS	makefile	/^GCCFLAGS = -c -Wall -g --std=c99$/;"	m
 GCM_config_h	include/config.h	10;"	d
 GET_UINT32_LE	src/aes.c	47;"	d	file:
 LC_BOUND	src/input.c	19;"	d	file:
+LDIR	makefile	/^LDIR = $(ROOTDIR)\/long$/;"	m
 MUL	src/aes.c	366;"	d	file:
 OBJ	makefile	/^OBJ = $(OBJDIR)\/run.o \\$/;"	m
 OBJDIR	makefile	/^OBJDIR = $(ROOTDIR)\/obj$/;"	m
@@ -74,6 +76,7 @@ RT3	src/aes.c	/^static const uint32_t RT3[256] = { RT };$/;"	v	file:
 RT3	src/aes.c	/^static uint32_t RT3[256];$/;"	v	file:
 Reverse	src/array_shift.c	/^void Reverse(char *arr, int b, int e)$/;"	f
 RightShift	src/array_shift.c	/^void RightShift(char *arr, int N, int k)$/;"	f
+SDIR	makefile	/^SDIR = $(ROOTDIR)\/short$/;"	m
 SEG_BITS	include/shuffle.h	5;"	d
 SHIFT_P	include/permutation.h	12;"	d
 SHIFT_P_P	include/permutation.h	13;"	d
@@ -104,6 +107,7 @@ X_generation_show_h	include/show.h	10;"	d
 Y_NUMBER	include/CETD.h	17;"	d
 Y_SINGLE	src/CETD.c	16;"	d	file:
 a	mod.py	/^a = 1%4$/;"	v
+addr_arr_generation	src/CETD.c	/^void addr_arr_generation(int addr, $/;"	f
 aes_context	include/aes.h	/^aes_context;$/;"	t	typeref:struct:__anon1
 aes_context	include/aes.h	/^aes_context;$/;"	t	typeref:struct:__anon2
 aes_crypt_cbc	src/aes.c	/^int aes_crypt_cbc( aes_context *ctx,$/;"	f
@@ -135,13 +139,15 @@ array_shift_bit_array_shift_h	include/array_shift.h	10;"	d
 balance_counter	src/input.c	/^void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int total_blk)$/;"	f
 buf	include/aes.h	/^    uint32_t buf[68];           \/*!<  unaligned data    *\/$/;"	m	struct:__anon1
 buf	include/aes.h	/^    uint32_t buf[68];           \/*!<  unaligned data    *\/$/;"	m	struct:__anon2
+byte_split	src/run.c	/^int byte_split(int bit_len)$/;"	f
 cipher	src/cipher.c	/^void cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o, bool file_type)$/;"	f
 cipher_short	src/cipher.c	/^void cipher_short(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,bool file_type)$/;"	f
 ciphertext_dir_csv	src/run.c	33;"	d	file:
 ciphertext_dir_txt	src/run.c	30;"	d	file:
 complex_count	src/input.c	/^void complex_count(uchar **input, int test_n, FILE *data_i,bool file_type,uint *random)$/;"	f
 count	src/input.c	/^void count(uchar **input, int test_n, FILE *data_i, bool file_type)$/;"	f
-counter_normal	src/input.c	/^void counter_normal(uchar **input, $/;"	f
+counter_normal	src/input.c	/^void counter_normal(uchar **input, uint counter, FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
+crt_arr_generation	src/CETD.c	/^void crt_arr_generation(int crt, $/;"	f
 data_dir_csv	src/run.c	32;"	d	file:
 data_dir_txt	src/run.c	29;"	d	file:
 debug	src/shuffle.c	/^void debug(unsigned int x)$/;"	f
@@ -153,9 +159,14 @@ index2	src/shuffle.c	/^	uint index2:2;\/\/block number 2$/;"	m	struct:split	file
 int32_t	include/padlock.h	/^typedef INT32 int32_t;$/;"	t
 length	src/shuffle.c	/^	uint length:5;\/\/segsize$/;"	m	struct:split	file:
 linear_counter	src/input.c	/^void linear_counter(uchar **input, int test_n, bool file_type, FILE *data_i, int number, int arr_length)$/;"	f
+log2_int	src/shuffle.c	/^int log2_int(int n)$/;"	f
 main	src/run.c	/^int main()$/;"	f
-nonce_dir_csv	include/CETD.h	33;"	d
-nonce_dir_txt	include/CETD.h	27;"	d
+mod	src/permutation.c	/^int mod(int a, int b)$/;"	f
+mod1	src/shuffle.c	/^int mod1(int a, int b)$/;"	f
+nonce_dir_csv	include/CETD.h	49;"	d
+nonce_dir_txt	include/CETD.h	43;"	d
+nonce_input_generation	src/CETD.c	/^void nonce_input_generation(uchar *nonce_input, $/;"	f
+nonce_len	src/run.c	/^int nonce_len(int shuffle_r, int y_num, int tag_len)$/;"	f
 nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon1
 nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon2
 offset1	src/shuffle.c	/^    uint offset1:5;\/\/start position for block1$/;"	m	struct:split	file:
@@ -164,7 +175,7 @@ only_plaintext	src/cipher.c	/^void only_plaintext(uchar **dst, const uchar **src
 padlock_supports	src/padlock.c	/^int padlock_supports( int feature )$/;"	f
 padlock_xcryptcbc	src/padlock.c	/^int padlock_xcryptcbc( aes_context *ctx,$/;"	f
 padlock_xcryptecb	src/padlock.c	/^int padlock_xcryptecb( aes_context *ctx,$/;"	f
-permutation	src/permutation.c	/^void permutation(int s, uchar **data, int number, int arr_length)$/;"	f
+permutation	src/permutation.c	/^void permutation(uchar **data,$/;"	f
 perodic_cipher	src/cipher.c	/^void perodic_cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,int index,bool file_type)$/;"	f
 perodic_input	src/input.c	/^void perodic_input(uchar **input, FILE *data_i,int index,bool file_type)$/;"	f
 print_binary	src/shuffle.c	/^static void print_binary(unsigned int x)$/;"	f	file:
@@ -174,32 +185,35 @@ random_repeat_short	src/input.c	/^void random_repeat_short(uchar **input, FILE *
 reserved	src/shuffle.c	/^	uint reserved:13;$/;"	m	struct:split	file:
 rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon1
 rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon2
-shift_p	src/permutation.c	/^void shift_p(uchar *nonce, int *s,int r)$/;"	f
+rnd_arr_generation	src/CETD.c	/^void rnd_arr_generation(const uchar *rnd, $/;"	f
+rotate_p	src/permutation.c	/^void rotate_p(const uchar *nonce,$/;"	f
 shiftl	src/array_shift.c	/^void shiftl(void *object, size_t size)$/;"	f
 shiftr	src/array_shift.c	/^void shiftr(void *object, size_t size, int n)$/;"	f
 shiftrr	src/array_shift.c	/^void shiftrr(void *object, size_t size, int n)$/;"	f
 shiftrrn	src/array_shift.c	/^void shiftrrn(void *object, size_t size, int n)$/;"	f
 show	src/show.c	/^void show(const void *object, size_t size)$/;"	f
-shuffle_p	src/shuffle.c	/^void shuffle_p(uchar *nonce, uint *v, int r)$/;"	f
+shuffle_p	src/CETD.c	/^int shuffle_p(int y_num,int tag_length)$/;"	f
 split	src/shuffle.c	/^struct split {$/;"	s	file:
 split_test	src/shuffle.c	/^void split_test(uint x)$/;"	f
-swap	src/shuffle.c	/^void swap(uchar *nonce, uchar **data, int r, int number, int arr_length)$/;"	f
-tag_dir_csv	include/CETD.h	32;"	d
-tag_dir_txt	include/CETD.h	26;"	d
+swap	src/shuffle.c	/^void swap(const uchar *nonce, $/;"	f
+swap_p	src/shuffle.c	/^void swap_p(const uchar *nonce, $/;"	f
+tag_dir_csv	include/CETD.h	48;"	d
+tag_dir_txt	include/CETD.h	42;"	d
 tag_gene	src/tag.c	/^void tag_gene(const uchar **data, uchar *tag, int number, int arr_length)$/;"	f
 uchar	include/config.h	13;"	d
 uint	include/config.h	15;"	d
 uint32_t	include/aes.h	/^typedef UINT32 uint32_t;$/;"	t
 ushort	include/config.h	14;"	d
+v_split	src/shuffle.c	/^void v_split(int shuffle_p, int y_num, int tag_length, uchar *v)$/;"	f
 write_csv_1array	src/write_csv.c	/^ void write_csv_1array(FILE *dst, int length, const uchar *array)$/;"	f
 write_csv_2array	src/write_csv.c	/^void write_csv_2array(FILE *dst, int number, int length, const uchar **array)$/;"	f
 write_csv_2array2	src/write_csv.c	/^void write_csv_2array2(FILE *dst, int num, int len, const uchar *array)$/;"	f
 write_txt_1array	src/write_txt.c	/^void write_txt_1array(FILE *dst,  int length, const uchar *array)$/;"	f
 write_txt_2array	src/write_txt.c	/^void write_txt_2array(FILE *dst, int number, int length, const uchar **array)$/;"	f
 write_txt_2array2	src/write_txt.c	/^void write_txt_2array2(FILE *dst, int num, int len, const uchar *array)$/;"	f
-x_dir_csv	include/CETD.h	29;"	d
-x_dir_txt	include/CETD.h	23;"	d
-y1_dir_split_csv	include/CETD.h	30;"	d
-y1_dir_split_txt	include/CETD.h	24;"	d
-y2_dir_split_csv	include/CETD.h	31;"	d
-y2_dir_split_txt	include/CETD.h	25;"	d
+x_dir_csv	include/CETD.h	45;"	d
+x_dir_txt	include/CETD.h	39;"	d
+y1_dir_split_csv	include/CETD.h	46;"	d
+y1_dir_split_txt	include/CETD.h	40;"	d
+y2_dir_split_csv	include/CETD.h	47;"	d
+y2_dir_split_txt	include/CETD.h	41;"	d

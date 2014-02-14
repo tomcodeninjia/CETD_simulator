@@ -25,6 +25,7 @@ void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, 
 		   *(*(dst+i)+j) = src[i][j];
 	   }
    }
+	/*
  	if(file_type==TXT_file){
 		write_txt_2array(cipher_o,number,arr_length,dst);
 	}
@@ -32,6 +33,7 @@ void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, 
 	{
 		write_csv_2array(cipher_o,number,arr_length,dst);
 	}
+	*/
        
 }
 /*
