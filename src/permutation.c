@@ -17,12 +17,12 @@ int mod(int a, int b)
 	return a - (a/b)*b;
 }
 void rotate_p(const uchar *nonce,
-		uchar *s,
+		uchar *s, //rotate para array
 		int y_num,
 		int tag_length,
-		int shuffle_r,
-		int s_p,
-		int r_p)
+		int shuffle_r, // shuffle rounds
+		int s_p, //length of shuffle para
+		int r_p) //length of rotate para
 {
 	int start,end;
 	uchar tmp;	

@@ -8,6 +8,7 @@ AES_DECRYPT	include/aes.h	55;"	d
 AES_ENCRYPT	include/aes.h	54;"	d
 AES_FROUND	src/aes.c	619;"	d	file:
 AES_RROUND	src/aes.c	642;"	d	file:
+BIN	include/config.h	24;"	d
 BLK_LENGTH	include/config.h	18;"	d
 BLK_NUMBER	include/config.h	17;"	d
 CC	makefile	/^CC = \/usr\/bin\/gcc$/;"	m
@@ -18,6 +19,7 @@ CETD_internal_input_h	include/input.h	10;"	d
 CETD_tag_generation	src/CETD.c	/^void CETD_tag_generation(const uchar **data,int block_num, $/;"	f
 CSV_file	include/config.h	20;"	d
 CTR_MAX	src/run.c	35;"	d	file:
+DEC	include/config.h	23;"	d
 FSb	src/aes.c	/^static const unsigned char FSb[256] =$/;"	v	file:
 FSb	src/aes.c	/^static unsigned char FSb[256];$/;"	v	file:
 FT	src/aes.c	114;"	d	file:
@@ -45,18 +47,18 @@ PADLOCK_PMM	include/padlock.h	51;"	d
 PADLOCK_RNG	include/padlock.h	48;"	d
 PERIODIC	src/cipher.c	15;"	d	file:
 PERIODIC	src/input.c	17;"	d	file:
-POLARSSL_AES_C	include/config.h	49;"	d
+POLARSSL_AES_C	include/config.h	52;"	d
 POLARSSL_AES_H	include/aes.h	28;"	d
 POLARSSL_CIPHER_MODE_CFB	include/aes.h	36;"	d
 POLARSSL_CIPHER_MODE_CTR	include/aes.h	43;"	d
 POLARSSL_ERR_AES_INVALID_INPUT_LENGTH	include/aes.h	58;"	d
 POLARSSL_ERR_AES_INVALID_KEY_LENGTH	include/aes.h	57;"	d
 POLARSSL_ERR_PADLOCK_DATA_MISALIGNED	include/padlock.h	32;"	d
-POLARSSL_GCM_C	include/config.h	75;"	d
+POLARSSL_GCM_C	include/config.h	78;"	d
 POLARSSL_HAVE_X86	include/padlock.h	37;"	d
-POLARSSL_PADLOCK_C	include/config.h	60;"	d
+POLARSSL_PADLOCK_C	include/config.h	63;"	d
 POLARSSL_PADLOCK_H	include/padlock.h	28;"	d
-POLARSSL_SELF_TEST	include/config.h	81;"	d
+POLARSSL_SELF_TEST	include/config.h	84;"	d
 PUT_UINT32_LE	src/aes.c	57;"	d	file:
 RCON	src/aes.c	/^static const uint32_t RCON[10] =$/;"	v	file:
 RCON	src/aes.c	/^static uint32_t RCON[10];$/;"	v	file:
@@ -83,7 +85,7 @@ SHIFT_P_P	include/permutation.h	13;"	d
 SHUFFLE_P	include/permutation.h	14;"	d
 SHUFFLE_P	include/shuffle.h	4;"	d
 SRCDIR	makefile	/^SRCDIR = $(ROOTDIR)\/src$/;"	m
-TAG_LENGTH	include/config.h	23;"	d
+TAG_LENGTH	include/config.h	26;"	d
 TXT_file	include/config.h	21;"	d
 V	src/aes.c	181;"	d	file:
 V	src/aes.c	183;"	d	file:
@@ -146,13 +148,14 @@ ciphertext_dir_csv	src/run.c	33;"	d	file:
 ciphertext_dir_txt	src/run.c	30;"	d	file:
 complex_count	src/input.c	/^void complex_count(uchar **input, int test_n, FILE *data_i,bool file_type,uint *random)$/;"	f
 count	src/input.c	/^void count(uchar **input, int test_n, FILE *data_i, bool file_type)$/;"	f
-counter_normal	src/input.c	/^void counter_normal(uchar **input, uint counter, FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
+counter_normal	src/input.c	/^void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 crt_arr_generation	src/CETD.c	/^void crt_arr_generation(int crt, $/;"	f
 data_dir_csv	src/run.c	32;"	d	file:
 data_dir_txt	src/run.c	29;"	d	file:
 debug	src/shuffle.c	/^void debug(unsigned int x)$/;"	f
 displayFileFormat	src/run.c	/^bool displayFileFormat()$/;"	f
 displayInputOption	src/run.c	/^int displayInputOption()$/;"	f
+dst_dir	python_src/dir_operation.py	/^dst_dir = ".\/frequency"$/;"	v
 equal_input	src/input.c	/^void equal_input(uchar **input, FILE *data_i, bool file_type)$/;"	f
 index1	src/shuffle.c	/^	uint index1:2;\/\/block number 1$/;"	m	struct:split	file:
 index2	src/shuffle.c	/^	uint index2:2;\/\/block number 2$/;"	m	struct:split	file:
@@ -163,8 +166,8 @@ log2_int	src/shuffle.c	/^int log2_int(int n)$/;"	f
 main	src/run.c	/^int main()$/;"	f
 mod	src/permutation.c	/^int mod(int a, int b)$/;"	f
 mod1	src/shuffle.c	/^int mod1(int a, int b)$/;"	f
-nonce_dir_csv	include/CETD.h	49;"	d
-nonce_dir_txt	include/CETD.h	43;"	d
+nonce_dir_csv	include/CETD.h	51;"	d
+nonce_dir_txt	include/CETD.h	45;"	d
 nonce_input_generation	src/CETD.c	/^void nonce_input_generation(uchar *nonce_input, $/;"	f
 nonce_len	src/run.c	/^int nonce_len(int shuffle_r, int y_num, int tag_len)$/;"	f
 nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon1
@@ -179,9 +182,11 @@ permutation	src/permutation.c	/^void permutation(uchar **data,$/;"	f
 perodic_cipher	src/cipher.c	/^void perodic_cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,int index,bool file_type)$/;"	f
 perodic_input	src/input.c	/^void perodic_input(uchar **input, FILE *data_i,int index,bool file_type)$/;"	f
 print_binary	src/shuffle.c	/^static void print_binary(unsigned int x)$/;"	f	file:
+randomNumFile	python_src/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 random_input	src/input.c	/^void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 random_repeat_long	src/input.c	/^void random_repeat_long(uchar **input, const uchar *rnd,FILE *data_i,  bool file_type, int number, int arr_length)$/;"	f
 random_repeat_short	src/input.c	/^void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)$/;"	f
+repeat_count	python_src/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 reserved	src/shuffle.c	/^	uint reserved:13;$/;"	m	struct:split	file:
 rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon1
 rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon2
@@ -195,11 +200,13 @@ show	src/show.c	/^void show(const void *object, size_t size)$/;"	f
 shuffle_p	src/CETD.c	/^int shuffle_p(int y_num,int tag_length)$/;"	f
 split	src/shuffle.c	/^struct split {$/;"	s	file:
 split_test	src/shuffle.c	/^void split_test(uint x)$/;"	f
+src_dir	python_src/dir_operation.py	/^src_dir = "..\/short"$/;"	v
 swap	src/shuffle.c	/^void swap(const uchar *nonce, $/;"	f
 swap_p	src/shuffle.c	/^void swap_p(const uchar *nonce, $/;"	f
-tag_dir_csv	include/CETD.h	48;"	d
-tag_dir_txt	include/CETD.h	42;"	d
+tag_dir_csv	include/CETD.h	50;"	d
+tag_dir_txt	include/CETD.h	44;"	d
 tag_gene	src/tag.c	/^void tag_gene(const uchar **data, uchar *tag, int number, int arr_length)$/;"	f
+test_array	src/run.c	/^uchar test_array[5][2] = {{0x44, 0x77},{0x66,0x71},{0x34, 0x27},{0x33,0x99},{0x63,0xD8}};$/;"	v
 uchar	include/config.h	13;"	d
 uint	include/config.h	15;"	d
 uint32_t	include/aes.h	/^typedef UINT32 uint32_t;$/;"	t
@@ -208,12 +215,14 @@ v_split	src/shuffle.c	/^void v_split(int shuffle_p, int y_num, int tag_length, u
 write_csv_1array	src/write_csv.c	/^ void write_csv_1array(FILE *dst, int length, const uchar *array)$/;"	f
 write_csv_2array	src/write_csv.c	/^void write_csv_2array(FILE *dst, int number, int length, const uchar **array)$/;"	f
 write_csv_2array2	src/write_csv.c	/^void write_csv_2array2(FILE *dst, int num, int len, const uchar *array)$/;"	f
+write_csv_decimal_1array	src/write_csv.c	/^void write_csv_decimal_1array(FILE *dst, int len, const uchar *array)$/;"	f
+write_csv_decimal_2array	src/write_csv.c	/^void write_csv_decimal_2array(FILE *dst, int num, int len, const uchar **array)$/;"	f
 write_txt_1array	src/write_txt.c	/^void write_txt_1array(FILE *dst,  int length, const uchar *array)$/;"	f
 write_txt_2array	src/write_txt.c	/^void write_txt_2array(FILE *dst, int number, int length, const uchar **array)$/;"	f
 write_txt_2array2	src/write_txt.c	/^void write_txt_2array2(FILE *dst, int num, int len, const uchar *array)$/;"	f
-x_dir_csv	include/CETD.h	45;"	d
-x_dir_txt	include/CETD.h	39;"	d
-y1_dir_split_csv	include/CETD.h	46;"	d
-y1_dir_split_txt	include/CETD.h	40;"	d
-y2_dir_split_csv	include/CETD.h	47;"	d
-y2_dir_split_txt	include/CETD.h	41;"	d
+x_dir_csv	include/CETD.h	47;"	d
+x_dir_txt	include/CETD.h	41;"	d
+y1_dir_split_csv	include/CETD.h	48;"	d
+y1_dir_split_txt	include/CETD.h	42;"	d
+y2_dir_split_csv	include/CETD.h	49;"	d
+y2_dir_split_txt	include/CETD.h	43;"	d

@@ -38,6 +38,9 @@ bool displayFileFormat();
 int nonce_len(int shuffle_r, int y_num, int tag_len);
 int byte_split(int bit_len);
 
+//pattern_diff, pattern+no, nos+nos, pas+pas,s-np+s-np
+uchar test_array[5][2] = {{0x44, 0x77},{0x66,0x71},{0x34, 0x27},{0x33,0x99},{0x63,0xD8}};
+
 int main()
 {
     
@@ -263,6 +266,7 @@ int main()
 			/*
 		 *set filenames for txt files
 		 * */
+		/*
 		sprintf(filename_plain_txt,data_dir_txt,test_round+1);
 		fp_plaintext_txt=fopen(filename_plain_txt,"w");
                 
@@ -283,7 +287,7 @@ int main()
 			sprintf((char*)y2_name_txt + i * 256,y2_dir_split_txt,test_round+1,i+1);
 			fp_y2_txt[i]=fopen((char*)y2_name_txt + i * 256,"w");
 		}
-
+*/
         
         sprintf(filename_CETD_txt, tag_dir_txt,test_round+1);
         fp_tag_CETD_txt=fopen(filename_CETD_txt, "w");
@@ -297,6 +301,7 @@ int main()
 			/*
 		 *set filenames for csv files
 		 * */
+/*
 		sprintf(filename_plain_csv,data_dir_csv,test_round+1);
 		fp_plaintext_csv=fopen(filename_plain_csv,"w");
                 
@@ -318,7 +323,7 @@ int main()
 			fp_y2_csv[i]=fopen((char*)y2_name_csv + i * 256,"w");
 		}
 
-        
+ */       
         sprintf(filename_CETD_csv, tag_dir_csv,test_round+1);
         fp_tag_CETD_csv=fopen(filename_CETD_csv, "w");
 
@@ -500,6 +505,15 @@ int main()
 				rnd_nonce);
 
 			/*
+			for(int i=0;i<block_number;i++)
+			{
+				for(int j=0;j<block_length;j++)
+				{
+					*(*(ciper_data+i)+j) = test_array[test_round][j];
+				}
+			}
+			*/
+			/*
 			 *generate CETD_tag
 			 * */
 			if(file_type == TXT_file)
@@ -571,39 +585,41 @@ int main()
 
 		if(file_type==TXT_file)
 		{
+			/*
 			for(int i=0;i<block_number;i++)
-		{
-			fclose(fp_y1_txt[i]);
-		}
-		for(int i=0;i<block_number;i++)
-		{
-			fclose(fp_y2_txt[i]);
-		}
-		fclose(fp_x_blk_txt);
-		fclose(fp_tag_CETD_txt);
+			{
+				fclose(fp_y1_txt[i]);
+			}
+			for(int i=0;i<block_number;i++)
+			{
+				fclose(fp_y2_txt[i]);
+			}
+			fclose(fp_x_blk_txt);
 
-		fclose(fp_plaintext_txt);
-		fclose(fp_cipher_txt);
-		fclose(fp_nonce_CETD_txt);
-
+			fclose(fp_plaintext_txt);
+			fclose(fp_cipher_txt);
+			*/
+			fclose(fp_nonce_CETD_txt);
+			fclose(fp_tag_CETD_txt);
 		}
 		else
 		{
+			/*
 			for(int i=0;i<block_number;i++)
-		{
-			fclose(fp_y1_csv[i]);
-		}
-		for(int i=0;i<block_number;i++)
-		{
-			fclose(fp_y2_csv[i]);
-		}
-		fclose(fp_x_blk_csv);
-		fclose(fp_tag_CETD_csv);
+			{
+				fclose(fp_y1_csv[i]);
+			}
+			for(int i=0;i<block_number;i++)
+			{
+				fclose(fp_y2_csv[i]);
+			}
+			fclose(fp_x_blk_csv);
 
-		fclose(fp_plaintext_csv);
-		fclose(fp_cipher_csv);
-
-		fclose(fp_nonce_CETD_csv);
+			fclose(fp_plaintext_csv);
+			fclose(fp_cipher_csv);
+			*/
+			fclose(fp_nonce_CETD_csv);
+			fclose(fp_tag_CETD_csv);
 
 		}
 		       

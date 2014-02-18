@@ -102,7 +102,7 @@ void write_csv_2array2(FILE *dst, int num, int len, const uchar *array)
 
 void write_csv_decimal_1array(FILE *dst, int len, const uchar *array)
 {
-	uint tmp_int;
+	uint tmp_int=0;
 	for(int i=0;i<len;i++)
 	{
 		tmp_int += array[i]*pow(256,i);	
@@ -116,7 +116,7 @@ void write_csv_decimal_2array(FILE *dst, int num, int len, const uchar **array)
 {
 
 
-	uint tmp_int;	
+	uint tmp_int=0;	
 	if( num * len <= 4)
 	{
 		for(int i=0;i<num;i++)

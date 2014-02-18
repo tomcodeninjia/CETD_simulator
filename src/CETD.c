@@ -17,7 +17,7 @@
 //input:data,nonce,r,
 
 
-
+//length of S[i]
 int shuffle_p(int y_num,int tag_length)
 {
 	return 3*log2_int(tag_length)+2*log2_int(y_num);		
@@ -205,7 +205,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	}
 
 	
-//	uchar CETD_data[y_num][tag_length];	
 	uchar **CETD_data =(uchar **)malloc(sizeof(uchar *)*y_num);	
 	for(int i=0;i<y_num;i++)
 	{
@@ -231,8 +230,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	 */
     uchar *nonce;
     
-    nonce=(uchar *)malloc(sizeof(uchar)*block_length);
-    memset(nonce, 0, block_length);
+    nonce=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
+    memset(nonce, 0, BLK_LENGTH);
     
 	
     aes_crypt_ecb(&a_ctx, AES_ENCRYPT,nonce_input, nonce);
@@ -251,6 +250,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	 shuffle_p = 2*log2(y_num) + 3*log2(tag_length);
 	 shift_p = y_num * log2(tag_length)
 	 shift_p_p = log2(tag_length)
+	@para s_p:length of a shuffle para
+	@para r_p: length of a rotate para
 	 */
 	int s_p = shuffle_p(y_num, tag_length*CHAR_BIT);	
 	int r_p = log2_int(tag_length*CHAR_BIT);
@@ -274,6 +275,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
         }
     }
     
+	//prepare s array: rotate para array
     rotate_p(nonce,
 		s,
 		 y_num,
@@ -379,13 +381,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	
 	//free memory
    	free(tmp_data);    
-	free(nonce);
-	for(int i=0;i<y_num;i++)
-	{
-		free(shift_data[i]);
-	}
-	free(shift_data);
-
+	
 	/*
 	for(int i=0;i<y_num;i++)
 	{
@@ -398,8 +394,15 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		free(CETD_data[i]);
 	}
 	free(CETD_data);
+	free(s);
+
+	free(nonce);
+	for(int i=0;i<y_num;i++)
+	{
+		free(shift_data[i]);
+	}
+	free(shift_data);
 
 	free(tag);
-	free(s);
 
 }
