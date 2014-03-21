@@ -1,4 +1,18 @@
-versio introduction:
-1. the tag is stored in decimal
-2. internal set is not stored,
-3. 
+How to use:
+1. make clean
+2. make
+3. you got a executable file: run. Execute it by type: ./run, in the command line
+4. In the tag frequency test, I choose Normal linear counter as input. The func
+of each type of input can be referred in src codes
+
+Dir hierarchy 
+1. src: c code files
+2. include: head files
+3. obj. executable files
+4. python_src: tag frequency static python files 
+5. long: store long-length components
+6. short: store short-length components such as tag
+
+Tips:
+choose the components you want to observe and output to files. This
+functionality can be achieved by slight modify the src codes
