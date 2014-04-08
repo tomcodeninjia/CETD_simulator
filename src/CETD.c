@@ -236,6 +236,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	
     aes_crypt_ecb(&a_ctx, AES_ENCRYPT,nonce_input, nonce);
 
+	/*
 	if(file_type == TXT_file)
 	{
 		write_txt_1array(CETD_nonce, BLK_LENGTH, nonce);
@@ -244,6 +245,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	{
 		write_csv_1array(CETD_nonce, BLK_LENGTH, nonce);
 	}
+	*/
     
 	/*
 	 compute shift_p and shuffle_p, the length
@@ -284,12 +286,11 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		 s_p,
 		 r_p);
 
+	/*
  	permutation(shift_data,
 		s,
 		 y_num, 
 		tag_length);
-
-/*
 	for(int i=0;i<y_num;i++)
 	{
 		if(file_type==TXT_file)
@@ -302,7 +303,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		}	
 
 	}
-
+*/
     //the swap_data is the output of 
 	//shuffle data
     uchar **swap_data=(uchar **)malloc(sizeof(uchar *)*y_num);
@@ -328,6 +329,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		y_num, tag_length//y_num and tag_len
 		);
 
+	/*
 	if(file_type==TXT_file){
 		write_txt_2array(x,y_num,tag_length,swap_data);
 	}
@@ -335,13 +337,14 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	{
 		write_csv_2array(x,y_num,tag_length,swap_data);
 	}
-
+	*/
 
  	permutation(swap_data,
 		s,
 		 y_num, 
 		tag_length);
 
+	/*
     for(int i=0;i<y_num;i++)
 	{
 		if(file_type==TXT_file)
@@ -358,7 +361,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	uchar *tag=(uchar *)malloc(sizeof(uchar)*tag_length);
 	memset(tag, 0, tag_length);
 
-    tag_gene(shift_data, tag, y_num, tag_length);
+    //tag_gene(swap_data, tag, y_num, tag_length);
+	tag_gene_nonce(swap_data, tag, y_num,tag_length,nonce);
     
 	
 	if(result_format == DEC)
@@ -381,20 +385,11 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	
 	//free memory
    	free(tmp_data);    
-	
-	/*
-	for(int i=0;i<y_num;i++)
-	{
-		free(swap_data[i]);
-	}
-//	free(swap_data);
-*/
 	for(int i=0;i<y_num;i++)
 	{
 		free(CETD_data[i]);
 	}
 	free(CETD_data);
-	free(s);
 
 	free(nonce);
 	for(int i=0;i<y_num;i++)
@@ -403,6 +398,14 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	}
 	free(shift_data);
 
+	for(int i=0;i<y_num;i++)
+	{
+		free(swap_data[i]);
+	}
+	free(swap_data);
+		free(s);
+
+	
 	free(tag);
 
 }

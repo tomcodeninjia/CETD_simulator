@@ -26,11 +26,11 @@
 #include <math.h>
 
 
-#define data_dir_txt "../NIST_suite/long/p%d.txt"
-#define ciphertext_dir_txt "../NIST_suite/long/c%d.txt"
+#define data_dir_txt "../NIST_suite/long/cache%d.txt"
+#define ciphertext_dir_txt "../NIST_suite/long/cipher%d.txt"
 
-#define data_dir_csv "./long/p%d.csv"
-#define ciphertext_dir_csv "./long/c%d.csv"
+#define data_dir_csv "./long/cache%d.csv"
+#define ciphertext_dir_csv "./long/cipher%d.csv"
 
 #define CTR_MAX 100000000 
 int displayInputOption();
@@ -61,7 +61,7 @@ int main()
     printf("input the No. of tags per sequence\n");
     scanf("%d",&n);
 
-	int choice =5;
+	int choice =6;
 	choice = displayInputOption();
 	
 	bool file_type = CSV_file;
@@ -240,10 +240,7 @@ int main()
      **/
     for(uint test_round=0;test_round<test_count;test_round++)
     {
-        
-      
-        
-        /**
+           /**
          1 key per sequence,randomly generated
          **/
         uchar *AES_key;
@@ -264,72 +261,73 @@ int main()
 		if(file_type==TXT_file)
 		{
 			/*
-		 *set filenames for txt files
-		 * */
-		/*
-		sprintf(filename_plain_txt,data_dir_txt,test_round+1);
-		fp_plaintext_txt=fopen(filename_plain_txt,"w");
-                
-        sprintf(filename_cipher_txt, ciphertext_dir_txt,test_round+1);
-        fp_cipher_txt=fopen(filename_cipher_txt, "w");
-        
-        sprintf(filename_x_txt,x_dir_txt ,test_round+1);
-        fp_x_blk_txt=fopen(filename_x_txt, "w");
-        
-		for(int i=0;i<y_num;i++)
-		{
-			sprintf((char*)y1_name_txt + i * 256,y1_dir_split_txt,test_round+1,i+1);
-			fp_y1_txt[i]=fopen((char*)y1_name_txt + i * 256,"w");
-		}
+			 *set filenames for txt files
+			 * */
 
-		for(int i=0;i<y_num;i++)
-		{
-			sprintf((char*)y2_name_txt + i * 256,y2_dir_split_txt,test_round+1,i+1);
-			fp_y2_txt[i]=fopen((char*)y2_name_txt + i * 256,"w");
-		}
-*/
-        
-        sprintf(filename_CETD_txt, tag_dir_txt,test_round+1);
-        fp_tag_CETD_txt=fopen(filename_CETD_txt, "w");
+			/*
+			sprintf(filename_plain_txt,data_dir_txt,test_round+1);
+			fp_plaintext_txt=fopen(filename_plain_txt,"w");
+        	        
+        	sprintf(filename_cipher_txt, ciphertext_dir_txt,test_round+1);
+        	fp_cipher_txt=fopen(filename_cipher_txt, "w");
+        	
+        	sprintf(filename_x_txt,x_dir_txt ,test_round+1);
+        	fp_x_blk_txt=fopen(filename_x_txt, "w");
+        	
+			for(int i=0;i<y_num;i++)
+			{
+				sprintf((char*)y1_name_txt + i * 256,y1_dir_split_txt,test_round+1,i+1);
+				fp_y1_txt[i]=fopen((char*)y1_name_txt + i * 256,"w");
+			}
 
-		sprintf(filename_nonce_CETD_txt, nonce_dir_txt, test_round+1);
-		fp_nonce_CETD_txt=fopen(filename_nonce_CETD_txt,"w");
-			
+			for(int i=0;i<y_num;i++)
+			{
+				sprintf((char*)y2_name_txt + i * 256,y2_dir_split_txt,test_round+1,i+1);
+				fp_y2_txt[i]=fopen((char*)y2_name_txt + i * 256,"w");
+			}
+        	
+			*/
+        	sprintf(filename_CETD_txt, tag_dir_txt,test_round+1);
+        	fp_tag_CETD_txt=fopen(filename_CETD_txt, "w");
+
+			sprintf(filename_nonce_CETD_txt, nonce_dir_txt, test_round+1);
+			fp_nonce_CETD_txt=fopen(filename_nonce_CETD_txt,"w");
+				
 		}
 		else
 		{
 			/*
-		 *set filenames for csv files
-		 * */
-/*
-		sprintf(filename_plain_csv,data_dir_csv,test_round+1);
-		fp_plaintext_csv=fopen(filename_plain_csv,"w");
-                
-        sprintf(filename_cipher_csv, ciphertext_dir_csv,test_round+1);
-        fp_cipher_csv=fopen(filename_cipher_csv, "w");
-        
-        sprintf(filename_x_csv,x_dir_csv ,test_round+1);
-        fp_x_blk_csv=fopen(filename_x_csv, "w");
-        
-		for(int i=0;i<y_num;i++)
-		{
-			sprintf((char*)y1_name_csv + i * 256,y1_dir_split_csv,test_round+1,i+1);
-			fp_y1_csv[i]=fopen((char*)y1_name_csv + i * 256,"w");
-		}
+			 *set filenames for csv files
+			 * */
 
-		for(int i=0;i<y_num;i++)
-		{
-			sprintf((char*)y2_name_csv + i * 256,y2_dir_split_csv,test_round+1,i+1);
-			fp_y2_csv[i]=fopen((char*)y2_name_csv + i * 256,"w");
-		}
-
- */       
-        sprintf(filename_CETD_csv, tag_dir_csv,test_round+1);
-        fp_tag_CETD_csv=fopen(filename_CETD_csv, "w");
-
-		sprintf(filename_nonce_CETD_csv, nonce_dir_csv, test_round+1);
-		fp_nonce_CETD_csv=fopen(filename_nonce_CETD_csv,"w");
-
+			/*
+			sprintf(filename_plain_csv,data_dir_csv,test_round+1);
+			fp_plaintext_csv=fopen(filename_plain_csv,"w");
+	                
+	        sprintf(filename_cipher_csv, ciphertext_dir_csv,test_round+1);
+	        fp_cipher_csv=fopen(filename_cipher_csv, "w");
+	        
+	        sprintf(filename_x_csv,x_dir_csv ,test_round+1);
+	        fp_x_blk_csv=fopen(filename_x_csv, "w");
+	        
+			for(int i=0;i<y_num;i++)
+			{
+				sprintf((char*)y1_name_csv + i * 256,y1_dir_split_csv,test_round+1,i+1);
+				fp_y1_csv[i]=fopen((char*)y1_name_csv + i * 256,"w");
+			}
+	
+			for(int i=0;i<y_num;i++)
+			{
+				sprintf((char*)y2_name_csv + i * 256,y2_dir_split_csv,test_round+1,i+1);
+				fp_y2_csv[i]=fopen((char*)y2_name_csv + i * 256,"w");
+			}
+			*/
+	        sprintf(filename_CETD_csv, tag_dir_csv,test_round+1);
+	        fp_tag_CETD_csv=fopen(filename_CETD_csv, "w");
+	
+			sprintf(filename_nonce_CETD_csv, nonce_dir_csv, test_round+1);
+			fp_nonce_CETD_csv=fopen(filename_nonce_CETD_csv,"w");
+	
 		}
 		        
         /**
@@ -586,38 +584,44 @@ int main()
 		if(file_type==TXT_file)
 		{
 			/*
+			fclose(fp_plaintext_txt);
+			fclose(fp_cipher_txt);
 			for(int i=0;i<block_number;i++)
 			{
 				fclose(fp_y1_txt[i]);
 			}
+			fclose(fp_x_blk_txt);
 			for(int i=0;i<block_number;i++)
 			{
 				fclose(fp_y2_txt[i]);
 			}
-			fclose(fp_x_blk_txt);
 
-			fclose(fp_plaintext_txt);
-			fclose(fp_cipher_txt);
 			*/
+						
+		
+			
 			fclose(fp_nonce_CETD_txt);
 			fclose(fp_tag_CETD_txt);
 		}
 		else
 		{
 			/*
+			fclose(fp_plaintext_csv);
+			fclose(fp_cipher_csv);
+
 			for(int i=0;i<block_number;i++)
 			{
 				fclose(fp_y1_csv[i]);
 			}
+			fclose(fp_x_blk_csv);
 			for(int i=0;i<block_number;i++)
 			{
 				fclose(fp_y2_csv[i]);
 			}
-			fclose(fp_x_blk_csv);
 
-			fclose(fp_plaintext_csv);
-			fclose(fp_cipher_csv);
 			*/
+		
+		
 			fclose(fp_nonce_CETD_csv);
 			fclose(fp_tag_CETD_csv);
 
@@ -643,7 +647,7 @@ int displayInputOption()
 
 	scanf("%d",&choice);
 
-	while((choice <= 0)|| (choice >5))
+	while((choice <= 0)|| (choice >6))
 	{
 		printf("error, try again:\n");
 		scanf("%d",&choice);

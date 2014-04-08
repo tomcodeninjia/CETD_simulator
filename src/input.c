@@ -174,7 +174,6 @@ void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, in
 		write_csv_2array(data_i,number,arr_length,input);
 	}
 	*/
-
 }
 
 //

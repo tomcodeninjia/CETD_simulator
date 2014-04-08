@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <math.h>
+#include <string.h>
 #include "../include/array_shift.h"
 #include "../include/show.h"
 
@@ -68,19 +69,22 @@ void v_split(int shuffle_p, int y_num, int tag_length, uchar *v)
 	int len=0;
 	//seg length
 	int tmp_len = tag_length * CHAR_BIT;
-	v[4]= mod1((shuffle_p & ((1 << log2_int(tmp_len)) - 1 )),tmp_len)  ;	
+	*(v+4)= mod1((shuffle_p & ((1 << log2_int(tmp_len)) - 1 )),tmp_len)  ;	
 	len += log2_int(tmp_len);
 	//blk2 offset
-	v[3] = mod1(((shuffle_p >> len) & ((1 << log2_int(tmp_len)) - 1 )),tmp_len)  ;
+	*(v+3) = mod1(((shuffle_p >> len) & ((1 << log2_int(tmp_len)) - 1 )),tmp_len)  ;
 	len += log2_int(tmp_len);
 	//blk2 index
-	v[2] = mod1(((shuffle_p >> len) & ((1 << log2_int(y_num)) - 1)),y_num)  ;
+	*(v+2) = mod1(((shuffle_p >> len) & ((1 << log2_int(y_num)) - 1)),y_num)  ;
+	*(v+2) = y_num-1-*(v+2);
 	len += log2_int(y_num);
 	//blk1 offset
-	v[1] =mod1(((shuffle_p >> len) & ((1 << log2_int(tmp_len))-1)),tmp_len)  ; 
+	*(v+1) =mod1(((shuffle_p >> len) & ((1 << log2_int(tmp_len))-1)),tmp_len)  ; 
 	len += log2_int(tmp_len);
 	//blk1 index
-	v[0] =mod1(((shuffle_p >> len) & ((1 << log2_int(y_num))-1)),y_num)  ;
+	*(v+0) =mod1(((shuffle_p >> len) & ((1 << log2_int(y_num))-1)),y_num)  ;
+	*(v+0) = y_num-1-*(v+0);
+
 }
 
 void swap(const uchar *nonce, 
@@ -110,11 +114,14 @@ void swap(const uchar *nonce,
 
 		memset(v_s,0,5);
 		 tmp_v = v[i];
+		 //printf("v%x,",v[i]);
 		 v_split(tmp_v, number, arr_length, v_s);
+
 		if(v_s[0]==v_s[2])
 		{
 			v_s[2]  = (v_s[2] + 1) % number;
 		}
+		//printf("v0:%d,v2:%d\n",v_s[0],v_s[2]);
 		 /*
         struct split *split1;
         split1 = (struct split*)&v[i];
