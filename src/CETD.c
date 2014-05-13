@@ -126,10 +126,18 @@ void rnd_arr_generation(const uchar *rnd,
 
 		int i=1;	
 		int start = (addr_len+crt_len)/CHAR_BIT +1;
+		while(start<BLK_LENGTH)
+		{
+			*(nonce+start) = rnd[i];
+			start++;
+			i++;
+		}
+		/*
 		for(start;start < BLK_LENGTH;start++,i++)
 		{
 			*(nonce+start) = rnd[i];
 		}		
+		*/
 	}
 
 }

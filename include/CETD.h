@@ -21,6 +21,7 @@ void nonce_input_generation(uchar *nonce_input,
 		int crt, int crt_len,
 		uchar *rnd);
 
+int shuffle_p(int y_num,int tag_length);
 void CETD_tag_generation(const uchar **data,int block_num, 
 		int block_length,
 		uchar *nonce_input, 

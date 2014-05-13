@@ -365,6 +365,7 @@ int main()
         		}
     		}		
 			
+			//test_round: No. of sequences
 			uint counter = test_round;
 
             //original_data=plaintext
@@ -398,6 +399,8 @@ int main()
 					random_repeat_long(original_data, rnd2,fp_plaintext_txt, file_type, block_number, block_length);
 					break;
 				case 6:
+					//void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length)
+
 					random_input(original_data, rnd3,fp_plaintext_txt, file_type, block_number, block_length);
 					break;
 				default:

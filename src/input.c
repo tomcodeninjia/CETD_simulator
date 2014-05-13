@@ -243,11 +243,13 @@ void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int 
  */
 void count(uchar **input, int test_n, FILE *data_i, bool file_type)
 {
+	/*
     int start[BLK_NUMBER];
     for(int i=0;i<BLK_NUMBER;i++)
     {
         start[i]=rand();
     }
+	*/
     uchar *tmp;
     tmp=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH*BLK_NUMBER);
     

@@ -1,0 +1,14 @@
+/usr/bin/gcc -o obj/run.o -c --std=c99 ./src/run.c 
+/usr/bin/gcc -o obj/CETD.o -c -Wall -g --std=c99 ./src/CETD.c	
+/usr/bin/gcc -o obj/tag.o -c -Wall -g --std=c99 ./src/tag.c	
+/usr/bin/gcc -o obj/shuffle.o -c -Wall -g --std=c99 ./src/shuffle.c	
+/usr/bin/gcc -o obj/permutation.o -c -Wall -g --std=c99 ./src/permutation.c
+/usr/bin/gcc -o obj/cipher.o -c -Wall -g --std=c99 ./src/cipher.c	
+/usr/bin/gcc -o obj/input.o -c -Wall -g --std=c99 ./src/input.c
+/usr/bin/gcc -o obj/aes.o -c -Wall -g --std=c99 ./src/aes.c	
+/usr/bin/gcc -o obj/padlock.o -c -Wall -g --std=c99 ./src/padlock.c
+/usr/bin/gcc -o obj/array_shift.o -c -Wall -g --std=c99 ./src/array_shift.c	
+/usr/bin/gcc -o obj/write_txt.o -c -Wall -g --std=c99 ./src/write_txt.c	
+/usr/bin/gcc -o obj/write_csv.o -c -Wall -g --std=c99 ./src/write_csv.c	
+/usr/bin/gcc -o obj/show.o -c -Wall -g --std=c99 ./src/show.c
+/usr/bin/gcc -o run ./obj/run.o ./obj/CETD.o ./obj/tag.o ./obj/shuffle.o ./obj/permutation.o ./obj/cipher.o  ./obj/input.o ./obj/aes.o ./obj/padlock.o ./obj/array_shift.o ./obj/write_txt.o ./obj/write_csv.o ./obj/show.o   -lm

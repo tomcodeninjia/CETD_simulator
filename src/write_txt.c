@@ -79,20 +79,21 @@ void write_txt_2array2(FILE *dst, int num, int len, const uchar *array)
         //printf("length is %d\n",length);
         for(int i=0;i<len;i++)
         {
-            fprintf(dst,"%d\n",(out_p[i]>>7)&0x01);
-            fprintf(dst,"%d\n",(out_p[i]>>6)&0x01);
-            fprintf(dst,"%d\n",(out_p[i]>>5)&0x01);
-            fprintf(dst,"%d\n",(out_p[i]>>4)&0x01);
-            fprintf(dst,"%d\n",(out_p[i]>>3)&0x01);
-            fprintf(dst,"%d\n",(out_p[i]>>2)&0x01);
-            fprintf(dst,"%d\n",(out_p[i]>>1)&0x01);
+			int tmp_int = out_p[i];
+            fprintf(dst,"%d\n",(tmp_int>>7)&0x01);
+            fprintf(dst,"%d\n",(tmp_int>>6)&0x01);
+            fprintf(dst,"%d\n",(tmp_int>>5)&0x01);
+            fprintf(dst,"%d\n",(tmp_int>>4)&0x01);
+            fprintf(dst,"%d\n",(tmp_int>>3)&0x01);
+            fprintf(dst,"%d\n",(tmp_int>>2)&0x01);
+            fprintf(dst,"%d\n",(tmp_int>>1)&0x01);
             if(length==(num-1)*len && i==len-1)
             {
-                fprintf(dst,"%d",out_p[i]&0x01);
+                fprintf(dst,"%d",tmp_int&0x01);
             }
             else
             {
-                fprintf(dst,"%d\n",out_p[i]&0x01);
+                fprintf(dst,"%d\n",tmp_int&0x01);
             }
             
         }

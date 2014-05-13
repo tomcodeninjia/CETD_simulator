@@ -3,11 +3,10 @@ import pyResAna.repeat_count as repeat_count
 import csv
 
 src_dir = "./short" 
-dst_dir = "./frequency"
 
 #the filename is stored in the variable "filenames"
 #for each filename, 
-result_file = "./frequency_count.csv" 
+result_file = "./frequency_xorNonce_count.csv" 
 csvFile = open(result_file,'wb')
 writer = csv.writer(csvFile, dialect='excel')
 
