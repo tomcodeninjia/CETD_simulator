@@ -55,6 +55,34 @@ void rotate_p(const uchar *nonce,
 	}
 }
 
+void serial_permutation(uchar **data,
+		uchar *s,
+		int number, 
+		int arr_length, uchar *tag)
+{
+
+	uchar *tmp_arr;
+	tmp_arr = (uchar *)malloc(sizeof(uchar)*arr_length);
+	for(int i=0;i<number;i++)
+	{
+		*(tmp_arr+i) = 0;
+	}
+	
+	for(int i=0;i<number;i++)
+    {
+		for(int j=0;j<arr_length;j++)	
+		{
+			tmp_arr[j] ^= data[i][j];	
+		}
+        shiftrrn(tmp_arr, arr_length, s[i]);
+    }
+	for(int i=0;i<arr_length;i++)
+	{
+		*(tag+i) = tmp_arr[i];
+	}
+	free(tmp_arr);
+
+}
 void permutation(uchar **data,
 		uchar *s,
 		int number, 

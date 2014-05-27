@@ -6,7 +6,8 @@ src_dir = "./short"
 
 #the filename is stored in the variable "filenames"
 #for each filename, 
-result_file = "./frequency_xorNonce_count.csv" 
+result_file = "./tmp/frequency_newCETD10000.csv"#xor nonce with input then
+#original CETD 
 csvFile = open(result_file,'wb')
 writer = csv.writer(csvFile, dialect='excel')
 

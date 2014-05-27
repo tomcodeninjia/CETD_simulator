@@ -27,6 +27,10 @@ void permutation(uchar **data,
 		uchar *s,
 		int number, 
 		int arr_length);
+void serial_permutation(uchar **data,
+		uchar *s,
+		int number, 
+		int arr_length, uchar *tag);
 
 
 /*

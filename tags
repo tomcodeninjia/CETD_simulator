@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+!_TAG_PROGRAM_VERSION	5.8	//
 AES_DECRYPT	include/aes.h	55;"	d
 AES_ENCRYPT	include/aes.h	54;"	d
 AES_FROUND	src/aes.c	619;"	d	file:
@@ -110,7 +110,6 @@ Y_NUMBER	include/CETD.h	17;"	d
 Y_SINGLE	src/CETD.c	16;"	d	file:
 addr_arr_generation	src/CETD.c	/^void addr_arr_generation(int addr, $/;"	f
 aes_context	include/aes.h	/^aes_context;$/;"	t	typeref:struct:__anon1
-aes_context	include/aes.h	/^aes_context;$/;"	t	typeref:struct:__anon2
 aes_crypt_cbc	src/aes.c	/^int aes_crypt_cbc( aes_context *ctx,$/;"	f
 aes_crypt_cfb128	src/aes.c	/^int aes_crypt_cfb128( aes_context *ctx,$/;"	f
 aes_crypt_ctr	src/aes.c	/^int aes_crypt_ctr( aes_context *ctx,$/;"	f
@@ -139,7 +138,6 @@ all_1	src/input.c	/^void all_1(uchar **input, FILE *data_i, bool file_type, int 
 array_shift_bit_array_shift_h	include/array_shift.h	10;"	d
 balance_counter	src/input.c	/^void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int total_blk)$/;"	f
 buf	include/aes.h	/^    uint32_t buf[68];           \/*!<  unaligned data    *\/$/;"	m	struct:__anon1
-buf	include/aes.h	/^    uint32_t buf[68];           \/*!<  unaligned data    *\/$/;"	m	struct:__anon2
 byte_split	src/run.c	/^int byte_split(int bit_len)$/;"	f
 cipher	src/cipher.c	/^void cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o, bool file_type)$/;"	f
 cipher_short	src/cipher.c	/^void cipher_short(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,bool file_type)$/;"	f
@@ -149,13 +147,21 @@ complex_count	src/input.c	/^void complex_count(uchar **input, int test_n, FILE *
 count	src/input.c	/^void count(uchar **input, int test_n, FILE *data_i, bool file_type)$/;"	f
 counter_normal	src/input.c	/^void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 crt_arr_generation	src/CETD.c	/^void crt_arr_generation(int crt, $/;"	f
+csv	dir_operation.py	/^import csv$/;"	i
+csv	pyResAna/repeat_count.py	/^import csv$/;"	i
+csv	python_src/repeat_count.py	/^import csv$/;"	i
+csvFile	dir_operation.py	/^csvFile = open(result_file,'wb')$/;"	v
 data_dir_csv	src/run.c	32;"	d	file:
 data_dir_txt	src/run.c	29;"	d	file:
+data_list	dir_operation.py	/^	data_list = []$/;"	v
+data_list	dir_operation.py	/^	data_list = f.readlines()$/;"	v
 debug	src/shuffle.c	/^void debug(unsigned int x)$/;"	f
 displayFileFormat	src/run.c	/^bool displayFileFormat()$/;"	f
 displayInputOption	src/run.c	/^int displayInputOption()$/;"	f
-dst_dir	python_src/dir_operation.py	/^dst_dir = ".\/frequency"$/;"	v
+distinct_value	pyResAna/repeat_count.py	/^def distinct_value(srcDirName, srcFileName, dstWriter):$/;"	f
+distinct_vn	dir_operation.py	/^	distinct_vn = len(my_set)$/;"	v
 equal_input	src/input.c	/^void equal_input(uchar **input, FILE *data_i, bool file_type)$/;"	f
+f	dir_operation.py	/^	f = file(src_dir+"\/"+filenames,"r")$/;"	v
 index1	src/shuffle.c	/^	uint index1:2;\/\/block number 1$/;"	m	struct:split	file:
 index2	src/shuffle.c	/^	uint index2:2;\/\/block number 2$/;"	m	struct:split	file:
 int32_t	include/padlock.h	/^typedef INT32 int32_t;$/;"	t
@@ -165,15 +171,16 @@ log2_int	src/shuffle.c	/^int log2_int(int n)$/;"	f
 main	src/run.c	/^int main()$/;"	f
 mod	src/permutation.c	/^int mod(int a, int b)$/;"	f
 mod1	src/shuffle.c	/^int mod1(int a, int b)$/;"	f
-nonce_dir_csv	include/CETD.h	51;"	d
-nonce_dir_txt	include/CETD.h	45;"	d
+my_set	dir_operation.py	/^	my_set = set(data_list)$/;"	v
+nonce_dir_csv	include/CETD.h	52;"	d
+nonce_dir_txt	include/CETD.h	46;"	d
 nonce_input_generation	src/CETD.c	/^void nonce_input_generation(uchar *nonce_input, $/;"	f
 nonce_len	src/run.c	/^int nonce_len(int shuffle_r, int y_num, int tag_len)$/;"	f
 nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon1
-nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon2
 offset1	src/shuffle.c	/^    uint offset1:5;\/\/start position for block1$/;"	m	struct:split	file:
 offset2	src/shuffle.c	/^	uint offset2:5;\/\/start position for block2$/;"	m	struct:split	file:
 only_plaintext	src/cipher.c	/^void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type)$/;"	f
+os	dir_operation.py	/^import os$/;"	i
 padlock_supports	src/padlock.c	/^int padlock_supports( int feature )$/;"	f
 padlock_xcryptcbc	src/padlock.c	/^int padlock_xcryptcbc( aes_context *ctx,$/;"	f
 padlock_xcryptecb	src/padlock.c	/^int padlock_xcryptecb( aes_context *ctx,$/;"	f
@@ -181,16 +188,24 @@ permutation	src/permutation.c	/^void permutation(uchar **data,$/;"	f
 perodic_cipher	src/cipher.c	/^void perodic_cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,int index,bool file_type)$/;"	f
 perodic_input	src/input.c	/^void perodic_input(uchar **input, FILE *data_i,int index,bool file_type)$/;"	f
 print_binary	src/shuffle.c	/^static void print_binary(unsigned int x)$/;"	f	file:
+pyResAna	dir_operation.py	/^import pyResAna.repeat_count as repeat_count$/;"	i
+random	pyResAna/random_file.py	/^import random$/;"	i
+random	python_src/random_file.py	/^import random$/;"	i
+randomNumFile	pyResAna/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 randomNumFile	python_src/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 random_input	src/input.c	/^void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 random_repeat_long	src/input.c	/^void random_repeat_long(uchar **input, const uchar *rnd,FILE *data_i,  bool file_type, int number, int arr_length)$/;"	f
 random_repeat_short	src/input.c	/^void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)$/;"	f
+repeat_count	dir_operation.py	/^import pyResAna.repeat_count as repeat_count$/;"	i
+repeat_count	pyResAna/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 repeat_count	python_src/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 reserved	src/shuffle.c	/^	uint reserved:13;$/;"	m	struct:split	file:
+result_file	dir_operation.py	/^result_file = ".\/tmp\/frequency_shift10000.csv" $/;"	v
 rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon1
-rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon2
 rnd_arr_generation	src/CETD.c	/^void rnd_arr_generation(const uchar *rnd, $/;"	f
 rotate_p	src/permutation.c	/^void rotate_p(const uchar *nonce,$/;"	f
+rotateticklabel	frequency/rotateticklabel.m	/^function TextHandle = rotateticklabel(ha,tag,rot)$/;"	f
+serial_permutation	src/permutation.c	/^void serial_permutation(uchar **data,$/;"	f
 shiftl	src/array_shift.c	/^void shiftl(void *object, size_t size)$/;"	f
 shiftr	src/array_shift.c	/^void shiftr(void *object, size_t size, int n)$/;"	f
 shiftrr	src/array_shift.c	/^void shiftrr(void *object, size_t size, int n)$/;"	f
@@ -199,11 +214,11 @@ show	src/show.c	/^void show(const void *object, size_t size)$/;"	f
 shuffle_p	src/CETD.c	/^int shuffle_p(int y_num,int tag_length)$/;"	f
 split	src/shuffle.c	/^struct split {$/;"	s	file:
 split_test	src/shuffle.c	/^void split_test(uint x)$/;"	f
-src_dir	python_src/dir_operation.py	/^src_dir = "..\/short"$/;"	v
+src_dir	dir_operation.py	/^src_dir = ".\/short" $/;"	v
 swap	src/shuffle.c	/^void swap(const uchar *nonce, $/;"	f
 swap_p	src/shuffle.c	/^void swap_p(const uchar *nonce, $/;"	f
-tag_dir_csv	include/CETD.h	50;"	d
-tag_dir_txt	include/CETD.h	44;"	d
+tag_dir_csv	include/CETD.h	51;"	d
+tag_dir_txt	include/CETD.h	45;"	d
 tag_gene	src/tag.c	/^void tag_gene(const uchar **data, uchar *tag, int number, int arr_length)$/;"	f
 tag_gene_nonce	src/tag.c	/^void tag_gene_nonce(const uchar **data, uchar *tag, int number, int arr_length, const uchar *nonce)$/;"	f
 test_array	src/run.c	/^uchar test_array[5][2] = {{0x44, 0x77},{0x66,0x71},{0x34, 0x27},{0x33,0x99},{0x63,0xD8}};$/;"	v
@@ -220,9 +235,10 @@ write_csv_decimal_2array	src/write_csv.c	/^void write_csv_decimal_2array(FILE *d
 write_txt_1array	src/write_txt.c	/^void write_txt_1array(FILE *dst,  int length, const uchar *array)$/;"	f
 write_txt_2array	src/write_txt.c	/^void write_txt_2array(FILE *dst, int number, int length, const uchar **array)$/;"	f
 write_txt_2array2	src/write_txt.c	/^void write_txt_2array2(FILE *dst, int num, int len, const uchar *array)$/;"	f
-x_dir_csv	include/CETD.h	47;"	d
-x_dir_txt	include/CETD.h	41;"	d
-y1_dir_split_csv	include/CETD.h	48;"	d
-y1_dir_split_txt	include/CETD.h	42;"	d
-y2_dir_split_csv	include/CETD.h	49;"	d
-y2_dir_split_txt	include/CETD.h	43;"	d
+writer	dir_operation.py	/^writer = csv.writer(csvFile, dialect='excel')$/;"	v
+x_dir_csv	include/CETD.h	48;"	d
+x_dir_txt	include/CETD.h	42;"	d
+y1_dir_split_csv	include/CETD.h	49;"	d
+y1_dir_split_txt	include/CETD.h	43;"	d
+y2_dir_split_csv	include/CETD.h	50;"	d
+y2_dir_split_txt	include/CETD.h	44;"	d
