@@ -200,10 +200,15 @@ void swap_with_nonce(const uchar *nonce,
 
 	
 	nonce_seg n_s;
-	n_s.first_start_index = BLK_LENGTH-1-shuffle_para[4]/CHAR_BIT;
+	n_s.first_start_index = BLK_LENGTH-1-shuffle_para_arr[4]/CHAR_BIT;
 	n_s.first_start_offset =  CHAR_BIT - (shuffle_para_arr[4] % CHAR_BIT)-1;
 	n_s.first_end_index = BLK_LENGTH-1;
-	n_s.first_start_offset = CHAR_BIT-1;
+	n_s.first_end_offset = CHAR_BIT-1;
+	n_s.second_start_index = BLK_LENGTH-1 - 2*shuffle_para_arri[4]/CHAR_BIT;
+	n_s.second_start_offset = CHAR_BIT - (2*shuffle_para_arr[4]%CHAR_BIT) -1;
+	//second_end_i = first_start_i
+	//second_end_o = first_
+
     for(int i=0;i<round;i++)
     {
 
