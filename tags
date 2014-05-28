@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.8	//
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 AES_DECRYPT	include/aes.h	55;"	d
 AES_ENCRYPT	include/aes.h	54;"	d
 AES_FROUND	src/aes.c	619;"	d	file:
@@ -147,9 +147,6 @@ complex_count	src/input.c	/^void complex_count(uchar **input, int test_n, FILE *
 count	src/input.c	/^void count(uchar **input, int test_n, FILE *data_i, bool file_type)$/;"	f
 counter_normal	src/input.c	/^void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 crt_arr_generation	src/CETD.c	/^void crt_arr_generation(int crt, $/;"	f
-csv	dir_operation.py	/^import csv$/;"	i
-csv	pyResAna/repeat_count.py	/^import csv$/;"	i
-csv	python_src/repeat_count.py	/^import csv$/;"	i
 csvFile	dir_operation.py	/^csvFile = open(result_file,'wb')$/;"	v
 data_dir_csv	src/run.c	32;"	d	file:
 data_dir_txt	src/run.c	29;"	d	file:
@@ -180,7 +177,6 @@ nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$
 offset1	src/shuffle.c	/^    uint offset1:5;\/\/start position for block1$/;"	m	struct:split	file:
 offset2	src/shuffle.c	/^	uint offset2:5;\/\/start position for block2$/;"	m	struct:split	file:
 only_plaintext	src/cipher.c	/^void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type)$/;"	f
-os	dir_operation.py	/^import os$/;"	i
 padlock_supports	src/padlock.c	/^int padlock_supports( int feature )$/;"	f
 padlock_xcryptcbc	src/padlock.c	/^int padlock_xcryptcbc( aes_context *ctx,$/;"	f
 padlock_xcryptecb	src/padlock.c	/^int padlock_xcryptecb( aes_context *ctx,$/;"	f
@@ -188,19 +184,15 @@ permutation	src/permutation.c	/^void permutation(uchar **data,$/;"	f
 perodic_cipher	src/cipher.c	/^void perodic_cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o,int index,bool file_type)$/;"	f
 perodic_input	src/input.c	/^void perodic_input(uchar **input, FILE *data_i,int index,bool file_type)$/;"	f
 print_binary	src/shuffle.c	/^static void print_binary(unsigned int x)$/;"	f	file:
-pyResAna	dir_operation.py	/^import pyResAna.repeat_count as repeat_count$/;"	i
-random	pyResAna/random_file.py	/^import random$/;"	i
-random	python_src/random_file.py	/^import random$/;"	i
 randomNumFile	pyResAna/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 randomNumFile	python_src/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 random_input	src/input.c	/^void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 random_repeat_long	src/input.c	/^void random_repeat_long(uchar **input, const uchar *rnd,FILE *data_i,  bool file_type, int number, int arr_length)$/;"	f
 random_repeat_short	src/input.c	/^void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)$/;"	f
-repeat_count	dir_operation.py	/^import pyResAna.repeat_count as repeat_count$/;"	i
 repeat_count	pyResAna/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 repeat_count	python_src/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 reserved	src/shuffle.c	/^	uint reserved:13;$/;"	m	struct:split	file:
-result_file	dir_operation.py	/^result_file = ".\/tmp\/frequency_shift10000.csv" $/;"	v
+result_file	dir_operation.py	/^result_file = ".\/tmp\/frequency_newCETD10000.csv"#xor nonce with input then$/;"	v
 rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$/;"	m	struct:__anon1
 rnd_arr_generation	src/CETD.c	/^void rnd_arr_generation(const uchar *rnd, $/;"	f
 rotate_p	src/permutation.c	/^void rotate_p(const uchar *nonce,$/;"	f
@@ -217,6 +209,7 @@ split_test	src/shuffle.c	/^void split_test(uint x)$/;"	f
 src_dir	dir_operation.py	/^src_dir = ".\/short" $/;"	v
 swap	src/shuffle.c	/^void swap(const uchar *nonce, $/;"	f
 swap_p	src/shuffle.c	/^void swap_p(const uchar *nonce, $/;"	f
+swap_with_nonce	src/shuffle.c	/^void swap_with_nonce(const uchar *nonce, $/;"	f
 tag_dir_csv	include/CETD.h	51;"	d
 tag_dir_txt	include/CETD.h	45;"	d
 tag_gene	src/tag.c	/^void tag_gene(const uchar **data, uchar *tag, int number, int arr_length)$/;"	f

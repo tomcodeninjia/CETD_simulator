@@ -23,6 +23,15 @@ int mod1(int a, int b)
 {
 	return a - (a/b)*b;
 }
+struct nonce_seg{
+	int first_start_index;
+	int first_start_offset;
+	int first_end_index;
+	int first_end_offset;
+	int second_start_index;
+	int second_start_offset;
+};
+typedef nonce_seg nonce_seg;
 /*
  The nonce should be 1 blk
  @para uint* v: each element is the shuffle control for a round
@@ -162,6 +171,102 @@ void swap(const uchar *nonce,
     
 	free(v);    
     
+}
+
+/* each round replace the segments in two blocks with segments from nonce
+
+
+*/
+void swap_with_nonce(const uchar *nonce, 
+		uchar **input, 
+		int round, 
+		int shuffle_para_len,
+		int number, int arr_length//y_num and tag_len
+		)
+{
+	uint *shuffle_para =(uint *)malloc(sizeof(uint)*round);
+	memset(shuffle_para, 0 , round);
+    
+ 	swap_p(nonce, 
+		shuffle_para, 
+		 round,
+		 shuffle_para_len);
+
+
+	//split v[i] to v_s[];
+	uchar shuffle_para_arr[5];
+	memset(shuffle_para_arr,0,5);
+	int tmp_shuffle_para = 0;
+
+	
+	nonce_seg n_s;
+	n_s.first_start_index = BLK_LENGTH-1-shuffle_para[4]/CHAR_BIT;
+	n_s.first_start_offset =  CHAR_BIT - (shuffle_para_arr[4] % CHAR_BIT)-1;
+	n_s.first_end_index = BLK_LENGTH-1;
+	n_s.first_start_offset = CHAR_BIT-1;
+    for(int i=0;i<round;i++)
+    {
+
+		memset(shuffle_para_arr,0,5);
+		tmp_shuffle_para = shuffle_para[i];
+		v_split(tmp_shuffle_para, number, arr_length, shuffle_para_arr);
+
+		if(shuffle_para_arr[0]==shuffle_para_arr[2])
+		{
+			shuffle_para_arr[2]  = (shuffle_para_arr[2] + 1) % number;
+		}
+		 /*
+        struct split *split1;
+        split1 = (struct split*)&v[i];
+               
+        if(split1->index1 == split1->index2)
+        {
+            split1->index2 = (split1->index2 + 1) % number;
+        }
+		*/
+	    uchar *a, *b;
+        a=input[shuffle_para_arr[0]] ; // index1
+        b=input[shuffle_para_arr[2]] ; // index2
+		//start bits
+
+		//search through the segment selected
+        while(shuffle_para_arr[4]>0 ) //seg_length
+        {
+            
+            if(((*(a+shuffle_para_arr[1] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1))) >> (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1)) 
+					!= 
+					((*(nonce+shuffle_para_arr[3] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[3] % CHAR_BIT)-1))) >> (CHAR_BIT - ((shuffle_para_arr[3]) % CHAR_BIT)-1)) )
+            {
+                
+                *(a+shuffle_para_arr[1] / CHAR_BIT) ^= 1 << (CHAR_BIT - ((shuffle_para_arr[1]) % CHAR_BIT)-1);
+//                *(b+shuffle_para_arr[3] / CHAR_BIT) ^= 1 << (CHAR_BIT -
+//((shuffle_para_arr[3]) % CHAR_BIT)-1);
+                
+            }
+
+            if(((*(b+shuffle_para_arr[1] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1))) >> (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1)) 
+					!= 
+					((*(nonce+shuffle_para_arr[3] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[3] % CHAR_BIT)-1))) >> (CHAR_BIT - ((shuffle_para_arr[3]) % CHAR_BIT)-1)) )
+            {
+                
+                *(b+shuffle_para_arr[1] / CHAR_BIT) ^= 1 << (CHAR_BIT - ((shuffle_para_arr[1]) % CHAR_BIT)-1);
+//                *(b+shuffle_para_arr[3] / CHAR_BIT) ^= 1 << (CHAR_BIT -
+//((shuffle_para_arr[3]) % CHAR_BIT)-1);
+                
+            }
+
+
+            shuffle_para_arr[1] = mod1((shuffle_para_arr[1] + 1),arr_length*CHAR_BIT );   // offset1
+            shuffle_para_arr[3] =mod1((shuffle_para_arr[3] + 1),arr_length*CHAR_BIT); // offset2
+			shuffle_para_arr[4]--;
+            
+        }
+
+        
+    }
+    
+	free(shuffle_para);    
+
 }
 
 struct split {

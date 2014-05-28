@@ -22,4 +22,11 @@ void swap(const uchar *nonce,
 		int number, int arr_length//y_num and tag_len
 		);
 
+void swap_with_nonce(const uchar *nonce, 
+		uchar **data, 
+		int r, 
+		int shuffle_p,
+		int number, int arr_length//y_num and tag_len
+		);
+
 //void swap1(unsigned short *mask,uchar *input,int r);
