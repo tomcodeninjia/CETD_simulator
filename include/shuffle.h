@@ -23,9 +23,9 @@ void swap(const uchar *nonce,
 		);
 
 void swap_with_nonce(const uchar *nonce, 
-		uchar **data, 
-		int r, 
-		int shuffle_p,
+		uchar **input, 
+		int round, 
+		int shuffle_para_len,
 		int number, int arr_length//y_num and tag_len
 		);
 

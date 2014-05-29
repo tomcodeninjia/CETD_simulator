@@ -330,12 +330,21 @@ void CETD_tag_generation(const uchar **data,int block_num,
         }
     }
 
+	/*
 	swap(nonce, 
 		swap_data, 
 		 r, 
 		 s_p,
 		y_num, tag_length//y_num and tag_len
 		);
+		*/
+	swap_with_nonce(nonce, 
+		swap_data, 
+		 r, 
+		 s_p,
+		y_num, tag_length//y_num and tag_len
+		);
+
 	/*
 	if(file_type==TXT_file){
 		write_txt_2array(x,y_num,tag_length,swap_data);

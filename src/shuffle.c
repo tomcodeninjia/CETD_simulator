@@ -5,6 +5,8 @@
 #include <string.h>
 #include "../include/array_shift.h"
 #include "../include/show.h"
+#define SHUFFLE_BLK_NUM 2
+#define ARR_ELEM_LEN CHAR_BIT
 
 int log2_int(int n)
 {
@@ -23,15 +25,7 @@ int mod1(int a, int b)
 {
 	return a - (a/b)*b;
 }
-struct nonce_seg{
-	int first_start_index;
-	int first_start_offset;
-	int first_end_index;
-	int first_end_offset;
-	int second_start_index;
-	int second_start_offset;
-};
-typedef nonce_seg nonce_seg;
+
 /*
  The nonce should be 1 blk
  @para uint* v: each element is the shuffle control for a round
@@ -198,16 +192,8 @@ void swap_with_nonce(const uchar *nonce,
 	memset(shuffle_para_arr,0,5);
 	int tmp_shuffle_para = 0;
 
-	
-	nonce_seg n_s;
-	n_s.first_start_index = BLK_LENGTH-1-shuffle_para_arr[4]/CHAR_BIT;
-	n_s.first_start_offset =  CHAR_BIT - (shuffle_para_arr[4] % CHAR_BIT)-1;
-	n_s.first_end_index = BLK_LENGTH-1;
-	n_s.first_end_offset = CHAR_BIT-1;
-	n_s.second_start_index = BLK_LENGTH-1 - 2*shuffle_para_arri[4]/CHAR_BIT;
-	n_s.second_start_offset = CHAR_BIT - (2*shuffle_para_arr[4]%CHAR_BIT) -1;
-	//second_end_i = first_start_i
-	//second_end_o = first_
+	int blk1_offset = BLK_LENGTH*ARR_ELEM_LEN;
+	int blk2_offset = BLK_LENGTH*ARR_ELEM_LEN;
 
     for(int i=0;i<round;i++)
     {
@@ -233,36 +219,52 @@ void swap_with_nonce(const uchar *nonce,
         a=input[shuffle_para_arr[0]] ; // index1
         b=input[shuffle_para_arr[2]] ; // index2
 		//start bits
+		
+		blk1_offset = blk2_offset-shuffle_para_arr[4];
+		if (blk1_offset < 0) blk1_offset += BLK_LENGTH*ARR_ELEM_LEN;
+		blk2_offset = blk1_offset-shuffle_para_arr[4];
+		if (blk2_offset < 0) blk2_offset += BLK_LENGTH*ARR_ELEM_LEN;
+
+		int tmp_blk1_offset = blk1_offset;
+		int tmp_blk2_offset = blk2_offset;
 
 		//search through the segment selected
         while(shuffle_para_arr[4]>0 ) //seg_length
         {
             
-            if(((*(a+shuffle_para_arr[1] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1))) >> (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1)) 
+			//bit in a is distinct to bit in nonce
+            if(((*(a+shuffle_para_arr[1] / ARR_ELEM_LEN) & (1 << (ARR_ELEM_LEN - (shuffle_para_arr[1] % ARR_ELEM_LEN)-1))) >> (ARR_ELEM_LEN - (shuffle_para_arr[1] % ARR_ELEM_LEN)-1)) 
 					!= 
-					((*(nonce+shuffle_para_arr[3] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[3] % CHAR_BIT)-1))) >> (CHAR_BIT - ((shuffle_para_arr[3]) % CHAR_BIT)-1)) )
+					((*(nonce+ tmp_blk1_offset / ARR_ELEM_LEN) & (1 << (ARR_ELEM_LEN - (tmp_blk1_offset % ARR_ELEM_LEN)-1))) >> (ARR_ELEM_LEN - (tmp_blk1_offset % ARR_ELEM_LEN)-1)) )
             {
                 
-                *(a+shuffle_para_arr[1] / CHAR_BIT) ^= 1 << (CHAR_BIT - ((shuffle_para_arr[1]) % CHAR_BIT)-1);
+				//revert bit in a
+                *(a+shuffle_para_arr[1] / ARR_ELEM_LEN) ^= 1 << (ARR_ELEM_LEN - ((shuffle_para_arr[1]) % ARR_ELEM_LEN)-1);
 //                *(b+shuffle_para_arr[3] / CHAR_BIT) ^= 1 << (CHAR_BIT -
 //((shuffle_para_arr[3]) % CHAR_BIT)-1);
                 
             }
 
-            if(((*(b+shuffle_para_arr[1] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1))) >> (CHAR_BIT - (shuffle_para_arr[1] % CHAR_BIT)-1)) 
+			//bit in a is distinct to bit in nonce
+            if(((*(b+shuffle_para_arr[3] / ARR_ELEM_LEN) & (1 << (ARR_ELEM_LEN - (shuffle_para_arr[3] % ARR_ELEM_LEN)-1))) >> (ARR_ELEM_LEN - (shuffle_para_arr[3] % ARR_ELEM_LEN)-1)) 
 					!= 
-					((*(nonce+shuffle_para_arr[3] / CHAR_BIT) & (1 << (CHAR_BIT - (shuffle_para_arr[3] % CHAR_BIT)-1))) >> (CHAR_BIT - ((shuffle_para_arr[3]) % CHAR_BIT)-1)) )
+					((*(nonce+ tmp_blk2_offset / ARR_ELEM_LEN) & (1 << (ARR_ELEM_LEN - (tmp_blk2_offset % ARR_ELEM_LEN)-1))) >> (ARR_ELEM_LEN - (tmp_blk2_offset % ARR_ELEM_LEN)-1)) )
             {
                 
-                *(b+shuffle_para_arr[1] / CHAR_BIT) ^= 1 << (CHAR_BIT - ((shuffle_para_arr[1]) % CHAR_BIT)-1);
+				//revert bit in a
+                *(b+shuffle_para_arr[3] / ARR_ELEM_LEN) ^= 1 << (ARR_ELEM_LEN - ((shuffle_para_arr[3]) % ARR_ELEM_LEN)-1);
 //                *(b+shuffle_para_arr[3] / CHAR_BIT) ^= 1 << (CHAR_BIT -
 //((shuffle_para_arr[3]) % CHAR_BIT)-1);
                 
             }
 
 
-            shuffle_para_arr[1] = mod1((shuffle_para_arr[1] + 1),arr_length*CHAR_BIT );   // offset1
-            shuffle_para_arr[3] =mod1((shuffle_para_arr[3] + 1),arr_length*CHAR_BIT); // offset2
+			//to next bit
+            shuffle_para_arr[1] = mod1((shuffle_para_arr[1] + 1),arr_length*ARR_ELEM_LEN);   // offset1
+            shuffle_para_arr[3] =mod1((shuffle_para_arr[3] + 1),arr_length*ARR_ELEM_LEN); // offset2
+			tmp_blk1_offset = mod1(tmp_blk1_offset+1, BLK_LENGTH*ARR_ELEM_LEN);
+			tmp_blk2_offset = mod1(tmp_blk2_offset+1, BLK_LENGTH*ARR_ELEM_LEN);
+
 			shuffle_para_arr[4]--;
             
         }

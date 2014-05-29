@@ -82,6 +82,7 @@ SDIR	makefile	/^SDIR = $(ROOTDIR)\/short$/;"	m
 SEG_BITS	include/shuffle.h	5;"	d
 SHIFT_P	include/permutation.h	12;"	d
 SHIFT_P_P	include/permutation.h	13;"	d
+SHUFFLE_BLK_NUM	src/shuffle.c	8;"	d	file:
 SHUFFLE_P	include/permutation.h	14;"	d
 SHUFFLE_P	include/shuffle.h	4;"	d
 SRCDIR	makefile	/^SRCDIR = $(ROOTDIR)\/src$/;"	m
@@ -159,6 +160,10 @@ distinct_value	pyResAna/repeat_count.py	/^def distinct_value(srcDirName, srcFile
 distinct_vn	dir_operation.py	/^	distinct_vn = len(my_set)$/;"	v
 equal_input	src/input.c	/^void equal_input(uchar **input, FILE *data_i, bool file_type)$/;"	f
 f	dir_operation.py	/^	f = file(src_dir+"\/"+filenames,"r")$/;"	v
+first_end_index	src/shuffle.c	/^	int first_end_index;$/;"	m	struct:nonce_seg	file:
+first_end_offset	src/shuffle.c	/^	int first_end_offset;$/;"	m	struct:nonce_seg	file:
+first_start_index	src/shuffle.c	/^	int first_start_index;$/;"	m	struct:nonce_seg	file:
+first_start_offset	src/shuffle.c	/^	int first_start_offset;$/;"	m	struct:nonce_seg	file:
 index1	src/shuffle.c	/^	uint index1:2;\/\/block number 1$/;"	m	struct:split	file:
 index2	src/shuffle.c	/^	uint index2:2;\/\/block number 2$/;"	m	struct:split	file:
 int32_t	include/padlock.h	/^typedef INT32 int32_t;$/;"	t
@@ -173,6 +178,8 @@ nonce_dir_csv	include/CETD.h	52;"	d
 nonce_dir_txt	include/CETD.h	46;"	d
 nonce_input_generation	src/CETD.c	/^void nonce_input_generation(uchar *nonce_input, $/;"	f
 nonce_len	src/run.c	/^int nonce_len(int shuffle_r, int y_num, int tag_len)$/;"	f
+nonce_seg	src/shuffle.c	/^struct nonce_seg{$/;"	s	file:
+nonce_seg	src/shuffle.c	/^typedef nonce_seg nonce_seg;$/;"	t	file:
 nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon1
 offset1	src/shuffle.c	/^    uint offset1:5;\/\/start position for block1$/;"	m	struct:split	file:
 offset2	src/shuffle.c	/^	uint offset2:5;\/\/start position for block2$/;"	m	struct:split	file:
@@ -197,6 +204,8 @@ rk	include/aes.h	/^    uint32_t *rk;               \/*!<  AES round keys    *\/$
 rnd_arr_generation	src/CETD.c	/^void rnd_arr_generation(const uchar *rnd, $/;"	f
 rotate_p	src/permutation.c	/^void rotate_p(const uchar *nonce,$/;"	f
 rotateticklabel	frequency/rotateticklabel.m	/^function TextHandle = rotateticklabel(ha,tag,rot)$/;"	f
+second_start_index	src/shuffle.c	/^	int second_start_index;$/;"	m	struct:nonce_seg	file:
+second_start_offset	src/shuffle.c	/^	int second_start_offset;$/;"	m	struct:nonce_seg	file:
 serial_permutation	src/permutation.c	/^void serial_permutation(uchar **data,$/;"	f
 shiftl	src/array_shift.c	/^void shiftl(void *object, size_t size)$/;"	f
 shiftr	src/array_shift.c	/^void shiftr(void *object, size_t size, int n)$/;"	f
