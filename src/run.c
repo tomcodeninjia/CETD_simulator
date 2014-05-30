@@ -94,6 +94,9 @@ int main()
 	printf("Input No. of shuffle rounds:\n");
 	scanf("%d",&shuffle_round);
 
+	/*
+	 compute para based on inputs
+	 */
 	int y_num;
 	if((block_number*block_length) % CETD_tag_length == 0)
 	{
@@ -134,11 +137,12 @@ int main()
 	}
 	//tag_length, y_num and shuffle_r are set now.
 
-	/*
-	 nonce parameters
-	 @para add_len: address length
-	 @para crt_len: counter length
-	 @para rnd_len: random number length
+	/* 
+	 * nonce parameters
+	 * @para add_len: address length
+	 * @para crt_len: counter length
+	 * @para rnd_len: random number length
+	 *  
 	 */
 	printf("Input nonce parameters\n\n");
 
@@ -152,7 +156,7 @@ int main()
 
 
 	/*
-	 * txt files
+	 * prepare txt files
 	 * */
 	FILE *fp_plaintext_txt;
 	fp_plaintext_txt=NULL;
@@ -192,8 +196,8 @@ int main()
     char filename_nonce_CETD_txt[256];
 
 		
-			/*
-	 * csv files
+	/* 
+	 * prepare csv files
 	 * */
 	FILE *fp_plaintext_csv;
 	fp_plaintext_csv=NULL;
