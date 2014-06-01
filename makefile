@@ -27,7 +27,7 @@ run: $(OBJ)
 #	commend
 $(OBJDIR)/run.o: $(SRCDIR)/run.c config.h show.h input.h CETD.h \
  aes.h cipher.h 
-	$(CC) -o $@ -c --std=c99 $(SRCDIR)/run.c 
+	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/run.c 
 
 $(OBJDIR)/CETD.o: $(SRCDIR)/CETD.c CETD.h show.h write_txt.h write_csv.h
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/CETD.c	
