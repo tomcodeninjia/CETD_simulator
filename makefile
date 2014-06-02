@@ -19,14 +19,16 @@ OBJ = $(OBJDIR)/run.o \
       $(OBJDIR)/array_shift.o  \
 	  $(OBJDIR)/write_txt.o \
 	  $(OBJDIR)/write_csv.o \
-      $(OBJDIR)/show.o  
+	  $(OBJDIR)/show.o \
+	  $(OBJDIR)/LL_arr_gen.o \
+	  $(OBJDIR)/combination.o \
 
 run: $(OBJ)
 	$(CC) -o $@ $(OBJ) -lm
 #target:prerequest
 #	commend
 $(OBJDIR)/run.o: $(SRCDIR)/run.c config.h show.h input.h CETD.h \
- aes.h cipher.h 
+ aes.h cipher.h LL_arr_gen.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/run.c 
 
 $(OBJDIR)/CETD.o: $(SRCDIR)/CETD.c CETD.h show.h write_txt.h write_csv.h
@@ -57,6 +59,12 @@ $(OBJDIR)/write_txt.o: $(SRCDIR)/write_txt.c write_txt.h
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/write_txt.c	
 $(OBJDIR)/write_csv.o: $(SRCDIR)/write_csv.c write_csv.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/write_csv.c	
+
+$(OBJDIR)/LL_arr_gen.o: $(SRCDIR)/LL_arr_gen.c LL_arr_gen.h combination.h 
+	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/LL_arr_gen.c	
+$(OBJDIR)/combination.o: $(SRCDIR)/combination.c combination.h config.h 
+	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/combination.c	
+
 
 
 clean:

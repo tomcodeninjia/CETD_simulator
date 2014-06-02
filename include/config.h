@@ -10,9 +10,12 @@
 #define GCM_config_h
 #include <stdio.h>
 #include <stdbool.h>
+#include <limits.h>
 #define uchar unsigned char
 #define ushort unsigned short
 #define uint unsigned int
+#define ELEM_TYPE uchar
+#define ELEM_LEN CHAR_BIT
 
 #define BLK_NUMBER 1
 #define BLK_LENGTH 16
