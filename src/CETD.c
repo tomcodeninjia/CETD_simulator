@@ -324,7 +324,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
     {
         for(int j=0;j<tag_length;j++)
         {
-            *(*(swap_data+i)+j)= CETD_data[i][j] ^ nonce[i*tag_length+j];
+            *(*(swap_data+i)+j)= CETD_data[i][j] ;
         }
     }
 
@@ -383,7 +383,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 			tag);
 */
     tag_gene(swap_data, tag, y_num, tag_length);
-	//tag_gene_nonce(swap_data, tag, y_num,tag_length,nonce);
+//	tag_gene_nonce(swap_data, tag, y_num,tag_length,nonce);
     
 	
 	if(result_format == DEC)

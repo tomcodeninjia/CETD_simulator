@@ -33,6 +33,7 @@
 
 #define data_dir_csv "./long/cache%d.csv"
 #define ciphertext_dir_csv "./long/cipher%d.csv"
+#define tag_rnd_csv_dir "./short/rnd_tag%d.csv"
 
 #define CTR_MAX 100000000 
 int displayInputOption();
@@ -50,10 +51,12 @@ void bits_freq_input(int block_number,
 		int shuffle_round,
 		char *filename_CETD_csv,
 		char *filename_nonce_CETD_csv,
+		char *filename_rnd_csv,
 		FILE *fp_x_blk_csv,
 		FILE **fp_y1_csv, 
 		FILE **fp_y2_csv, 
 		FILE *fp_tag_CETD_csv, 
+		FILE *fp_tag_rnd_csv,
 		FILE *fp_nonce_CETD_csv,
 		int addr_len,
 		int crt_len
@@ -264,6 +267,10 @@ void main()
     fp_tag_CETD_csv=NULL;
     char filename_CETD_csv[256];
 
+	FILE *fp_tag_rnd_csv;//tag
+    fp_tag_rnd_csv=NULL;
+    char filename_rnd_csv[256];
+
 	FILE *fp_nonce_CETD_csv;//tag
     fp_nonce_CETD_csv=NULL;
     char filename_nonce_CETD_csv[256];
@@ -278,7 +285,7 @@ void main()
 
 		LL_arr_gen_func(node_arr, blk_num);
 
-		traverse_ll(node_arr, blk_num);
+//		traverse_ll(node_arr, blk_num);
 		//the linkedlist array is filled and ready to use
 
 		ELEM_TYPE **input;
@@ -322,10 +329,12 @@ void main()
 		 shuffle_round,
 		filename_CETD_csv,
 		filename_nonce_CETD_csv,
+		filename_rnd_csv,
 		fp_x_blk_csv,
 		fp_y1_csv, 
 		fp_y2_csv, 
 		fp_tag_CETD_csv, 
+		fp_tag_rnd_csv,
 		fp_nonce_CETD_csv,
 		 addr_len,
 		 crt_len
@@ -844,10 +853,12 @@ void bits_freq_input(int block_number,
 		int shuffle_round,
 		char *filename_CETD_csv,
 		char *filename_nonce_CETD_csv,
+		char *filename_rnd_csv,
 		FILE *fp_x_blk_csv,
 		FILE **fp_y1_csv, 
 		FILE **fp_y2_csv, 
 		FILE *fp_tag_CETD_csv, 
+		FILE *fp_tag_rnd_csv,
 		FILE *fp_nonce_CETD_csv,
 		int addr_len,
 		int crt_len
@@ -856,6 +867,19 @@ void bits_freq_input(int block_number,
 
 	srand((int)time(0));
 	int input_blk_num = block_length*block_number;
+
+	int rnd_len = byte_split(128 - addr_len - crt_len) ;
+	uchar *rnd_nonce = (uchar *)malloc(sizeof(uchar)*rnd_len);
+
+	uchar *CETD_nonce_input;
+   	CETD_nonce_input = (uchar *)malloc(sizeof(uchar)*16);
+
+	uchar **rnd_input = (uchar **)malloc(block_number*sizeof(uchar *));
+	for(int i=0;i<block_number;i++)
+	{
+		rnd_input[i] = (uchar *)malloc(block_length*sizeof(uchar));
+	}
+
 	if(input_blk_num == 2)
 	{
 		for(int i=0;i<= input_blk_num*ELEM_LEN;i++)
@@ -869,11 +893,13 @@ void bits_freq_input(int block_number,
 			sprintf(filename_nonce_CETD_csv, nonce_dir_csv, i);
 			fp_nonce_CETD_csv=fopen(filename_nonce_CETD_csv,"w");
 
+			sprintf(filename_rnd_csv,tag_rnd_csv_dir,i);
+    	   	fp_tag_rnd_csv=fopen(filename_rnd_csv, "w");
+
+
 			//open a file here
 			//fp_tag_cetd = fopen()
 			//fp_nonce = fopen()
-			int rnd_len = byte_split(128 - addr_len - crt_len) ;
-				uchar *rnd_nonce = (uchar *)malloc(sizeof(uchar)*rnd_len);
 				memset(rnd_nonce,0,rnd_len);
 
 				for(int i=0;i<rnd_len;i++)
@@ -881,8 +907,6 @@ void bits_freq_input(int block_number,
 					*(rnd_nonce+i) = rand() %256;
 				}
 
-				uchar *CETD_nonce_input;
-    	        CETD_nonce_input = (uchar *)malloc(sizeof(uchar)*16);
 				memset(CETD_nonce_input,0,16);
 
 				uint addr = (uint) input;
@@ -918,7 +942,19 @@ void bits_freq_input(int block_number,
 						/*
 							generate input, gen tag then write to a line in fp_tag 
 						 */
+						for(int i=0;i<block_number;i++)	
+						{
+							memset(rnd_input[i], 0 , block_length);
+						}
 
+						for(int i=0;i<block_number;i++)
+						{
+							for(int j=0;j<block_length;j++)	
+							{
+								rnd_input[i][j] = (uchar) (rand()%256);
+							}
+						}
+						
 						CETD_tag_generation(input,
 											block_number, 
 											block_length,
@@ -934,7 +970,22 @@ void bits_freq_input(int block_number,
 											fp_nonce_CETD_csv,
 			 								CSV_file,
 											DEC);
-											
+						CETD_tag_generation(rnd_input,
+											block_number, 
+											block_length,
+											CETD_nonce_input, //uchar *
+											ctx, //aes_context
+											shuffle_round,  //shuffle round  
+			 								1,
+			 								2, //
+											fp_x_blk_csv,
+											fp_y1_csv, 
+											fp_y2_csv, 
+											fp_tag_rnd_csv, 
+											fp_nonce_CETD_csv,
+			 								CSV_file,
+											DEC);
+
 						//use input to tag generation 
 					}
 				}
@@ -942,5 +993,6 @@ void bits_freq_input(int block_number,
 			printf("NO. of %d 1s array is:%d\n", i, count);
 		}
 	}
+
 
 }

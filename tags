@@ -19,7 +19,7 @@ CETD_internal_cipher_h	include/cipher.h	10;"	d
 CETD_internal_input_h	include/input.h	10;"	d
 CETD_tag_generation	src/CETD.c	/^void CETD_tag_generation(const uchar **data,int block_num, $/;"	f
 CSV_file	include/config.h	23;"	d
-CTR_MAX	src/run.c	37;"	d	file:
+CTR_MAX	src/run.c	38;"	d	file:
 DEC	include/config.h	26;"	d
 ELEM_LEN	include/config.h	18;"	d
 ELEM_TYPE	include/config.h	17;"	d
@@ -144,7 +144,7 @@ all_1	src/input.c	/^void all_1(uchar **input, FILE *data_i, bool file_type, int 
 array_shift_bit_array_shift_h	include/array_shift.h	10;"	d
 balance_counter	src/input.c	/^void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int total_blk)$/;"	f
 bin2dec	src/combination.c	/^int bin2dec(char *bin, int bin_len)$/;"	f
-bits_freq_input	src/LL_arr_gen.c	/^void bits_freq_input(int input_blk_num, Node **index_tmp, Node **node_arr, ELEM_TYPE *input)$/;"	f
+bits_freq_input	src/run.c	/^void bits_freq_input(int block_number, $/;"	f
 buf	include/aes.h	/^    uint32_t buf[68];           \/*!<  unaligned data    *\/$/;"	m	struct:__anon1
 byte_split	src/run.c	/^int byte_split(int bit_len)$/;"	f
 cipher	src/cipher.c	/^void cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o, bool file_type)$/;"	f
@@ -232,8 +232,10 @@ tag_dir_csv	include/CETD.h	51;"	d
 tag_dir_txt	include/CETD.h	45;"	d
 tag_gene	src/tag.c	/^void tag_gene(const uchar **data, uchar *tag, int number, int arr_length)$/;"	f
 tag_gene_nonce	src/tag.c	/^void tag_gene_nonce(const uchar **data, uchar *tag, int number, int arr_length, const uchar *nonce)$/;"	f
+tag_rnd_csv_dir	src/run.c	36;"	d	file:
 test_array	src/run.c	/^uchar test_array[5][2] = {{0x44, 0x77},{0x66,0x71},{0x34, 0x27},{0x33,0x99},{0x63,0xD8}};$/;"	v
 traversal_list	src/LL_arr_gen.c	/^void traversal_list(Node *H)$/;"	f
+traverse_ll	src/run.c	/^void traverse_ll(Node **node_arr, int blk_num)$/;"	f
 traverse_ll	src/test.c	/^void traverse_ll(Node **node_arr, int blk_num)$/;"	f
 uchar	include/config.h	14;"	d
 uint	include/config.h	16;"	d
