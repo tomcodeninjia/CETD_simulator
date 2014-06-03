@@ -294,19 +294,11 @@ void main()
 		{
 			input[i] = (ELEM_TYPE *)malloc(block_length*sizeof(ELEM_TYPE));
 		}
+		
 		int input_blk_num = block_length*block_number;
 		Node **index_tmp;
 		index_tmp = (Node **)malloc(input_blk_num*sizeof(Node *));
 
-		/*
-		//chose filename and open file
-		sprintf(filename_CETD_txt, tag_dir_txt,test_round+1);
-    	fp_tag_CETD_txt=fopen(filename_CETD_txt, "w");
-
-		sprintf(filename_nonce_CETD_txt, nonce_dir_txt, test_round+1);
-		fp_nonce_CETD_txt=fopen(filename_nonce_CETD_txt,"w");
-
-*/
 		//aes key
 		uchar *AES_key;
     	AES_key = (uchar *)malloc(sizeof(uchar)*16);
@@ -320,25 +312,25 @@ void main()
     	aes_context ctx;
     	aes_setkey_enc(&ctx, AES_key, 128);
 
-     bits_freq_input( block_number, 
-		 block_length,
-		index_tmp, 
-		node_arr, 
-		input,
-		 ctx,
-		 shuffle_round,
-		filename_CETD_csv,
-		filename_nonce_CETD_csv,
-		filename_rnd_csv,
-		fp_x_blk_csv,
-		fp_y1_csv, 
-		fp_y2_csv, 
-		fp_tag_CETD_csv, 
-		fp_tag_rnd_csv,
-		fp_nonce_CETD_csv,
-		 addr_len,
-		 crt_len
-		);
+     	bits_freq_input( block_number, 
+					block_length,
+					index_tmp, 
+					node_arr, 
+					input,
+					ctx,
+					shuffle_round,
+					filename_CETD_csv,
+					filename_nonce_CETD_csv,
+					filename_rnd_csv,
+					fp_x_blk_csv,
+					fp_y1_csv, 
+					fp_y2_csv, 
+					fp_tag_CETD_csv, 
+					fp_tag_rnd_csv,
+					fp_nonce_CETD_csv,
+					addr_len,
+					crt_len
+					);
 
 
 				
@@ -354,7 +346,12 @@ void main()
 		}
 		free(node_arr);
 
+		for(int i=0;i<block_number;i++)
+		{
+			free(input[i]);
+		}
 		free(input);
+		free(AES_key);
 	
 	}
 	else{
@@ -369,6 +366,9 @@ void main()
     	     **/
     	    uchar *AES_key;
     	    AES_key = (uchar *)malloc(sizeof(uchar)*16);
+			uchar *rnd2;
+			rnd2 = (uchar *)malloc(sizeof(uchar)*block_length);
+
     	    memset(AES_key, 0, 16);
     	    //show(AES_key, 16);
     	    
@@ -458,14 +458,11 @@ void main()
     	     Each sequence require several blocks, the No. of blocks is n.
     	     **/
 
-    	   		uchar *rnd2;
-			   rnd2 = (uchar *)malloc(sizeof(uchar)*block_length);
-			   memset(rnd2,0,block_number);
-
-			   for(int i=0;i<block_length;i++)
-			   {
-					rnd2[i]=(uchar) (rand()%256);
-			   }
+    	   	memset(rnd2,0,block_number);
+			for(int i=0;i<block_length;i++)
+			{
+				rnd2[i]=(uchar) (rand()%256);
+			}
 
 
     	    for(uint test_n=0;test_n<n;test_n++)
@@ -475,6 +472,11 @@ void main()
 				 * */
 				uchar **rnd3;
 				rnd3=(uchar **)malloc(sizeof(uchar *)*block_number);
+				uchar **original_data;
+    	        original_data=(uchar **)malloc(sizeof(uchar *)*block_number);
+				uchar **ciper_data;
+    	        ciper_data=(uchar **)malloc(sizeof(uchar *)*block_number);
+
     	        for(int i=0;i<block_number;i++)
     	        {
     	            rnd3[i]=(uchar *)malloc(sizeof(uchar)*block_length);
@@ -493,15 +495,12 @@ void main()
 				uint counter = test_round;
 
     	        //original_data=plaintext
-    	        uchar **original_data;
-    	        original_data=(uchar **)malloc(sizeof(uchar *)*block_number);
     	        for(int i=0;i<block_number;i++)
     	        {
     	            original_data[i]=(uchar *)malloc(sizeof(uchar)*block_length);
     	            
     	            memset(original_data[i], 0, block_length);
     	        }
-				
 				
 				if(file_type== TXT_file)
 				{
@@ -567,9 +566,6 @@ void main()
 				 *construct the input block sequence for scheme
 				 * */
    
-    	        uchar **ciper_data;
-    	        
-    	        ciper_data=(uchar **)malloc(sizeof(uchar *)*block_number);
     	        for(int i=0;i<block_number;i++)
     	        {
     	            ciper_data[i]=(uchar *)malloc(sizeof(uchar)*block_length);
@@ -578,7 +574,7 @@ void main()
     	        }
     	        
     	        
-			            //cipher_short(ctx,ciphertext, original_data,fp_cipher_txt,file_type);
+			    //cipher_short(ctx,ciphertext, original_data,fp_cipher_txt,file_type);
     	        //perodic_cipher(ctx,ciphertext, original_data, fp_cipher_txt,test_n,file_type);
 
 				if(file_type==TXT_file)
@@ -609,15 +605,15 @@ void main()
 				 */
 				int rnd_len = byte_split(128 - addr_len - crt_len) ;
 				uchar *rnd_nonce = (uchar *)malloc(sizeof(uchar)*rnd_len);
-				memset(rnd_nonce,0,rnd_len);
+				uchar *CETD_nonce_input;
+    	        CETD_nonce_input = (uchar *)malloc(sizeof(uchar)*16);
 
+				memset(rnd_nonce,0,rnd_len);
 				for(int i=0;i<rnd_len;i++)
 				{
 					*(rnd_nonce+i) = rand() %256;
 				}
 
-				uchar *CETD_nonce_input;
-    	        CETD_nonce_input = (uchar *)malloc(sizeof(uchar)*16);
 				memset(CETD_nonce_input,0,16);
 
 				uint addr = (uint) ciper_data;
@@ -677,10 +673,9 @@ void main()
 						DEC);
 
  				}
-
-    	        
     	        
     	        free(CETD_nonce_input);
+				free(rnd_nonce);
 
 				for(int i=0;i<block_number;i++)
 				{
@@ -699,8 +694,6 @@ void main()
 					free(original_data[i]);
 				}
 				free(original_data);
-			
-
     	    }
     	    /**
     	     close the files to prepre for the next input sequence
@@ -722,11 +715,8 @@ void main()
 				{
 					fclose(fp_y2_txt[i]);
 				}
-
 				*/
 							
-			
-				
 				fclose(fp_nonce_CETD_txt);
 				fclose(fp_tag_CETD_txt);
 			}
@@ -745,9 +735,7 @@ void main()
 				{
 					fclose(fp_y2_csv[i]);
 				}
-
 				*/
-			
 			
 				fclose(fp_nonce_CETD_csv);
 				fclose(fp_tag_CETD_csv);
@@ -900,20 +888,20 @@ void bits_freq_input(int block_number,
 			//open a file here
 			//fp_tag_cetd = fopen()
 			//fp_nonce = fopen()
-				memset(rnd_nonce,0,rnd_len);
+			memset(rnd_nonce,0,rnd_len);
 
-				for(int i=0;i<rnd_len;i++)
-				{
-					*(rnd_nonce+i) = rand() %256;
-				}
+			for(int i=0;i<rnd_len;i++)
+			{
+				*(rnd_nonce+i) = rand() %256;
+			}
 
-				memset(CETD_nonce_input,0,16);
+			memset(CETD_nonce_input,0,16);
 
-				uint addr = (uint) input;
+			uint addr = (uint) input;
 				//uint addr = 1;
-				uint crt = i;
+			uint crt = i;
 
- 				nonce_input_generation(CETD_nonce_input, 
+ 			nonce_input_generation(CETD_nonce_input, 
 					 addr,  addr_len,
 					 crt,  crt_len,
 					rnd_nonce);
@@ -985,7 +973,6 @@ void bits_freq_input(int block_number,
 											fp_nonce_CETD_csv,
 			 								CSV_file,
 											DEC);
-
 						//use input to tag generation 
 					}
 				}
@@ -994,5 +981,11 @@ void bits_freq_input(int block_number,
 		}
 	}
 
-
+	free(rnd_nonce);
+	free(CETD_nonce_input);
+	for(int i=0;i<block_number;i++)
+	{
+		free(rnd_input[i]);
+	}
+	free(rnd_input);
 }
