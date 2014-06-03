@@ -61,12 +61,43 @@ void swap_p(const uchar *nonce,
     }
 }
 
+//rotate extract bit segments from nonce to form v array
+void swap_p_with_start(const uchar *nonce, //
+		int start_bit, //0 to 127
+		uint *v,//shuffle para array 
+		int r,//shuffle rounds
+		int shuffle_p // elem_len for v array
+		)
+{
+    uint k=0;
+    uint blk = 0;
+    uint src=0;
+	int tmp_v;
+    for(int i=0;i<r;i++)
+    {
+        
+		tmp_v = nonce[shuffle_p*(i+1)/CHAR_BIT];
+        //k = (*(nonce+shuffle_p*(i+1)/CHAR_BIT)) >> (CHAR_BIT - (shuffle_p*(i+1) % CHAR_BIT));
+		k= tmp_v >> (CHAR_BIT - (shuffle_p*(i+1) % CHAR_BIT));
+        int dest=shuffle_p*(i+1)/CHAR_BIT;
+        blk=dest-src;
+        for(int j=0;j<blk;j++)
+        {
+			tmp_v = nonce[shuffle_p*(i+1)/CHAR_BIT-j-1];
+            //k |= (*(nonce + shuffle_p*(i+1)/CHAR_BIT-j-1)) << (((shuffle_p*(i+1))%CHAR_BIT) + j*CHAR_BIT);
+			k |= tmp_v <<  (((shuffle_p*(i+1))%CHAR_BIT) + j*CHAR_BIT);
+                        
+        }
+        src=dest;
+        v[i] = k & ((1 << shuffle_p)-1);
+        
+    }
+}
 
 /*
  split the v[i]
  @para log2_int(tag_len)
  */
-
 void v_split(int shuffle_p, int y_num, int tag_length, uchar *v)
 {
 	int len=0;
@@ -90,13 +121,15 @@ void v_split(int shuffle_p, int y_num, int tag_length, uchar *v)
 
 }
 
-void swap(const uchar *nonce, 
-		uchar **data, 
-		int r, 
-		int shuffle_p,
-		int number, int arr_length//y_num and tag_len
+void swap(const uchar *nonce,  //nonce 
+		uchar **data, //input data array
+		int r, //shuffle rounds
+		int shuffle_p, //length of v[i]
+		int number,  // No. of blocks
+		int arr_length// block length
 		)
 {
+	//shuffle para array, 
     uint *v =(uint *)malloc(sizeof(uint)*r);
 	memset(v, 0 , r);
     
@@ -105,9 +138,7 @@ void swap(const uchar *nonce,
 		 r,
 		 shuffle_p);
 
-//    swap_p(nonce, v, r);
-
-	//split v[i] to v_s[];
+	//each v[i] is consist of 5 segs, split v[i] to v_s array;
 	uchar v_s[5];
 	memset(v_s,0,5);
 	int tmp_v = 0;
@@ -124,16 +155,6 @@ void swap(const uchar *nonce,
 		{
 			v_s[2]  = (v_s[2] + 1) % number;
 		}
-		//printf("v0:%d,v2:%d\n",v_s[0],v_s[2]);
-		 /*
-        struct split *split1;
-        split1 = (struct split*)&v[i];
-               
-        if(split1->index1 == split1->index2)
-        {
-            split1->index2 = (split1->index2 + 1) % number;
-        }
-		*/
 				
         uchar *a, *b;
         a=data[v_s[0]] ; // index1
@@ -143,7 +164,6 @@ void swap(const uchar *nonce,
         while(v_s[4]>0 ) //seg_length
         {
             
-//			printf("%d, %d\n", v_s[1],v_s[3]);
             if(((*(a+v_s[1] / CHAR_BIT) & (1 << (CHAR_BIT - (v_s[1] % CHAR_BIT)-1))) >> (CHAR_BIT - (v_s[1] % CHAR_BIT)-1)) 
 					!= 
 					((*(b+v_s[3] / CHAR_BIT) & (1 << (CHAR_BIT - (v_s[3] % CHAR_BIT)-1))) >> (CHAR_BIT - ((v_s[3]) % CHAR_BIT)-1)) )
@@ -159,12 +179,9 @@ void swap(const uchar *nonce,
 			v_s[4]--;
             
         }
-
-        
     }
     
 	free(v);    
-    
 }
 
 /* each round replace the segments in two blocks with segments from nonce

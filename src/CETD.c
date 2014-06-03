@@ -168,10 +168,12 @@ void nonce_input_generation(uchar *nonce_input,
 		 crt_len, 
 		 addr_len,
 		nonce_input);// |addr_seg, crt_seg|,|crt_byte|.. 
-
-
 }
 
+void insert_nonce_seg()
+{
+	
+}
 /*
  CETD simulator
  @para data : No. of blks
@@ -206,6 +208,14 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	 concatenate the data array to a 1D array
 	 */
 	uchar *tmp_data = (uchar *)malloc(sizeof(uchar)*block_length*block_num);
+	uchar *nonce;
+	uchar *s = (uchar *)malloc(sizeof(uchar)*y_num);
+	uchar *tag=(uchar *)malloc(sizeof(uchar)*tag_length);
+	uchar **CETD_data =(uchar **)malloc(sizeof(uchar *)*y_num);	
+    nonce=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
+    uchar **shift_data=(uchar **)malloc(sizeof(uchar *)*y_num);
+    uchar **swap_data=(uchar **)malloc(sizeof(uchar *)*y_num);
+
 	for(int i=0;i<block_length*block_num;i++)
 	{
 		uchar x = i - (i/block_length)*block_length;
@@ -213,7 +223,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	}
 
 	
-	uchar **CETD_data =(uchar **)malloc(sizeof(uchar *)*y_num);	
 	for(int i=0;i<y_num;i++)
 	{
 		CETD_data[i]=(uchar *)malloc(sizeof(uchar)*tag_length);
@@ -236,9 +245,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	/*
 	 generate nonce
 	 */
-    uchar *nonce;
-    
-    nonce=(uchar *)malloc(sizeof(uchar)*BLK_LENGTH);
     memset(nonce, 0, BLK_LENGTH);
     
 	
@@ -264,10 +270,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	int s_p = shuffle_p(y_num, tag_length*CHAR_BIT);	
 	int r_p = log2_int(tag_length*CHAR_BIT);
 
-	uchar *s = (uchar *)malloc(sizeof(uchar)*y_num);
 	memset(s,0,y_num);
     //shift data
-    uchar **shift_data=(uchar **)malloc(sizeof(uchar *)*y_num);
     for(int i=0;i<y_num;i++)
     {
         shift_data[i]=(uchar *)malloc(sizeof(uchar)*tag_length);
@@ -312,7 +316,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 */
     //the swap_data is the output of 
 	//shuffle data
-    uchar **swap_data=(uchar **)malloc(sizeof(uchar *)*y_num);
     for(int i=0;i<y_num;i++)
     {
         swap_data[i]=(uchar *)malloc(sizeof(uchar)*tag_length);
@@ -328,21 +331,20 @@ void CETD_tag_generation(const uchar **data,int block_num,
         }
     }
 
-	/*
 	swap(nonce, 
 		swap_data, 
 		 r, 
 		 s_p,
 		y_num, tag_length//y_num and tag_len
 		);
-		*/
+/*
 	swap_with_nonce(nonce, 
 		swap_data, 
 		 r, 
 		 s_p,
 		y_num, tag_length//y_num and tag_len
 		);
-
+*/
 	/*
 	if(file_type==TXT_file){
 		write_txt_2array(x,y_num,tag_length,swap_data);
@@ -372,7 +374,6 @@ void CETD_tag_generation(const uchar **data,int block_num,
 
 	}
 */
-	uchar *tag=(uchar *)malloc(sizeof(uchar)*tag_length);
 	memset(tag, 0, tag_length);
 
 	/*
@@ -406,13 +407,16 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	
 	//free memory
    	free(tmp_data);    
+	free(nonce);
+	free(s);
+	free(tag);
+
 	for(int i=0;i<y_num;i++)
 	{
 		free(CETD_data[i]);
 	}
 	free(CETD_data);
 
-	free(nonce);
 	for(int i=0;i<y_num;i++)
 	{
 		free(shift_data[i]);
@@ -424,9 +428,7 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		free(swap_data[i]);
 	}
 	free(swap_data);
-		free(s);
 
 	
-	free(tag);
 
 }
