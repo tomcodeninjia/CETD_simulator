@@ -16,6 +16,7 @@
 #include "../include/cipher.h"
 #include "../include/write_txt.h"
 #include "../include/write_csv.h"
+#include "../include/math_func.h"
 
 //CETD API
 #include "../include/CETD.h"

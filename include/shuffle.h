@@ -8,8 +8,6 @@ void debug(unsigned int x);
 void split_test(uint x);
 //void shift_p(uchar *nonce, int *s,int r);
 
-int log2_int(int n);
-
 void swap_p(const uchar *nonce, 
 		uint *v, 
 		int r,

@@ -22,20 +22,22 @@ OBJ = $(OBJDIR)/run.o \
 	  $(OBJDIR)/show.o \
 	  $(OBJDIR)/LL_arr_gen.o \
 	  $(OBJDIR)/combination.o \
+	  $(OBJDIR)/math_func.o \
+	  $(OBJDIR)/gf_mult.o \
 
 run: $(OBJ)
 	$(CC) -o $@ $(OBJ) -lm
 #target:prerequest
 #	commend
 $(OBJDIR)/run.o: $(SRCDIR)/run.c config.h show.h input.h CETD.h \
- aes.h cipher.h LL_arr_gen.h 
+ aes.h cipher.h LL_arr_gen.h math_func.h
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/run.c 
 
-$(OBJDIR)/CETD.o: $(SRCDIR)/CETD.c CETD.h show.h write_txt.h write_csv.h
+$(OBJDIR)/CETD.o: $(SRCDIR)/CETD.c CETD.h show.h write_txt.h write_csv.h math_func.h gf_mult.h
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/CETD.c	
 $(OBJDIR)/tag.o: $(SRCDIR)/tag.c tag.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/tag.c	
-$(OBJDIR)/shuffle.o: $(SRCDIR)/shuffle.c shuffle.h show.h  
+$(OBJDIR)/shuffle.o: $(SRCDIR)/shuffle.c shuffle.h show.h math_func.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/shuffle.c	
 $(OBJDIR)/permutation.o: $(SRCDIR)/permutation.c permutation.h array_shift.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/permutation.c
@@ -65,6 +67,10 @@ $(OBJDIR)/LL_arr_gen.o: $(SRCDIR)/LL_arr_gen.c LL_arr_gen.h combination.h
 $(OBJDIR)/combination.o: $(SRCDIR)/combination.c combination.h config.h 
 	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/combination.c	
 
+$(OBJDIR)/math_func.o: $(SRCDIR)/math_func.c math_func.h  
+	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/math_func.c	
+$(OBJDIR)/gf_mult.o: $(SRCDIR)/gf_mult.c gf_mult.h math_func.h array_shift.h 
+	$(CC) -o $@ $(GCCFLAGS) $(SRCDIR)/gf_mult.c	
 
 
 clean:
