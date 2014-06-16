@@ -66,7 +66,7 @@ void bits_freq_input(int block_number,
 //pattern_diff, pattern+no, nos+nos, pas+pas,s-np+s-np
 uchar test_array[5][2] = {{0x44, 0x77},{0x66,0x71},{0x34, 0x27},{0x33,0x99},{0x63,0xD8}};
 
-void main()
+int main()
 {
     
 	int choice =6;
@@ -748,8 +748,7 @@ void main()
 	}
     
     printf("finish \n");
-    exit(0) ;
-    
+   	return 0; 
 }
 
 

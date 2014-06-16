@@ -56,6 +56,7 @@ void gf_mult(uchar *input,
 {
 	uchar tmp_byte;
 	memset(output, 0, blk_len);//z=0
+
 	uchar *tmp_v = (uchar *)malloc(blk_len * sizeof(uchar));
 	memset(tmp_v, 0, blk_len);
 
@@ -109,6 +110,7 @@ void gf_mult(uchar *input,
 		}
 
 	}
+	free(tmp_v);
 }
 
 int gf_mult_stage(uchar *nonce, 
@@ -125,9 +127,11 @@ int gf_mult_stage(uchar *nonce,
 	   @para xxx_blk: 0-15
 	 */
 	int log_blkn = log2_int(blk_num);
-	uchar *mult_index;
 
+	uchar *mult_index;
 	uchar *tmp_mult_input;
+	uchar *tmp_mult_result;
+
 	tmp_mult_input = (uchar *)malloc(blk_len * sizeof(uchar));
 	memset(tmp_mult_input, 0, blk_len);
 
@@ -159,7 +163,6 @@ int gf_mult_stage(uchar *nonce,
 		mult_index[i] = (mult_mux >> i)	& 0x01;
 	}
 
-	uchar *tmp_mult_result;
 	tmp_mult_result = (uchar *)malloc(blk_len * sizeof(uchar));
 	memset(tmp_mult_result, 0, blk_len);
 
@@ -193,6 +196,7 @@ int gf_mult_stage(uchar *nonce,
 
 		
 	}
+
 	free(mult_index);
 	free(tmp_mult_input);
 	free(tmp_mult_result);
