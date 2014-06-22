@@ -22,11 +22,13 @@ void nonce_input_generation(uchar *nonce_input,
 		uchar *rnd);
 
 int shuffle_p(int y_num,int tag_length);
-void CETD_tag_generation(const uchar **data,int block_num, 
+void CETD_tag_generation(const uchar **data,
+		int block_num, 
 		int block_length,
 		uchar *nonce_input, 
 		aes_context a_ctx,
 		int r,  //shuffle round  
+		int num_blk_mult,
 		int tag_length,
 		int y_num, //
 		FILE *x,

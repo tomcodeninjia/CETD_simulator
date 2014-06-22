@@ -50,6 +50,7 @@ void bits_freq_input(int block_number,
 		ELEM_TYPE **input,
 		aes_context ctx,
 		int shuffle_round,
+		int num_blk_mult,
 		char *filename_CETD_csv,
 		char *filename_nonce_CETD_csv,
 		char *filename_rnd_csv,
@@ -93,6 +94,10 @@ int main()
 	int shuffle_round;
 	printf("Input No. of shuffle rounds:\n");
 	scanf("%d",&shuffle_round);
+
+	int num_blk_mult;
+	printf("Input No. of GF-mult input blocks:\n");
+	scanf("%d", &num_blk_mult);
 
 	if(choice == 7)
 	{
@@ -320,6 +325,7 @@ int main()
 					input,
 					ctx,
 					shuffle_round,
+					num_blk_mult,
 					filename_CETD_csv,
 					filename_nonce_CETD_csv,
 					filename_rnd_csv,
@@ -640,40 +646,44 @@ int main()
 				 * */
 				if(file_type == TXT_file)
 				{
- 					CETD_tag_generation(ciper_data,block_number, 
-						block_length,
-						CETD_nonce_input, 
-						ctx,
-						shuffle_round,  //shuffle round  
-			 			CETD_tag_length,
-			 			y_num, //
-						fp_x_blk_txt,
-						fp_y1_txt, 
-						fp_y2_txt, 
-						fp_tag_CETD_txt, 
-						fp_nonce_CETD_txt,
-			 			file_type,
-						DEC);
+					CETD_tag_generation(ciper_data,
+							block_number, 
+							block_length,
+							CETD_nonce_input, 
+							ctx,
+							shuffle_round,  //shuffle round  
+							num_blk_mult,
+							CETD_tag_length,
+							y_num, //
+							fp_x_blk_txt,
+							fp_y1_txt, 
+							fp_y2_txt, 
+							fp_tag_CETD_txt, 
+							fp_nonce_CETD_txt,
+							file_type,
+							DEC);
 
- 				}
+				}
 				else
 				{
-					CETD_tag_generation(ciper_data,block_number, 
-						block_length,
-						CETD_nonce_input, 
-						ctx,
-						shuffle_round,  //shuffle round  
-			 			CETD_tag_length,
-			 			y_num, //
-						fp_x_blk_csv,
-						fp_y1_csv, 
-						fp_y2_csv, 
-						fp_tag_CETD_csv, 
-						fp_nonce_CETD_csv,
-			 			file_type,
-						DEC);
+					CETD_tag_generation(ciper_data,
+							block_number, 
+							block_length,
+							CETD_nonce_input, 
+							ctx,
+							shuffle_round,  //shuffle round  
+							num_blk_mult,
+							CETD_tag_length,
+							y_num, //
+							fp_x_blk_csv,
+							fp_y1_csv, 
+							fp_y2_csv, 
+							fp_tag_CETD_csv, 
+							fp_nonce_CETD_csv,
+							file_type,
+							DEC);
 
- 				}
+				}
     	        
     	        free(CETD_nonce_input);
 				free(rnd_nonce);
@@ -839,6 +849,7 @@ void bits_freq_input(int block_number,
 		ELEM_TYPE **input,
 		aes_context ctx,
 		int shuffle_round,
+		int num_blk_mult,
 		char *filename_CETD_csv,
 		char *filename_nonce_CETD_csv,
 		char *filename_rnd_csv,
@@ -949,6 +960,7 @@ void bits_freq_input(int block_number,
 											CETD_nonce_input, //uchar *
 											ctx, //aes_context
 											shuffle_round,  //shuffle round  
+											num_blk_mult,
 			 								1,
 			 								2, //
 											fp_x_blk_csv,
@@ -964,6 +976,7 @@ void bits_freq_input(int block_number,
 											CETD_nonce_input, //uchar *
 											ctx, //aes_context
 											shuffle_round,  //shuffle round  
+											num_blk_mult,
 			 								1,
 			 								2, //
 											fp_x_blk_csv,

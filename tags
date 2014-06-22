@@ -17,7 +17,7 @@ CETD_128_CETD_h	include/CETD.h	10;"	d
 CETD_128_permutation_h	include/permutation.h	10;"	d
 CETD_internal_cipher_h	include/cipher.h	10;"	d
 CETD_internal_input_h	include/input.h	10;"	d
-CETD_tag_generation	src/CETD.c	/^void CETD_tag_generation(const uchar **data,int block_num, $/;"	f
+CETD_tag_generation	src/CETD.c	/^void CETD_tag_generation(const uchar **data,$/;"	f
 CSV_file	include/config.h	23;"	d
 CTR_MAX	src/run.c	39;"	d	file:
 DEBUG	src/gf_mult.c	8;"	d	file:
@@ -42,9 +42,7 @@ GET_UINT32_LE	src/aes.c	47;"	d	file:
 LC_BOUND	src/input.c	19;"	d	file:
 LDIR	makefile	/^LDIR = $(ROOTDIR)\/long$/;"	m
 LL_arr_gen_func	src/LL_arr_gen.c	/^void LL_arr_gen_func(Node **node_arr, int blk_num)$/;"	f
-LOGS	src/galois.c	39;"	d	file:
 MUL	src/aes.c	366;"	d	file:
-NONE	src/galois.c	36;"	d	file:
 Node	include/LL_arr_gen.h	/^}Node;$/;"	t	typeref:struct:node
 OBJ	makefile	/^OBJ = $(OBJDIR)\/run.o \\$/;"	m
 OBJDIR	makefile	/^OBJDIR = $(ROOTDIR)\/obj$/;"	m
@@ -88,15 +86,12 @@ Reverse	src/array_shift.c	/^void Reverse(char *arr, int b, int e)$/;"	f
 RightShift	src/array_shift.c	/^void RightShift(char *arr, int N, int k)$/;"	f
 SDIR	makefile	/^SDIR = $(ROOTDIR)\/short$/;"	m
 SEG_BITS	include/shuffle.h	5;"	d
-SHIFT	src/galois.c	38;"	d	file:
 SHIFT_P	include/permutation.h	12;"	d
 SHIFT_P_P	include/permutation.h	13;"	d
 SHUFFLE_BLK_NUM	src/shuffle.c	9;"	d	file:
 SHUFFLE_P	include/permutation.h	14;"	d
 SHUFFLE_P	include/shuffle.h	4;"	d
-SPLITW8	src/galois.c	40;"	d	file:
 SRCDIR	makefile	/^SRCDIR = $(ROOTDIR)\/src$/;"	m
-TABLE	src/galois.c	37;"	d	file:
 TAG_LENGTH	include/config.h	29;"	d
 TESTi	src/gf_mult.c	7;"	d	file:
 TXT_file	include/config.h	24;"	d
@@ -152,6 +147,7 @@ array_shift_bit_array_shift_h	include/array_shift.h	10;"	d
 balance_counter	src/input.c	/^void balance_counter(uchar **input, FILE *data_i, int test_n,bool file_type,int total_blk)$/;"	f
 bin2dec	src/combination.c	/^int bin2dec(char *bin, int bin_len)$/;"	f
 bits_freq_input	src/run.c	/^void bits_freq_input(int block_number, $/;"	f
+block_flipping	src/CETD.c	/^int block_flipping(uchar **input_data, $/;"	f
 buf	include/aes.h	/^    uint32_t buf[68];           \/*!<  unaligned data    *\/$/;"	m	struct:__anon1
 byte_split	src/run.c	/^int byte_split(int bit_len)$/;"	f
 cipher	src/cipher.c	/^void cipher(aes_context ctx,uchar **dst, uchar ** src, FILE *cipher_o, bool file_type)$/;"	f
@@ -179,37 +175,8 @@ equal_input	src/input.c	/^void equal_input(uchar **input, FILE *data_i, bool fil
 extract_nonce_seg	src/gf_mult.c	/^int extract_nonce_seg(int start_bit, int end_bit, uchar *nonce, int log_blkn)$/;"	f
 f	dir_operation.py	/^	f = file(src_dir+"\/"+filenames,"r")$/;"	v
 factorial	src/LL_arr_gen.c	/^int factorial(int n)$/;"	f
-galois_create_log_tables	src/galois.c	/^int galois_create_log_tables(int w)$/;"	f
-galois_create_mult_tables	src/galois.c	/^int galois_create_mult_tables(int w)$/;"	f
-galois_create_split_w8_tables	src/galois.c	/^int galois_create_split_w8_tables()$/;"	f
-galois_div_tables	src/galois.c	/^static int *galois_div_tables[33] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL,$/;"	v	file:
-galois_get_div_table	src/galois.c	/^int *galois_get_div_table(int w) $/;"	f
-galois_get_ilog_table	src/galois.c	/^int *galois_get_ilog_table(int w)$/;"	f
-galois_get_log_table	src/galois.c	/^int *galois_get_log_table(int w)$/;"	f
-galois_get_mult_table	src/galois.c	/^int *galois_get_mult_table(int w)$/;"	f
-galois_ilog	src/galois.c	/^int galois_ilog(int value, int w)$/;"	f
-galois_ilog_tables	src/galois.c	/^static int *galois_ilog_tables[33] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL,$/;"	v	file:
-galois_inverse	src/galois.c	/^int galois_inverse(int y, int w)$/;"	f
-galois_invert_binary_matrix	src/galois.c	/^void galois_invert_binary_matrix(int *mat, int *inv, int rows)$/;"	f
-galois_log	src/galois.c	/^int galois_log(int value, int w)$/;"	f
-galois_log_tables	src/galois.c	/^static int *galois_log_tables[33] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL,$/;"	v	file:
-galois_logtable_divide	src/galois.c	/^int galois_logtable_divide(int x, int y, int w)$/;"	f
-galois_logtable_multiply	src/galois.c	/^int galois_logtable_multiply(int x, int y, int w)$/;"	f
-galois_mult_tables	src/galois.c	/^static int *galois_mult_tables[33] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL,$/;"	v	file:
-galois_multtable_divide	src/galois.c	/^int galois_multtable_divide(int x, int y, int w)$/;"	f
-galois_multtable_multiply	src/galois.c	/^int galois_multtable_multiply(int x, int y, int w)$/;"	f
-galois_region_xor	src/galois.c	/^void galois_region_xor(           char *r1,         \/* Region 1 *\/$/;"	f
-galois_shift_divide	src/galois.c	/^int galois_shift_divide(int a, int b, int w)$/;"	f
-galois_shift_inverse	src/galois.c	/^int galois_shift_inverse(int y, int w)$/;"	f
-galois_shift_multiply	src/galois.c	/^int galois_shift_multiply(int x, int y, int w)$/;"	f
-galois_single_divide	src/galois.c	/^int galois_single_divide(int a, int b, int w)$/;"	f
-galois_single_multiply	src/galois.c	/^int galois_single_multiply(int x, int y, int w)$/;"	f
-galois_split_w8	src/galois.c	/^static int *galois_split_w8[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL };$/;"	v	file:
-galois_split_w8_multiply	src/galois.c	/^int galois_split_w8_multiply(int x, int y)$/;"	f
-galois_w08_region_multiply	src/galois.c	/^void galois_w08_region_multiply(char *region,      \/* Region to multiply *\/$/;"	f
-galois_w16_region_multiply	src/galois.c	/^void galois_w16_region_multiply(char *region,      \/* Region to multiply *\/$/;"	f
-galois_w32_region_multiply	src/galois.c	/^void galois_w32_region_multiply(char *region,      \/* Region to multiply *\/$/;"	f
 gf_mult	src/gf_mult.c	/^void gf_mult(uchar *input, $/;"	f
+gf_mult_nonce_seg	src/gf_mult.c	/^int gf_mult_nonce_seg(uchar *nonce, $/;"	f
 gf_mult_stage	src/gf_mult.c	/^int gf_mult_stage(uchar *nonce, $/;"	f
 index1	src/shuffle.c	/^	uint index1:2;\/\/block number 1$/;"	m	struct:split	file:
 index2	src/shuffle.c	/^	uint index2:2;\/\/block number 2$/;"	m	struct:split	file:
@@ -220,21 +187,18 @@ length	src/shuffle.c	/^	uint length:5;\/\/segsize$/;"	m	struct:split	file:
 linear_counter	src/input.c	/^void linear_counter(uchar **input, int test_n, bool file_type, FILE *data_i, int number, int arr_length)$/;"	f
 log2_int	src/math_func.c	/^int log2_int(int n)$/;"	f
 main	src/gf_mult.c	/^int main()$/;"	f
-main	src/run.c	/^void main()$/;"	f
+main	src/run.c	/^int main()$/;"	f
 main	src/test.c	/^void main()$/;"	f
 mod	src/permutation.c	/^int mod(int a, int b)$/;"	f
 mod1	src/math_func.c	/^int mod1(int a, int b)$/;"	f
-mult_type	src/galois.c	/^static int mult_type[33] = $/;"	v	file:
 my_set	dir_operation.py	/^	my_set = set(data_list)$/;"	v
 next	include/LL_arr_gen.h	/^	struct node *next;$/;"	m	struct:node	typeref:struct:node::node
 node	include/LL_arr_gen.h	/^typedef struct node{$/;"	s
-nonce_dir_csv	include/CETD.h	52;"	d
-nonce_dir_txt	include/CETD.h	46;"	d
+nonce_dir_csv	include/CETD.h	54;"	d
+nonce_dir_txt	include/CETD.h	48;"	d
 nonce_input_generation	src/CETD.c	/^void nonce_input_generation(uchar *nonce_input, $/;"	f
 nonce_len	src/run.c	/^int nonce_len(int shuffle_r, int y_num, int tag_len)$/;"	f
 nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$/;"	m	struct:__anon1
-nw	src/galois.c	/^static int nw[33] = { 0, (1 << 1), (1 << 2), (1 << 3), (1 << 4), $/;"	v	file:
-nwm1	src/galois.c	/^static int nwm1[33] = { 0, (1 << 1)-1, (1 << 2)-1, (1 << 3)-1, (1 << 4)-1, $/;"	v	file:
 offset1	src/shuffle.c	/^    uint offset1:5;\/\/start position for block1$/;"	m	struct:split	file:
 offset2	src/shuffle.c	/^	uint offset2:5;\/\/start position for block2$/;"	m	struct:split	file:
 only_plaintext	src/cipher.c	/^void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type)$/;"	f
@@ -249,7 +213,6 @@ poly_16	src/gf_mult.c	/^uchar poly_16[] = {0xD4, 0x00};$/;"	v
 poly_32	src/gf_mult.c	/^uchar poly_32[] = {0xB1, 0x00, 0x00, 0x00};$/;"	v
 poly_64	src/gf_mult.c	/^uchar poly_64[] = {0xD8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};$/;"	v
 poly_8	src/gf_mult.c	/^uchar poly_8[] = {0xD8};$/;"	v
-prim_poly	src/galois.c	/^static int prim_poly[33] = $/;"	v	file:
 print_arr	src/test.c	/^void print_arr(ELEM_TYPE *arr, int len)$/;"	f
 print_binary	src/shuffle.c	/^static void print_binary(unsigned int x)$/;"	f	file:
 randomNumFile	pyResAna/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
@@ -279,8 +242,8 @@ swap	src/shuffle.c	/^void swap(const uchar *nonce,  \/\/nonce $/;"	f
 swap_p	src/shuffle.c	/^void swap_p(const uchar *nonce, $/;"	f
 swap_p_with_start	src/shuffle.c	/^void swap_p_with_start(const uchar *nonce, \/\/$/;"	f
 swap_with_nonce	src/shuffle.c	/^void swap_with_nonce(const uchar *nonce, $/;"	f
-tag_dir_csv	include/CETD.h	51;"	d
-tag_dir_txt	include/CETD.h	45;"	d
+tag_dir_csv	include/CETD.h	53;"	d
+tag_dir_txt	include/CETD.h	47;"	d
 tag_gene	src/tag.c	/^void tag_gene(const uchar **data, uchar *tag, int number, int arr_length)$/;"	f
 tag_gene_nonce	src/tag.c	/^void tag_gene_nonce(const uchar **data, uchar *tag, int number, int arr_length, const uchar *nonce)$/;"	f
 tag_rnd_csv_dir	src/run.c	37;"	d	file:
@@ -302,9 +265,9 @@ write_txt_1array	src/write_txt.c	/^void write_txt_1array(FILE *dst,  int length,
 write_txt_2array	src/write_txt.c	/^void write_txt_2array(FILE *dst, int number, int length, const uchar **array)$/;"	f
 write_txt_2array2	src/write_txt.c	/^void write_txt_2array2(FILE *dst, int num, int len, const uchar *array)$/;"	f
 writer	dir_operation.py	/^writer = csv.writer(csvFile, dialect='excel')$/;"	v
-x_dir_csv	include/CETD.h	48;"	d
-x_dir_txt	include/CETD.h	42;"	d
-y1_dir_split_csv	include/CETD.h	49;"	d
-y1_dir_split_txt	include/CETD.h	43;"	d
-y2_dir_split_csv	include/CETD.h	50;"	d
-y2_dir_split_txt	include/CETD.h	44;"	d
+x_dir_csv	include/CETD.h	50;"	d
+x_dir_txt	include/CETD.h	44;"	d
+y1_dir_split_csv	include/CETD.h	51;"	d
+y1_dir_split_txt	include/CETD.h	45;"	d
+y2_dir_split_csv	include/CETD.h	52;"	d
+y2_dir_split_txt	include/CETD.h	46;"	d

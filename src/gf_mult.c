@@ -13,6 +13,13 @@ uchar poly_32[] = {0xB1, 0x00, 0x00, 0x00};
 uchar poly_64[] = {0xD8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 uchar poly_128[] = {0xE1, 0x00,0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+/*
+   extract a segment from nonce to form a int
+   @para start_bit
+   @para end_bit
+   @para nonce
+   @log_blkn
+ */
 int extract_nonce_seg(int start_bit, int end_bit, uchar *nonce, int log_blkn)
 {
 
@@ -113,7 +120,124 @@ void gf_mult(uchar *input,
 	free(tmp_v);
 }
 
+/*
+   gf-mult each input blk with 0xFFFF...F or a seg from nonce
+   @para uchar *nonce: nonce array
+   @para int round_num: No. of shuffle_round
+   @para int shuffle_para_len: 
+   @para uchar **input: input[blk_num][blk_len]
+
+ */
 int gf_mult_stage(uchar *nonce, 
+		int round_num,
+		int shuffle_para_len,
+		int shift_para_len,
+		uchar **input_data,
+		int blk_num,
+		int blk_len
+		)
+{
+	/*
+	   extract nonce seg and prepare para array 
+	   @para xxx_bit: 0-127
+	   @para xxx_blk: 0-15
+	 */
+	int log_blkn = log2_int(blk_num);
+
+	uchar *mult_index;
+	uchar *tmp_mult_input;
+	uchar *tmp_mult_result;
+
+	tmp_mult_input = (uchar *)malloc(blk_len * sizeof(uchar));
+	memset(tmp_mult_input, 0, blk_len);
+
+	int start_bit =0;
+	int end_bit = 0;
+	
+	/*
+	   int mult_num =0;
+	   mult_num = extract_nonce_seg(start_bit, end_bit, nonce, log_blkn);
+
+	   memset(mult_index, 0, mult_num);
+	   for(int i=0;i<mult_num;i++)
+	   {
+	//creat a index and array and set index here	
+	start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
+	end_bit = (start_bit + log_blkn - 1) % (BLK_LENGTH * CHAR_BIT);
+	mult_index[i] = extract_nonce_seg(start_bit, end_bit, nonce, log_blkn);
+	}
+	 */
+
+	start_bit = (round_num * shuffle_para_len + blk_num * shift_para_len) % (BLK_LENGTH * CHAR_BIT);
+	end_bit = (start_bit + blk_num -1) % (BLK_LENGTH * CHAR_BIT);
+	int mult_mux = 0;
+	mult_mux = extract_nonce_seg(start_bit, end_bit, nonce, blk_num);
+
+	mult_index = (uchar *)malloc(blk_num*sizeof(uchar));
+	for(int i=0;i<blk_num;i++)
+	{
+		mult_index[i] = (mult_mux >> i)	& 0x01;
+	}
+
+	tmp_mult_result = (uchar *)malloc(blk_len * sizeof(uchar));
+	memset(tmp_mult_result, 0, blk_len);
+
+	for(int i=0;i< blk_num;i++)
+	{
+		//prepare tmp_nonce_mult array
+		for(int j=0; j < blk_len; j++)	
+		{
+#if OPTV1 == 1
+			start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
+			end_bit = (start_bit + CHAR_BIT - 1) % (BLK_LENGTH * CHAR_BIT);
+			tmp_mult_input[j] =   extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT);
+#endif
+#if OPTV2 == 1 
+			if(mult_index[i] == 1)
+			{
+				start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
+				end_bit = (start_bit + CHAR_BIT - 1) % (BLK_LENGTH * CHAR_BIT);
+				tmp_mult_input[j] =   extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT);
+
+			}
+			else
+			{
+				tmp_mult_input[j] = 0xFF;	
+			}
+#endif
+		}
+		//mult tmp_nonce_mult with input[i]
+		gf_mult(input_data[i], 
+				tmp_mult_input, 
+				tmp_mult_result, 
+				blk_len, 
+				blk_len * CHAR_BIT);
+		for(int j=0;j< blk_len;j++)
+		{
+			input_data[i][j] = tmp_mult_result[j];	
+		}
+
+		
+	}
+
+	free(mult_index);
+	free(tmp_mult_input);
+	free(tmp_mult_result);
+	return end_bit;
+
+}
+
+/*
+   gf-mult n_blk input blks with segs from nonce
+   @para uchar *nonce: nonce array
+   @para int round_num: No. of shuffle_round
+   @para int shuffle_para_len: 
+   @para uchar **input: input[blk_num][blk_len]
+
+ */
+int gf_mult_nonce_seg(uchar *nonce, 
+		int st_bit,
+		int num_blk_mult,
 		int round_num,
 		int shuffle_para_len,
 		uchar **input_data,
@@ -135,66 +259,50 @@ int gf_mult_stage(uchar *nonce,
 	tmp_mult_input = (uchar *)malloc(blk_len * sizeof(uchar));
 	memset(tmp_mult_input, 0, blk_len);
 
-	int start_bit =0;
-	start_bit = round_num * shuffle_para_len % (BLK_LENGTH * CHAR_BIT);
-	int end_bit = 0;
-	end_bit = (start_bit + blk_num -1) % (BLK_LENGTH * CHAR_BIT);
-
-	/*
-	   int mult_num =0;
-	   mult_num = extract_nonce_seg(start_bit, end_bit, nonce, log_blkn);
-
-	   memset(mult_index, 0, mult_num);
-	   for(int i=0;i<mult_num;i++)
-	   {
-	//creat a index and array and set index here	
-	start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
-	end_bit = (start_bit + log_blkn - 1) % (BLK_LENGTH * CHAR_BIT);
-	mult_index[i] = extract_nonce_seg(start_bit, end_bit, nonce, log_blkn);
-	}
-	 */
-
-	mult_index = (uchar *)malloc(blk_num*sizeof(uchar));
-
-	int mult_mux = 0;
-	mult_mux = extract_nonce_seg(start_bit, end_bit, nonce, blk_num);
-	for(int i=0;i<blk_num;i++)
+	mult_index = (uchar *)malloc(num_blk_mult*sizeof(uchar));
+//	int start_bit =0;
+//	int end_bit = st_bit - 1;
+	//index array of input blks
+	
+	int start_bit = st_bit;
+	int end_bit = (start_bit + log_blkn - 1) % (BLK_LENGTH * CHAR_BIT); 
+	mult_index[0] = extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT) % blk_num;//which input blk needs gf-mult
+	//printf("mult_index 0:%d\n", mult_index[0]);
+	if(num_blk_mult != 0)
 	{
-		mult_index[i] = (mult_mux >> i)	& 0x01;
+		for(int i=1;i < num_blk_mult;i++)
+		{
+			//start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
+			//end_bit = (start_bit + log_blkn - 1) % (BLK_LENGTH * CHAR_BIT); 
+			mult_index[i] =(mult_index[0] + i) % blk_num ;
+
+		}
+			
 	}
 
 	tmp_mult_result = (uchar *)malloc(blk_len * sizeof(uchar));
 	memset(tmp_mult_result, 0, blk_len);
 
-	for(int i=0;i< blk_num;i++)
+	for(int i=0;i< num_blk_mult;i++)
 	{
 		//prepare tmp_nonce_mult array
 		for(int j=0; j < blk_len; j++)	
 		{
-			if(mult_index[i] == 1)
-			{
-				start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
-				end_bit = (start_bit + CHAR_BIT - 1) % (BLK_LENGTH * CHAR_BIT);
-				tmp_mult_input[j] =   extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT);
+			start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
+			end_bit = (start_bit + CHAR_BIT - 1) % (BLK_LENGTH * CHAR_BIT);
+			tmp_mult_input[j] =   extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT);
 
-			}
-			else
-			{
-				tmp_mult_input[j] = 0xFF;	
-			}
 		}
 		//mult tmp_nonce_mult with input[i]
-		gf_mult(input_data[i], 
+		gf_mult(input_data[mult_index[i]], 
 				tmp_mult_input, 
 				tmp_mult_result, 
 				 blk_len, 
 				 blk_len * CHAR_BIT);
 		for(int j=0;j< blk_len;j++)
 		{
-			input_data[i][j] = tmp_mult_result[j];	
+			input_data[mult_index[i]][j] = tmp_mult_result[j];	
 		}
-
-		
 	}
 
 	free(mult_index);
@@ -203,7 +311,6 @@ int gf_mult_stage(uchar *nonce,
 	return end_bit;
 
 }
-
 
 #if TEST == 1
 int main()

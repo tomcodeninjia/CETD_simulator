@@ -174,7 +174,39 @@ void nonce_input_generation(uchar *nonce_input,
 			nonce_input);// |addr_seg, crt_seg|,|crt_byte|.. 
 }
 
+/*
+if nonce_bit[i] is 0, input_data[i] xor with 0x0...0, otherwise xor with 0xFF...F 
+ */
+int block_flipping(uchar **input_data, 
+				int y_num,
+				int blk_len,
+				uchar *nonce,
+				int st_bit
+				)
+{
+	int start_bit = st_bit;	
+	int end_bit = (start_bit + y_num - 1) % (BLK_LENGTH * CHAR_BIT) ;
+	int xor_mux = 0;
+	xor_mux = extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT) & ((1 << y_num) - 1);
 
+	for(int i=0;i<y_num;i++)
+	{
+		for(int j = 0; j < blk_len; j++)
+		{
+			if(((xor_mux >> i) & 0x1) == 0)	
+			{
+				input_data[i][j] ^=  0x00;
+			}
+			else
+			{
+				input_data[i][j] ^= 0xFF;
+			}
+
+		}
+	}
+	return end_bit;
+
+}
 /*
    CETD simulator
    @para data : No. of blks
@@ -189,11 +221,13 @@ void nonce_input_generation(uchar *nonce_input,
    @para x, y1, y2 : internal output
    @para 
  */
-void CETD_tag_generation(const uchar **data,int block_num, 
+void CETD_tag_generation(const uchar **data,
+		int block_num, 
 		int block_length,
 		uchar *nonce_input, 
 		aes_context a_ctx,
 		int r,  //shuffle round  
+		int num_blk_mult,
 		int tag_length,// No. of Byte
 		int y_num, // No. of internal Y blks
 		FILE *x,
@@ -202,7 +236,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 		FILE *CETD_tag, 
 		FILE *CETD_nonce,
 		bool file_type,
-		bool result_format)
+		bool result_format
+		)
 {
 
 	/*
@@ -273,6 +308,8 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	int s_p = shuffle_p(y_num, tag_length*CHAR_BIT);	
 	int r_p = log2_int(tag_length*CHAR_BIT);
 
+	int start_bit =0;
+	int end_bit = 0;
 	memset(s,0,y_num);
     //shift data
     for(int i=0;i<y_num;i++)
@@ -334,15 +371,53 @@ void CETD_tag_generation(const uchar **data,int block_num,
         }
     }
 
-	
-	int end_bit =gf_mult_stage(nonce, 
+//add some operation before swapping
+#if OPTV2 == 1 || OPTV1 == 1
+	 end_bit = gf_mult_stage(nonce, 
 			r,
 			s_p,
+			r_p,
 			swap_data,
 			y_num,
 			tag_length	
 			);
+#endif
+	//block flipping
 
+	start_bit = (r * s_p + y_num * r_p) % (BLK_LENGTH * CHAR_BIT);
+#if OPTV3 == 1 || OPTV4 == 1
+#if OPTV4 == 1
+	end_bit = block_flipping(swap_data, 
+			y_num,
+			tag_length,
+			nonce,
+			start_bit
+			);
+	//gf-mult
+	start_bit = (end_bit + 1) % (BLK_LENGTH * CHAR_BIT);
+#endif
+	if(num_blk_mult != 0)
+	{
+		end_bit = gf_mult_nonce_seg(nonce, 
+				start_bit,
+				num_blk_mult,
+				r,
+				s_p,
+				swap_data,
+				y_num,
+				tag_length	
+				);
+	}
+#endif
+
+#if OPTV5 == 1
+	end_bit = block_flipping(swap_data, 
+			y_num,
+			tag_length,
+			nonce,
+			start_bit
+			);
+#endif
 
 	swap(nonce, 
 			swap_data, 
@@ -368,10 +443,11 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	   }
 	 */
 	/*
-	   permutation(swap_data,
-	   s,
-	   y_num, 
-	   tag_length);
+	permutation(swap_data,
+			s,
+			y_num, 
+			tag_length);
+
 	 */
 	/*
 	   for(int i=0;i<y_num;i++)
@@ -443,3 +519,4 @@ void CETD_tag_generation(const uchar **data,int block_num,
 	free(swap_data);
 
 }
+
