@@ -3,7 +3,7 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+!_TAG_PROGRAM_VERSION	5.8	//
 AES_DECRYPT	include/aes.h	55;"	d
 AES_ENCRYPT	include/aes.h	54;"	d
 AES_FROUND	src/aes.c	619;"	d	file:
@@ -46,6 +46,11 @@ MUL	src/aes.c	366;"	d	file:
 Node	include/LL_arr_gen.h	/^}Node;$/;"	t	typeref:struct:node
 OBJ	makefile	/^OBJ = $(OBJDIR)\/run.o \\$/;"	m
 OBJDIR	makefile	/^OBJDIR = $(ROOTDIR)\/obj$/;"	m
+OPTV1	include/gf_mult.h	2;"	d
+OPTV2	include/gf_mult.h	3;"	d
+OPTV3	include/gf_mult.h	4;"	d
+OPTV4	include/gf_mult.h	5;"	d
+OPTV5	include/gf_mult.h	6;"	d
 PADLOCK_ACE	include/padlock.h	49;"	d
 PADLOCK_ALIGN16	include/padlock.h	53;"	d
 PADLOCK_PHE	include/padlock.h	50;"	d
@@ -160,6 +165,9 @@ complex_count	src/input.c	/^void complex_count(uchar **input, int test_n, FILE *
 count	src/input.c	/^void count(uchar **input, int test_n, FILE *data_i, bool file_type)$/;"	f
 counter_normal	src/input.c	/^void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 crt_arr_generation	src/CETD.c	/^void crt_arr_generation(int crt, $/;"	f
+csv	dir_operation.py	/^import csv$/;"	i
+csv	pyResAna/repeat_count.py	/^import csv$/;"	i
+csv	python_src/repeat_count.py	/^import csv$/;"	i
 csvFile	dir_operation.py	/^csvFile = open(result_file,'wb')$/;"	v
 data	include/LL_arr_gen.h	/^	ELEM_TYPE data;$/;"	m	struct:node
 data_dir_csv	src/run.c	35;"	d	file:
@@ -202,6 +210,7 @@ nr	include/aes.h	/^    int nr;                     \/*!<  number of rounds  *\/$
 offset1	src/shuffle.c	/^    uint offset1:5;\/\/start position for block1$/;"	m	struct:split	file:
 offset2	src/shuffle.c	/^	uint offset2:5;\/\/start position for block2$/;"	m	struct:split	file:
 only_plaintext	src/cipher.c	/^void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type)$/;"	f
+os	dir_operation.py	/^import os$/;"	i
 padlock_supports	src/padlock.c	/^int padlock_supports( int feature )$/;"	f
 padlock_xcryptcbc	src/padlock.c	/^int padlock_xcryptcbc( aes_context *ctx,$/;"	f
 padlock_xcryptecb	src/padlock.c	/^int padlock_xcryptecb( aes_context *ctx,$/;"	f
@@ -215,11 +224,15 @@ poly_64	src/gf_mult.c	/^uchar poly_64[] = {0xD8, 0x00, 0x00, 0x00, 0x00, 0x00, 0
 poly_8	src/gf_mult.c	/^uchar poly_8[] = {0xD8};$/;"	v
 print_arr	src/test.c	/^void print_arr(ELEM_TYPE *arr, int len)$/;"	f
 print_binary	src/shuffle.c	/^static void print_binary(unsigned int x)$/;"	f	file:
+pyResAna	dir_operation.py	/^import pyResAna.repeat_count as repeat_count$/;"	i
+random	pyResAna/random_file.py	/^import random$/;"	i
+random	python_src/random_file.py	/^import random$/;"	i
 randomNumFile	pyResAna/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 randomNumFile	python_src/random_file.py	/^def randomNumFile(dirName, fileNum, lineNum, startN, endN):$/;"	f
 random_input	src/input.c	/^void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length)$/;"	f
 random_repeat_long	src/input.c	/^void random_repeat_long(uchar **input, const uchar *rnd,FILE *data_i,  bool file_type, int number, int arr_length)$/;"	f
 random_repeat_short	src/input.c	/^void random_repeat_short(uchar **input, FILE *data_i, int rand_num, bool file_type)$/;"	f
+repeat_count	dir_operation.py	/^import pyResAna.repeat_count as repeat_count$/;"	i
 repeat_count	pyResAna/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 repeat_count	python_src/repeat_count.py	/^def repeat_count(srcDirName,srcFileName, dstDirName, dstFileName):$/;"	f
 reserved	src/shuffle.c	/^	uint reserved:13;$/;"	m	struct:split	file:
