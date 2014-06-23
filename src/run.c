@@ -997,8 +997,12 @@ void bits_freq_input(int block_number,
 						}
 					}
 				}
-				printf("NO. of %d 1s array is:%d\n", i, count);
+//				printf("NO. of %d 1s array is:%d\n", i, count);
+				fclose(fp_tag_rnd_csv);
+				fclose(fp_tag_CETD_csv);
+				fclose(fp_nonce_CETD_csv);
 			}
+
 
 		}
 	}
