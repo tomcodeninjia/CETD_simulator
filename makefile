@@ -3,8 +3,6 @@ GCCFLAGS = -c -Wall -g --std=c99
 ROOTDIR = .
 SRCDIR = $(ROOTDIR)/src
 OBJDIR = $(ROOTDIR)/obj
-LDIR = $(ROOTDIR)/long
-SDIR = $(ROOTDIR)/short
 
 
 #if using this method to find header files, the header file in c file should be included in the following way: #include "../include/header.h"
@@ -74,7 +72,7 @@ $(OBJDIR)/gf_mult.o: $(SRCDIR)/gf_mult.c gf_mult.h math_func.h array_shift.h
 
 
 clean:
-	rm -f run $(OBJDIR)/*.o $(LDIR)/* $(SDIR)/*
+	rm -f run $(OBJDIR)/*.o 
 
 rebuild: clean run
 
