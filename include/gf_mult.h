@@ -1,8 +1,8 @@
 #include "config.h"
-#define OPTV1 0 
+#define OPTV1 1 
 #define OPTV2 0 
 #define OPTV3 0 
-#define OPTV4 1 
+#define OPTV4 0 
 #define OPTV5 0
 
 int gf_mult_stage(uchar *nonce, 

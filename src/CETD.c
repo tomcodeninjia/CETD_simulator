@@ -187,7 +187,7 @@ int block_flipping(uchar **input_data,
 	int start_bit = st_bit;	
 	int end_bit = (start_bit + y_num - 1) % (BLK_LENGTH * CHAR_BIT) ;
 	int xor_mux = 0;
-	xor_mux = extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT) & ((1 << y_num) - 1);
+	xor_mux = (extract_nonce_seg(start_bit, end_bit, nonce, CHAR_BIT) & ((1 << y_num) - 1)) % y_num;
 
 	for(int i=0;i<y_num;i++)
 	{

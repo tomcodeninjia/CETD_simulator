@@ -18,14 +18,17 @@ nonce_num = len(name_list)/34
 if name_list[0][1] == "_":
 	result_filename = "nonce_collide_n%d"
 	test_type = "nonceCollide"
+
 	nonce_id = 0
 	csvname = result_dir+"/"+test_type+"/"+result_filename % (nonce_id)+".csv" 
 	csvFile = open(csvname,'wb')
 	writer = csv.writer(csvFile, dialect='excel')
 	for i in range(0, len(name_list)):
-		if int(name_list[i][0]) != int(nonce_id):#new nonce_id
-			csvFile.close() #open new file
-			nonce_id = nonce_id +1
+		nonce_index = name_list[i].find('_')		
+		nonce_id_tmp = name_list[i][0:nonce_index]
+		if int(nonce_id_tmp) != nonce_id: #new nonce_id
+			csvFile.close()
+			nonce_id = int(nonce_id_tmp) 
 			csvname = result_dir+"/"+test_type+"/"+result_filename % (nonce_id)+".csv" 
 			csvFile = open(csvname,'wb')
 			writer = csv.writer(csvFile, dialect='excel')
@@ -37,6 +40,7 @@ if name_list[0][1] == "_":
 		index=name_list[i].find('_')
 		writer.writerow([name_list[i][index+1:],distinct_vn])
 	csvFile.close()
+
 
 #static the aver of No. of distinct tags for each proportion
 	result_filename = "nonce_collide_aver.csv"
@@ -58,6 +62,7 @@ if name_list[0][1] == "_":
 		  	key = line[0:index-4]
 			freq_list[key] = freq_list[key] + int(line[index+1:])
 	print nonce_num
+	print freq_list
 	for ele in freq_list:
 		writer.writerow([ele, freq_list[ele]/nonce_num])
 	csvFile.close()

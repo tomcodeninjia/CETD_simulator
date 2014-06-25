@@ -902,7 +902,6 @@ void bits_freq_input(int block_number,
 				sprintf(filename_rnd_csv,rndInput_dir,x,i);
 				fp_tag_rnd_csv=fopen(filename_rnd_csv, "w");
 
-
 				//open a file here
 				//fp_tag_cetd = fopen()
 				//fp_nonce = fopen()
@@ -960,7 +959,6 @@ void bits_freq_input(int block_number,
 									rnd_input[i][j] = (uchar) (rand()%256);
 								}
 							}
-
 							CETD_tag_generation(input,
 									block_number, 
 									block_length,
