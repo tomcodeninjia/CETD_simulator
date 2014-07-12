@@ -432,7 +432,7 @@ void CETD_tag_generation(const uchar **data,
 	   s_p,
 	   y_num, tag_length//y_num and tag_len
 	   );
-	 */
+	   */
 	/*
 	   if(file_type==TXT_file){
 	   write_txt_2array(x,y_num,tag_length,swap_data);
@@ -442,13 +442,11 @@ void CETD_tag_generation(const uchar **data,
 	   write_csv_2array(x,y_num,tag_length,swap_data);
 	   }
 	 */
-	/*
 	permutation(swap_data,
 			s,
 			y_num, 
 			tag_length);
 
-	 */
 	/*
 	   for(int i=0;i<y_num;i++)
 	   {

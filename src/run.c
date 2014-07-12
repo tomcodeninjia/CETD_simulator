@@ -69,13 +69,15 @@ void bits_freq_input(int block_number,
 //pattern_diff, pattern+no, nos+nos, pas+pas,s-np+s-np
 uchar test_array[5][2] = {{0x44, 0x77},{0x66,0x71},{0x34, 0x27},{0x33,0x99},{0x63,0xD8}};
 
-int main()
+int main(int argc, char *argv[])
 {
     
 	int choice =6;
-	choice = displayInputOption();
+//	choice = displayInputOption();
+	choice = 4;
 	bool file_type = CSV_file;
-	file_type = displayFileFormat();
+//	file_type = displayFileFormat();
+	file_type = CSV_file;
 
 	/*
 	 Experiment parameters
@@ -94,12 +96,14 @@ int main()
     int n;//number of tags per test
 
 	int shuffle_round;
-	printf("Input No. of shuffle rounds:\n");
-	scanf("%d",&shuffle_round);
+//	printf("Input No. of shuffle rounds:\n");
+//	scanf("%d",&shuffle_round);
+	shuffle_round = 2;
 
 	int num_blk_mult;
-	printf("Input No. of GF-mult input blocks:\n");
-	scanf("%d", &num_blk_mult);
+//	printf("Input No. of GF-mult input blocks:\n");
+//	scanf("%d", &num_blk_mult);
+	num_blk_mult = 1;
 
 	if(choice == 7)
 	{
@@ -109,25 +113,32 @@ int main()
 	}
 	else
 	{
-    	printf("input the No. of sample sequences\n");
-    	scanf("%d",&test_count);
+//    	printf("input the No. of sample sequences\n");
+//    	scanf("%d",&test_count);
+		test_count = 65536;
     	
-    	printf("input the No. of tags per sequence\n");
-    	scanf("%d",&n);
+//    	printf("input the No. of tags per sequence\n");
+//    	scanf("%d",&n);
+		n = atof(argv[1]);
+//		printf("n is %d\n",n);
 
-		printf("Input the No. of Plaintext Blocks.If choice is (7), input '1':\n");
-		scanf("%d",&block_number);
+//		printf("Input the No. of Plaintext Blocks.If choice is (7), input '1':\n");
+//		scanf("%d",&block_number);
+		block_number = 1;
 
-		printf("Input the Length of Plaintext Blocks(No. of Bytes). If choice is (7), input '2':\n");
-		scanf("%d", &block_length);
+//		printf("Input the Length of Plaintext Blocks(No. of Bytes). If choice is (7), input '2':\n");
+//		scanf("%d", &block_length);
+		block_length = 2;
+
 		/*
 		 CETD parameters
 		 @para shuffle_round: shuffle round
 		 @para CETD_tag_length: the length of tag
 
 		*/
-		printf("Input CETD Tag Length(No. of Bytes, 1-16). If choice is (7), input '1':\n");
-		scanf("%d",&CETD_tag_length);
+//		printf("Input CETD Tag Length(No. of Bytes, 1-16). If choice is (7), input '1':\n");
+//		scanf("%d",&CETD_tag_length);
+		CETD_tag_length = 1;
 		while((CETD_tag_length <1)||(CETD_tag_length >16))
 		{
 			printf("tag length out of order, try again.\n");
@@ -187,15 +198,17 @@ int main()
 	 * @para rnd_len: random number length
 	 *  
 	 */
-	printf("Input nonce parameters\n\n");
+//	printf("Input nonce parameters\n\n");
 
 	int addr_len;
-	printf("Input address length:(bits)\n");
-	scanf("%d",&addr_len);
+//	printf("Input address length:(bits)\n");
+//	scanf("%d",&addr_len);
+	addr_len = 32;
 
 	int crt_len;
-	printf("Input counter length:(bits)\n");
-	scanf("%d",&crt_len);
+//	printf("Input counter length:(bits)\n");
+//	scanf("%d",&crt_len);
+	crt_len = 48;
 
 
 	/*

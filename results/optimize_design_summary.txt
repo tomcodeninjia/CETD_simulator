@@ -1,5 +1,0 @@
-1. just gf-mult nonce-seg to each input block
-2. gf-mult nonce-seg or 0xFFF..F with each input block
-
-3. selected num of input blocks to gf-mult with nonce-segs
-4. selected xor 0x00..0 or 0xFFF..F with each input bloc, then selected num of input blocks to gf-mult with nonce-segs
