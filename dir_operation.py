@@ -80,7 +80,8 @@ else:
 		data_list = f.readlines()
 		my_set = set(data_list)
 		distinct_vn = len(my_set)
-		writer.writerow([name_list[i],distinct_vn])
+#		writer.writerow([name_list[i],distinct_vn])
+		writer.writerow([i,distinct_vn])
 #totally 65536 distinct inputs, then should be 65536 lines in the statistic csv file
 	csvFile.close()
 	
