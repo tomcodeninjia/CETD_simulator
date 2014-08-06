@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	choice = 4;
 	bool file_type = CSV_file;
 //	file_type = displayFileFormat();
-	file_type = CSV_file;
+	file_type = TXT_file;
 
 	/*
 	 Experiment parameters
@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
 	int shuffle_round;
 //	printf("Input No. of shuffle rounds:\n");
 //	scanf("%d",&shuffle_round);
-	shuffle_round = 2;
+	shuffle_round = atof(argv[1]);
 
 	int num_blk_mult;
 //	printf("Input No. of GF-mult input blocks:\n");
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     	
 //    	printf("input the No. of tags per sequence\n");
 //    	scanf("%d",&n);
-		n = atof(argv[1]);
+		n = atof(argv[2]);
 //		printf("n is %d\n",n);
 
 //		printf("Input the No. of Plaintext Blocks.If choice is (7), input '1':\n");
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
 
 //		printf("Input the Length of Plaintext Blocks(No. of Bytes). If choice is (7), input '2':\n");
 //		scanf("%d", &block_length);
-		block_length = 2;
+		block_length = atof(argv[3]);
 
 		/*
 		 CETD parameters
@@ -676,7 +676,7 @@ int main(int argc, char *argv[])
 							fp_tag_CETD_txt, 
 							fp_nonce_CETD_txt,
 							file_type,
-							DEC);
+							BIN);
 
 				}
 				else
@@ -696,7 +696,7 @@ int main(int argc, char *argv[])
 							fp_tag_CETD_csv, 
 							fp_nonce_CETD_csv,
 							file_type,
-							DEC);
+							BIN);
 
 				}
     	        
@@ -987,7 +987,7 @@ void bits_freq_input(int block_number,
 									fp_tag_CETD_csv, 
 									fp_nonce_CETD_csv,
 									CSV_file,
-									DEC);
+									BIN);
 							CETD_tag_generation(rnd_input,
 									block_number, 
 									block_length,
@@ -1003,7 +1003,7 @@ void bits_freq_input(int block_number,
 									fp_tag_rnd_csv, 
 									fp_nonce_CETD_csv,
 									CSV_file,
-									DEC);
+									BIN);
 							//use input to tag generation 
 						}
 					}

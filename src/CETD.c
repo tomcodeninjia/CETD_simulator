@@ -478,17 +478,15 @@ void CETD_tag_generation(const uchar **data,
 	{
 		write_csv_decimal_1array(CETD_tag,tag_length,tag);
 	}
+	
+	if(file_type==TXT_file)
+	{
+		write_txt_1array(CETD_tag,tag_length,tag);
+	}
 	else
 	{
-		if(file_type==TXT_file)
-		{
-			write_txt_1array(CETD_tag,tag_length,tag);
-		}
-		else
-		{
-			write_csv_1array(CETD_tag,tag_length,tag);
-		}	
-	}
+		write_csv_1array(CETD_tag,tag_length,tag);
+	}	
 	
 	
 	
