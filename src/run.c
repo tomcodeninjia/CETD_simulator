@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 	int num_blk_mult;
 //	printf("Input No. of GF-mult input blocks:\n");
 //	scanf("%d", &num_blk_mult);
-	num_blk_mult = 1;
+	num_blk_mult = 0;
 
 	if(choice == 7)
 	{
