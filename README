@@ -17,4 +17,4 @@ Tips:
 choose the components you want to observe and output to files. This
 functionality can be achieved by slight modify the src codes
 
-./run shuffle_round tagNum_eachInput blk_len
+./run shuffle_round num_blk_gf tagNum_eachInput blk_len 

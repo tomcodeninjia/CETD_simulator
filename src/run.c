@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 	int num_blk_mult;
 //	printf("Input No. of GF-mult input blocks:\n");
 //	scanf("%d", &num_blk_mult);
-	num_blk_mult = 0;
+	num_blk_mult = atof(argv[2]);
 
 	if(choice == 7)
 	{
@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
     	
 //    	printf("input the No. of tags per sequence\n");
 //    	scanf("%d",&n);
-		n = atof(argv[2]);
+		n = atof(argv[3]);
 //		printf("n is %d\n",n);
 
 //		printf("Input the No. of Plaintext Blocks.If choice is (7), input '1':\n");
@@ -128,7 +128,7 @@ int main(int argc, char *argv[])
 
 //		printf("Input the Length of Plaintext Blocks(No. of Bytes). If choice is (7), input '2':\n");
 //		scanf("%d", &block_length);
-		block_length = atof(argv[3]);
+		block_length = atof(argv[4]);
 
 		/*
 		 CETD parameters
