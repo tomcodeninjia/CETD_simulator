@@ -150,19 +150,30 @@ void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type,
 
 void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, int number, int arr_length)
 {
-	int n;
-	if(arr_length > 4)
+//	int n;
+//	if(arr_length > 4)
+//	{
+//		n = 4;
+//	}
+//	else
+//	{
+//		n = arr_length;
+//	}
+//
+	//counter is 16-bits 
+	uint tmp_counter=counter;
+	uchar tmp=0;
+	for(int i=0;i<number;i++)
 	{
-		n = 4;
-	}
-	else
-	{
-		n = arr_length;
-	}
+		for(int j=0;j<arr_length;j++)
+		{
+			tmp = (uchar) (tmp_counter & (1<< (16/arr_length)-1) );
+//			*(*(input + i) + j) = (uchar) ((counter >> i*CHAR_BIT) & ((1 << CHAR_BIT) - 1));
+			*(*(input+i)+j) = tmp;
+			tmp_counter = tmp_counter >> (16/arr_length);
 
-	for(int i=0;i<n;i++)
-	{
-		*(*(input + 0) + i) = (uchar) ((counter >> i*CHAR_BIT) & ((1 << CHAR_BIT) - 1));
+		}
+
 	}
 	
 	/*
