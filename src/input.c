@@ -163,19 +163,17 @@ void counter_normal(uchar **input,uint counter, FILE *data_i, bool file_type, in
 	//counter is 16-bits 
 	uint tmp_counter=counter;
 	uchar tmp=0;
+	int mask = 16/arr_length;
 	for(int i=0;i<number;i++)
 	{
 		for(int j=0;j<arr_length;j++)
 		{
-			tmp = (uchar) (tmp_counter & (1<< (16/arr_length)-1) );
+			tmp = (uchar) ((tmp_counter >> (j*mask)) & ((1<< (mask))-1));
 //			*(*(input + i) + j) = (uchar) ((counter >> i*CHAR_BIT) & ((1 << CHAR_BIT) - 1));
-			*(*(input+i)+j) = tmp;
-			tmp_counter = tmp_counter >> (16/arr_length);
-
+			*(*(input + i) + j) = tmp;
 		}
 
 	}
-	
 	/*
 	if(file_type==TXT_file){
 		write_txt_2array(data_i,number,arr_length,input);
