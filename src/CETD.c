@@ -474,10 +474,7 @@ void CETD_tag_generation(const uchar **data,
 //	tag_gene_nonce(swap_data, tag, y_num,tag_length,nonce);
     
 	
-	if(result_format == DEC)
-	{
-		write_csv_decimal_1array(CETD_tag,tag_length,tag);
-	}
+	
 	
 	if(file_type==TXT_file)
 	{
@@ -485,7 +482,14 @@ void CETD_tag_generation(const uchar **data,
 	}
 	else
 	{
-		write_csv_1array(CETD_tag,tag_length,tag);
+		if(result_format == DEC)
+		{
+			write_csv_decimal_1array(CETD_tag,tag_length,tag);
+		}
+		else{
+
+			write_csv_1array(CETD_tag,tag_length,tag);
+		}
 	}	
 	
 	

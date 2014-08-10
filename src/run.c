@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	choice = 4;
 	bool file_type = CSV_file;
 //	file_type = displayFileFormat();
-	file_type = TXT_file;
+	file_type = CSV_file;
 
 	/*
 	 Experiment parameters
@@ -676,7 +676,7 @@ int main(int argc, char *argv[])
 							fp_tag_CETD_txt, 
 							fp_nonce_CETD_txt,
 							file_type,
-							BIN);
+							DEC);
 
 				}
 				else
@@ -696,7 +696,7 @@ int main(int argc, char *argv[])
 							fp_tag_CETD_csv, 
 							fp_nonce_CETD_csv,
 							file_type,
-							BIN);
+							DEC);
 
 				}
     	        
@@ -987,7 +987,7 @@ void bits_freq_input(int block_number,
 									fp_tag_CETD_csv, 
 									fp_nonce_CETD_csv,
 									CSV_file,
-									BIN);
+									DEC);
 							CETD_tag_generation(rnd_input,
 									block_number, 
 									block_length,
@@ -1003,7 +1003,7 @@ void bits_freq_input(int block_number,
 									fp_tag_rnd_csv, 
 									fp_nonce_CETD_csv,
 									CSV_file,
-									BIN);
+									DEC);
 							//use input to tag generation 
 						}
 					}
