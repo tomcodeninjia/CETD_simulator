@@ -35,8 +35,8 @@
 #define data_dir_csv "./long/cache%d.csv"
 #define ciphertext_dir_csv "./long/cipher%d.csv"
 
-#define rndInput_dir "./short/%d_rnd_tag_%d.csv"
-#define nonceCollide_tag_dir "./short/%d_tag_cetd_%d.csv"
+#define rndInput_dir_csv "./short/%d_rnd_tag_%d.csv"
+#define nonceCollide_tag_dir_csv "./short/%d_tag_cetd_%d.csv"
 
 #define CTR_MAX 100000000 
 int displayInputOption();
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
     
 	int choice =6;
 //	choice = displayInputOption();
-	choice = 4;
+	choice = 7;
 	bool file_type = CSV_file;
 //	file_type = displayFileFormat();
 	file_type = CSV_file;
@@ -901,18 +901,19 @@ void bits_freq_input(int block_number,
 	{
 		for(int x =0; x < nonce_num; x++)
 		{
+			// there is i 1s in the input
 			for(int i=0;i<= input_blk_num*ELEM_LEN;i++)
 			{
 				int count =0;
 				//there are i 1s
 				//all input arrays stored in a file?
-				sprintf(filename_CETD_csv, nonceCollide_tag_dir,x,i);
+				sprintf(filename_CETD_csv, nonceCollide_tag_dir_csv,x,i);
 				fp_tag_CETD_csv=fopen(filename_CETD_csv, "w");
 
 				sprintf(filename_nonce_CETD_csv, nonce_dir_csv, i);
 				fp_nonce_CETD_csv=fopen(filename_nonce_CETD_csv,"w");
 
-				sprintf(filename_rnd_csv,rndInput_dir,x,i);
+				sprintf(filename_rnd_csv,rndInput_dir_csv,x,i);
 				fp_tag_rnd_csv=fopen(filename_rnd_csv, "w");
 
 				//open a file here
