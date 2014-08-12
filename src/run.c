@@ -74,10 +74,10 @@ int main(int argc, char *argv[])
     
 	int choice =6;
 //	choice = displayInputOption();
-	choice = 7;
+	choice = 4;
 	bool file_type = CSV_file;
 //	file_type = displayFileFormat();
-	file_type = CSV_file;
+	file_type = TXT_file;
 
 	/*
 	 Experiment parameters
