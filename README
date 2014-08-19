@@ -13,6 +13,12 @@ Dir hierarchy
 5. long: store long-length components
 6. short: store short-length components such as tag
 
+Galois(Finite) Field Multiplication:
+1. Implemented in src/gf_mult.c
+Block flip:
+1. Implemented in src/CETD.c
+Cost-Effective Tag Design:
+1. Implemented in src/CETD.c
 Tips:
 choose the components you want to observe and output to files. This
 functionality can be achieved by slight modify the src codes

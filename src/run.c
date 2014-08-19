@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	choice = 4;
 	bool file_type = CSV_file;
 //	file_type = displayFileFormat();
-	file_type = TXT_file;
+	file_type = CSV_file;
 
 	/*
 	 Experiment parameters
