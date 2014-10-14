@@ -286,7 +286,6 @@ void CETD_tag_generation(const uchar **data,
 	
     aes_crypt_ecb(&a_ctx, AES_ENCRYPT,nonce_input, nonce);
 
-	/*
 	if(file_type == TXT_file)
 	{
 		write_txt_1array(CETD_nonce, BLK_LENGTH, nonce);
@@ -295,7 +294,7 @@ void CETD_tag_generation(const uchar **data,
 	{
 		write_csv_1array(CETD_nonce, BLK_LENGTH, nonce);
 	}
-	*/
+	
     
 	/*
 	   compute shift_p and shuffle_p, the length

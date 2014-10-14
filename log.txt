@@ -1,0 +1,105 @@
+/usr/bin/gcc -o obj/run.o -c -Wall -g --std=c99 ./src/run.c 
+./src/run.c: In function ‘main’:
+./src/run.c:550:7: warning: passing argument 2 of ‘random_input’ from incompatible pointer type [enabled by default]
+       random_input(original_data, rnd3,fp_plaintext_txt, file_type, block_number, block_length);
+       ^
+In file included from ./src/run.c:15:0:
+./src/../include/input.h:16:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length);
+      ^
+./src/run.c:578:7: warning: passing argument 2 of ‘random_input’ from incompatible pointer type [enabled by default]
+       random_input(original_data, rnd3,fp_plaintext_csv, file_type, block_number, block_length);
+       ^
+In file included from ./src/run.c:15:0:
+./src/../include/input.h:16:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void random_input(uchar **input, const uchar **rnd,FILE *data_i, bool file_type, int number, int arr_length);
+      ^
+./src/run.c:605:7: warning: passing argument 2 of ‘only_plaintext’ from incompatible pointer type [enabled by default]
+       only_plaintext(ciper_data, original_data, block_number,block_length, fp_cipher_txt,file_type);
+       ^
+In file included from ./src/run.c:16:0:
+./src/../include/cipher.h:18:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type);
+      ^
+./src/run.c:609:7: warning: passing argument 2 of ‘only_plaintext’ from incompatible pointer type [enabled by default]
+       only_plaintext(ciper_data, original_data, block_number,block_length, fp_cipher_csv,file_type);
+       ^
+In file included from ./src/run.c:16:0:
+./src/../include/cipher.h:18:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void only_plaintext(uchar **dst, const uchar **src, int number, int arr_length, FILE *cipher_o,bool file_type);
+      ^
+./src/run.c:642:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+     uint addr = (uint) ciper_data;
+                 ^
+./src/run.c:643:10: error: redefinition of ‘addr’
+     uint addr = 1;
+          ^
+./src/run.c:642:10: note: previous definition of ‘addr’ was here
+     uint addr = (uint) ciper_data;
+          ^
+./src/run.c:680:8: warning: passing argument 1 of ‘CETD_tag_generation’ from incompatible pointer type [enabled by default]
+        DEC);
+        ^
+In file included from ./src/run.c:22:0:
+./src/../include/CETD.h:25:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void CETD_tag_generation(const uchar **data,
+      ^
+./src/run.c:700:8: warning: passing argument 1 of ‘CETD_tag_generation’ from incompatible pointer type [enabled by default]
+        DEC);
+        ^
+In file included from ./src/run.c:22:0:
+./src/../include/CETD.h:25:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void CETD_tag_generation(const uchar **data,
+      ^
+./src/run.c:613:9: warning: unused variable ‘CETD_ctr’ [-Wunused-variable]
+     int CETD_ctr = mod(test_n,CTR_MAX);
+         ^
+./src/run.c:286:7: warning: unused variable ‘y2_name_csv’ [-Wunused-variable]
+  char y2_name_csv[y_num][256];
+       ^
+./src/run.c:278:7: warning: unused variable ‘y1_name_csv’ [-Wunused-variable]
+  char y1_name_csv[y_num][256];
+       ^
+./src/run.c:270:10: warning: unused variable ‘filename_x_csv’ [-Wunused-variable]
+     char filename_x_csv[256];
+          ^
+./src/run.c:265:7: warning: unused variable ‘filename_cipher_csv’ [-Wunused-variable]
+  char filename_cipher_csv[256];
+       ^
+./src/run.c:261:7: warning: unused variable ‘filename_plain_csv’ [-Wunused-variable]
+  char filename_plain_csv[256];
+       ^
+./src/run.c:245:7: warning: unused variable ‘y2_name_txt’ [-Wunused-variable]
+  char y2_name_txt[y_num][256];
+       ^
+./src/run.c:237:7: warning: unused variable ‘y1_name_txt’ [-Wunused-variable]
+  char y1_name_txt[y_num][256];
+       ^
+./src/run.c:229:10: warning: unused variable ‘filename_x_txt’ [-Wunused-variable]
+     char filename_x_txt[256];
+          ^
+./src/run.c:224:7: warning: unused variable ‘filename_cipher_txt’ [-Wunused-variable]
+  char filename_cipher_txt[256];
+       ^
+./src/run.c:220:7: warning: unused variable ‘filename_plain_txt’ [-Wunused-variable]
+  char filename_plain_txt[256];
+       ^
+./src/run.c: In function ‘bits_freq_input’:
+./src/run.c:932:17: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+     uint addr = (uint) input;
+                 ^
+./src/run.c:992:10: warning: passing argument 1 of ‘CETD_tag_generation’ from incompatible pointer type [enabled by default]
+          DEC);
+          ^
+In file included from ./src/run.c:22:0:
+./src/../include/CETD.h:25:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void CETD_tag_generation(const uchar **data,
+      ^
+./src/run.c:1008:10: warning: passing argument 1 of ‘CETD_tag_generation’ from incompatible pointer type [enabled by default]
+          DEC);
+          ^
+In file included from ./src/run.c:22:0:
+./src/../include/CETD.h:25:6: note: expected ‘const unsigned char **’ but argument is of type ‘unsigned char **’
+ void CETD_tag_generation(const uchar **data,
+      ^
+make: *** [obj/run.o] Error 1

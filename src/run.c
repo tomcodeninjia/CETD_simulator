@@ -115,7 +115,8 @@ int main(int argc, char *argv[])
 	{
 //    	printf("input the No. of sample sequences\n");
 //    	scanf("%d",&test_count);
-		test_count = 65536;
+//		test_count = 65536;
+		test_count = 3;
     	
 //    	printf("input the No. of tags per sequence\n");
 //    	scanf("%d",&n);
@@ -203,12 +204,12 @@ int main(int argc, char *argv[])
 	int addr_len;
 //	printf("Input address length:(bits)\n");
 //	scanf("%d",&addr_len);
-	addr_len = 32;
+	addr_len = 112;
 
 	int crt_len;
 //	printf("Input counter length:(bits)\n");
-//	scanf("%d",&crt_len);
-	crt_len = 48;
+//	scanf("%d",gcrt_len);
+	crt_len = 16;
 
 
 	/*
@@ -639,7 +640,7 @@ int main(int argc, char *argv[])
 				memset(CETD_nonce_input,0,16);
 
 				uint addr = (uint) ciper_data;
-				//uint addr = 1;
+				 addr = 1;
 				uint crt = mod(test_n, CTR_MAX);
 
  				nonce_input_generation(CETD_nonce_input, 
